@@ -7,24 +7,39 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Pustaka CSS Video.js -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* Rasio 16:9 */
-            height: 0;
             background: #000;
             border-radius: 8px;
             overflow: hidden;
         }
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        /* Mengatur ukuran pemutar agar pas 16:9 */
+        .video-js {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 16 / 9;
             border-radius: 8px;
-            background: #000;
+        }
+        /* Kustomisasi Tombol Play Besar di Tengah Layar */
+        .video-js .vjs-big-play-button {
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            border-radius: 50% !important;
+            width: 80px !important;
+            height: 80px !important;
+            line-height: 80px !important;
+            background-color: rgba(59, 130, 246, 0.9) !important;
+            border: none !important;
+            font-size: 2.5em !important;
+        }
+        .video-js .vjs-big-play-button:hover {
+            background-color: #3b82f6 !important;
         }
     </style>
 </head>
@@ -53,12 +68,18 @@
     <!-- Konten Detail & Streaming -->
     <main class="main-container watch-container">
         
-        <!-- Pemutar Video HTML5 Standar dengan Penanganan Desktop -->
+        <!-- Pemutar Video dengan Video.js -->
         <div class="player-wrapper">
-            <div class="video-container" id="videoContainer">
-                <video id="desktopVideoPlayer" controls playsinline preload="auto">
-                    <source id="videoSource" src="" type="video/mp4">
-                    Browser Anda tidak mendukung pemutar video ini.
+            <div class="video-container">
+                <video
+                    id="rjPlayer"
+                    class="video-js vjs-big-play-centered"
+                    controls
+                    preload="auto"
+                    playsinline>
+                    <p class="vjs-no-js">
+                        Peramban Anda harus mengaktifkan JavaScript untuk melihat video ini.
+                    </p>
                 </video>
             </div>
             
@@ -117,8 +138,12 @@
         </div>
     </footer>
 
-    <!-- JavaScript Logika Pemutar Langsung Desktop -->
+    <!-- JavaScript Video.js & Logika Data Film -->
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script>
+        // Inisialisasi Player Video.js
+        var player = videojs('rjPlayer');
+
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
             const titleParam = params.get('title');
@@ -142,17 +167,11 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Mengatur sumber video agar langsung diputar di elemen video HTML5
+                    // Masukkan link video ke pemutar Video.js
                     if(currentMovie.videoUrl) {
-                        const videoPlayer = document.getElementById('desktopVideoPlayer');
-                        const videoSource = document.getElementById('videoSource');
-                        
-                        videoSource.src = currentMovie.videoUrl;
-                        videoPlayer.load();
-
-                        // Paksa pemutaran ulang agar dekoder komputer memuat frame pertama video
-                        videoPlayer.addEventListener('loadedmetadata', () => {
-                            videoPlayer.currentTime = 0.1;
+                        player.src({
+                            src: currentMovie.videoUrl,
+                            type: 'video/mp4'
                         });
                     }
 
