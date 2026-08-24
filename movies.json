@@ -1,14 +1,19 @@
 [
   {
     "id": 1,
-    "title": "Ghost In The Cell",
-    "year": "2025",
-    "genre": "Horror",
-    "poster": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
-    "rating": "7.5",
-    "duration": "120 min",
+    [
+  {
+    "title": "Ghost in the Cell",
+    "year": 2026,
+    "genre": "Horror, Comedy, Action",
+    "rating": "4.8",
+    "duration": "106 Menit",
     "quality": "HD",
-    "country": "ID"
+    "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80",
+    "director": "Joko Anwar",
+    "country": "Indonesia",
+    "cast": "Abimana Aryasatya, Endy Arfian, Yoga Pratama, Aming, Bront Palarae",
+    "synopsis": "Narapidana di penjara Labuhan Angsana menghadapi teror kekuatan gaib yang membunuh tahanan dengan aura paling negatif. Para tahanan mencoba berbuat baik demi menjaga aura positif, hingga akhirnya sadar bahwa satu-satunya cara bertahan hidup adalah bersatu melawan penindas dan hantu tersebut."
   },
   {
     "id": 2,
