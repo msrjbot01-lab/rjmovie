@@ -117,22 +117,10 @@
         </div>
     </header>
 
-    <!-- Hero Banner / Full Banner Slider -->
+    <!-- Hero Banner / Full Banner Slider (Dimuat Otomatis dari banners.json) -->
     <div class="hero-banner">
         <div class="slider-container" id="sliderContainer">
-            <!-- Tambahkan tag <div class="slide"><img src="nama-banner.png"></div> di bawah jika ingin menambah banner baru -->
-            <div class="slide">
-                <img src="banner1.png" alt="Banner 1">
-            </div>
-            <div class="slide">
-                <img src="banner2.png" alt="Banner 2">
-            </div>
-            <!-- Contoh banner ke-3 (hapus komentar jika file gambarnya sudah ada) -->
-            <!-- 
-            <div class="slide">
-                <img src="banner3.png" alt="Banner 3">
-            </div> 
-            -->
+            <!-- Slide banner akan dimuat secara dinamis via JavaScript -->
         </div>
 
         <!-- Tombol Panah Slider -->
@@ -156,7 +144,7 @@
     <!-- Konten Utama (Grid Film) -->
     <main class="main-container">
         <div class="section-title">
-            <h2><i class="fas fa-fire text-blue"></i> Sedang Trending</h2>
+            <h2><i class="fas fa-fire" style="color: #3b82f6;"></i> Sedang Trending</h2>
         </div>
         <div id="movieGrid" class="movie-grid">
             <!-- Data film dimuat otomatis oleh JavaScript -->
@@ -173,25 +161,57 @@
 
     <!-- Script JavaScript untuk Slider & Film -->
     <script>
-        // --- Logika Banner Slider ---
         let currentIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
-        const sliderContainer = document.getElementById('sliderContainer');
-        const dotsContainer = document.getElementById('sliderDots');
+        let totalSlides = 0;
+        let slideInterval;
 
-        // Membuat titik indikator secara otomatis sesuai jumlah banner
-        for (let i = 0; i < totalSlides; i++) {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            if (i === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToSlide(i));
-            dotsContainer.appendChild(dot);
+        // --- Logika Banner Slider Dinamis dari banners.json ---
+        async function loadBanners() {
+            try {
+                const response = await fetch('banners.json');
+                if (!response.ok) throw new Error('File banners.json tidak ditemukan');
+                const banners = await response.json();
+                
+                const sliderContainer = document.getElementById('sliderContainer');
+                const dotsContainer = document.getElementById('sliderDots');
+                
+                sliderContainer.innerHTML = '';
+                dotsContainer.innerHTML = '';
+                totalSlides = banners.length;
+
+                if (totalSlides === 0) {
+                    sliderContainer.innerHTML = '<div class="slide"><p style="text-align:center; padding:50px; color:#888;">Belum ada banner tersedia.</p></div>';
+                    return;
+                }
+
+                banners.forEach((banner, index) => {
+                    // Buat elemen Slide
+                    const slideDiv = document.createElement('div');
+                    slideDiv.classList.add('slide');
+                    slideDiv.innerHTML = `<img src="${banner.image}" alt="${banner.title || 'Banner'}">`;
+                    sliderContainer.appendChild(slideDiv);
+
+                    // Buat Titik Indikator (Dot)
+                    const dot = document.createElement('div');
+                    dot.classList.add('dot');
+                    if (index === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => goToSlide(index));
+                    dotsContainer.appendChild(dot);
+                });
+
+                // Jalankan auto-slide setelah banner dimuat
+                startAutoSlide();
+
+            } catch (error) {
+                console.error("Gagal memuat banner:", error);
+                document.getElementById('sliderContainer').innerHTML = '<div class="slide"><p style="text-align:center; padding:50px; color:#ef4444;">Gagal memuat banners.json</p></div>';
+            }
         }
 
-        const dots = document.querySelectorAll('.dot');
-
         function updateSlider() {
+            const sliderContainer = document.getElementById('sliderContainer');
+            const dots = document.querySelectorAll('.dot');
+            
             sliderContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
             dots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentIndex);
@@ -199,6 +219,7 @@
         }
 
         function moveSlide(direction) {
+            if (totalSlides === 0) return;
             currentIndex += direction;
             if (currentIndex < 0) {
                 currentIndex = totalSlides - 1;
@@ -213,19 +234,20 @@
             updateSlider();
         }
 
-        // Auto slide berganti otomatis tiap 4 detik
-        let slideInterval = setInterval(() => {
-            moveSlide(1);
-        }, 4000);
-
-        // Hentikan auto-slide saat mouse diarahkan ke banner (agar nyaman dibaca)
-        const bannerElement = document.querySelector('.hero-banner');
-        bannerElement.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        bannerElement.addEventListener('mouseleave', () => {
+        function startAutoSlide() {
             slideInterval = setInterval(() => {
                 moveSlide(1);
             }, 4000);
-        });
+
+            // Hentikan auto-slide saat mouse diarahkan ke banner
+            const bannerElement = document.querySelector('.hero-banner');
+            bannerElement.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            bannerElement.addEventListener('mouseleave', () => {
+                slideInterval = setInterval(() => {
+                    moveSlide(1);
+                }, 4000);
+            });
+        }
 
 
         // --- Logika Film & Pencarian ---
@@ -318,6 +340,8 @@
             renderMovies(result);
         }
 
+        // Jalankan fungsi saat halaman dimuat
+        loadBanners();
         loadMovies();
     </script>
 </body>
