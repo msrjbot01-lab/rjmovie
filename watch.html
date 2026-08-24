@@ -11,45 +11,20 @@
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%;
+            padding-bottom: 56.25%; /* Rasio 16:9 */
             height: 0;
             background: #000;
             border-radius: 8px;
             overflow: hidden;
         }
-        .video-container iframe {
+        .video-container video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
             border-radius: 8px;
-        }
-        /* Style khusus jika dibuka di desktop dan error */
-        .desktop-fallback {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            background: #111;
-            text-align: center;
-            padding: 20px;
-        }
-        .desktop-fallback a {
-            margin-top: 15px;
-            background: #3b82f6;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
+            background: #000;
         }
     </style>
 </head>
@@ -78,10 +53,13 @@
     <!-- Konten Detail & Streaming -->
     <main class="main-container watch-container">
         
-        <!-- Pemutar Video -->
+        <!-- Pemutar Video HTML5 Standar dengan Penanganan Desktop -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
-                <iframe id="archivePlayer" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+                <video id="desktopVideoPlayer" controls playsinline preload="auto">
+                    <source id="videoSource" src="" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video ini.
+                </video>
             </div>
             
             <!-- Tombol Aksi Bawah Player -->
@@ -139,7 +117,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript Deteksi Perangkat & Embed -->
+    <!-- JavaScript Logika Pemutar Langsung Desktop -->
     <script>
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -164,32 +142,18 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
+                    // Mengatur sumber video agar langsung diputar di elemen video HTML5
                     if(currentMovie.videoUrl) {
-                        let videoUrl = currentMovie.videoUrl;
+                        const videoPlayer = document.getElementById('desktopVideoPlayer');
+                        const videoSource = document.getElementById('videoSource');
                         
-                        // Deteksi apakah pengguna menggunakan Komputer / Desktop
-                        const isDesktop = !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+                        videoSource.src = currentMovie.videoUrl;
+                        videoPlayer.load();
 
-                        if (isDesktop) {
-                            // Jika di Komputer, tampilkan pesan informasi interaktif agar tidak error 224002
-                            const container = document.getElementById('videoContainer');
-                            container.innerHTML = `
-                                <div class="desktop-fallback">
-                                    <i class="fas fa-exclamation-triangle fa-2x" style="color: #f59e0b; margin-bottom: 10px;"></i>
-                                    <p>Format server video ini tidak didukung pemutar langsung di browser Desktop.<br>Silakan tonton atau unduh melalui tombol di bawah:</p>
-                                    <a href="${currentMovie.downloadUrl || videoUrl}" target="_blank"><i class="fas fa-play-circle"></i> Putar/Download di Tab Baru</a>
-                                </div>
-                            `;
-                        } else {
-                            // Jika di Mobile, gunakan embed standar Internet Archive yang sudah berjalan baik
-                            let embedUrl = videoUrl;
-                            if (videoUrl.includes('archive.org/download/')) {
-                                let parts = videoUrl.split('/');
-                                let identifier = parts[4];
-                                embedUrl = `https://archive.org/embed/${identifier}`;
-                            }
-                            document.getElementById('archivePlayer').src = embedUrl;
-                        }
+                        // Paksa pemutaran ulang agar dekoder komputer memuat frame pertama video
+                        videoPlayer.addEventListener('loadedmetadata', () => {
+                            videoPlayer.currentTime = 0.1;
+                        });
                     }
 
                     if(currentMovie.downloadUrl) {
