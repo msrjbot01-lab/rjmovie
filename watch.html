@@ -8,53 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Styling untuk Custom Play Button Overlay */
         .video-container {
             position: relative;
             width: 100%;
+            padding-bottom: 56.25%; /* Rasio aspek 16:9 */
             background: #000;
             border-radius: 8px;
             overflow: hidden;
         }
-        #videoPlayer {
-            width: 100%;
-            display: block;
-            border-radius: 8px;
-        }
-        .custom-play-overlay {
+        .video-container iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: background 0.3s ease;
-        }
-        .custom-play-overlay:hover {
-            background: rgba(0, 0, 0, 0.6);
-        }
-        .play-icon-btn {
-            width: 80px;
-            height: 80px;
-            background: rgba(59, 130, 246, 0.9);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 30px;
-            padding-left: 5px;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-        .custom-play-overlay:hover .play-icon-btn {
-            transform: scale(1.1);
-            background: #3b82f6;
+            border: none;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -83,21 +52,10 @@
     <!-- Konten Detail & Streaming -->
     <main class="main-container watch-container">
         
-        <!-- Pemutar Video -->
+        <!-- Pemutar Video Menggunakan Iframe Internet Archive -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
-                <!-- Tombol Play Kustom di Tengah -->
-                <div class="custom-play-overlay" id="playOverlay">
-                    <div class="play-icon-btn">
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-
-                <!-- Video Player HTML5 -->
-                <video id="videoPlayer" playsinline preload="metadata">
-                    <source id="videoSource" src="" type="video/mp4">
-                    Browser Anda tidak mendukung pemutar video ini.
-                </video>
+                <iframe id="videoIframe" src="" allowfullscreen></iframe>
             </div>
             
             <!-- Tombol Aksi Bawah Player -->
@@ -182,25 +140,21 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    const videoPlayer = document.getElementById('videoPlayer');
-                    const videoSource = document.getElementById('videoSource');
-                    const playOverlay = document.getElementById('playOverlay');
-
+                    // Otomatis mengubah link download/direct menjadi format embed Internet Archive
                     if(currentMovie.videoUrl) {
-                        videoSource.src = currentMovie.videoUrl;
-                        videoPlayer.load(); // Memuat ulang buffer video agar siap diputar di desktop
+                        // Contoh link original: https://archive.org/download/tumbal-dukun-jahanam/Tumbal%20Dukun%20Jahanam.mp4
+                        // Diubah otomatis menjadi link embed: https://archive.org/embed/tumbal-dukun-jahanam
+                        let embedUrl = currentMovie.videoUrl;
+                        if (embedUrl.includes('archive.org/download/')) {
+                            let parts = embedUrl.split('/');
+                            let identifierIndex = parts.indexOf('download') + 1;
+                            if (identifierIndex < parts.length) {
+                                let identifier = parts[identifierIndex];
+                                embedUrl = `https://archive.org/embed/${identifier}`;
+                            }
+                        }
+                        document.getElementById('videoIframe').src = embedUrl;
                     }
-
-                    // Logika Klik Tombol Play Kustom
-                    playOverlay.addEventListener('click', function() {
-                        videoPlayer.play().then(() => {
-                            videoPlayer.setAttribute('controls', 'true'); // Memunculkan kontrol bawah
-                            playOverlay.style.display = 'none'; // Sembunyikan tombol play tengah
-                        }).catch(error => {
-                            console.error("Gagal memutar video:", error);
-                            alert("Gagal memutar video. Pastikan link video valid.");
-                        });
-                    });
 
                     if(currentMovie.downloadUrl) {
                         document.getElementById('downloadBtn').href = currentMovie.downloadUrl;
