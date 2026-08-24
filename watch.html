@@ -61,8 +61,8 @@
         <!-- Pemutar Video -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
-                <!-- Video Player dengan crossOrigin agar lolos sensor CORS browser -->
-                <video id="videoPlayer" playsinline controls preload="metadata">
+                <!-- Ditambahkan crossorigin="anonymous" agar lolos sensor CORS browser komputer -->
+                <video id="videoPlayer" crossorigin="anonymous" playsinline controls preload="metadata">
                     <source id="videoSource" src="" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video ini.
                 </video>
@@ -150,7 +150,13 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Mengatur video dan mengaktifkan Plyr Player
+                    // Inisialisasi pemutar Plyr
+                    const player = new Plyr('#videoPlayer', {
+                        controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'settings', 'fullscreen'],
+                        settings: ['quality', 'speed'],
+                        fullscreen: { iosNative: true }
+                    });
+
                     const videoSource = document.getElementById('videoSource');
                     const videoPlayer = document.getElementById('videoPlayer');
 
@@ -158,11 +164,11 @@
                         videoSource.src = currentMovie.videoUrl;
                         videoPlayer.load();
                         
-                        // Inisialisasi pemutar Plyr agar video langsung di-decode dengan benar di komputer
-                        const player = new Plyr('#videoPlayer', {
-                            controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'settings', 'fullscreen'],
-                            settings: ['quality', 'speed'],
-                            fullscreen: { iosNative: true }
+                        // Sinkronisasi otomatis agar dekoder komputer langsung membaca aliran data video
+                        videoPlayer.addEventListener('loadeddata', () => {
+                            if (videoPlayer.paused) {
+                                videoPlayer.currentTime = 0;
+                            }
                         });
                     }
 
