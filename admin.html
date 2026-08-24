@@ -294,14 +294,8 @@
     <script>
         const CORRECT_PASSWORD = "matthewsel18"; // Password admin
         
-        // Konfigurasi GitHub Repository Anda
-        const GITHUB_USERNAME = 'msrjbot01-lab';
-        const REPO_NAME = 'rjmovie';
-        const BRANCH_NAME = 'main';
-        const GITHUB_TOKEN = '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'; 
-        // ⚠️ Catatan Keamanan: Token di atas terlihat di browser. 
-        // Disarankan untuk segera melakukan revoke/generate ulang token ini di GitHub 
-        // setelah website selesai di-setup, atau gunakan backend/Serverless Function.
+        // URL Cloudflare Worker Backend (Aman dari Error 401 dan Secret Scanning)
+        const WORKER_URL = 'https://rjmovie-backend.trbmaster.workers.dev';
 
         window.onload = function() {
             if (sessionStorage.getItem("isLoggedIn") === "true") {
@@ -338,19 +332,7 @@
             reader.onerror = error => reject(error);
         });
 
-        function utf8ToBase64(str) {
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-                return String.fromCharCode('0x' + p1);
-            }));
-        }
-
-        function base64ToUtf8(base64Str) {
-            return decodeURIComponent(atob(base64Str).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-        }
-
-        // Script Otomatis Upload Film & Update movies.json ke GitHub
+        // Script Otomatis Upload Film via Cloudflare Worker
         document.getElementById('addMovieForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -365,26 +347,11 @@
             const posterFile = posterInput.files[0];
             const posterFileName = `poster-${Date.now()}-${posterFile.name.replace(/\s+/g, '-')}`;
 
-            alert('Sedang mengunggah poster dan memperbarui movies.json ke GitHub...');
+            alert('Sedang mengunggah poster dan memperbarui movies.json via Cloudflare...');
 
             try {
                 const base64Poster = await toBase64(posterFile);
                 const posterContentOnly = base64Poster.split(',')[1];
-
-                const uploadPosterRes = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${posterFileName}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: `Upload poster film: ${title}`,
-                        content: posterContentOnly,
-                        branch: BRANCH_NAME
-                    })
-                });
-
-                if (!uploadPosterRes.ok) throw new Error('Gagal mengunggah file poster ke GitHub.');
 
                 const newMovie = {
                     id: Date.now(),
@@ -403,40 +370,20 @@
                     downloadUrl: document.getElementById('videoUrl').value
                 };
 
-                const getJsonUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/movies.json`;
-                const jsonFileResponse = await fetch(getJsonUrl, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-                });
-
-                let existingMovies = [];
-                let fileSha = '';
-
-                if (jsonFileResponse.ok) {
-                    const jsonDat = await jsonFileResponse.json();
-                    fileSha = jsonDat.sha;
-                    const decodedJson = base64ToUtf8(jsonDat.content);
-                    existingMovies = JSON.parse(decodedJson);
-                }
-
-                existingMovies.push(newMovie);
-
-                const updatedJsonContent = utf8ToBase64(JSON.stringify(existingMovies, null, 4));
-
-                const updateJsonResponse = await fetch(getJsonUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Content-Type': 'application/json',
-                    },
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: `Tambah film baru: ${title}`,
-                        content: updatedJsonContent,
-                        sha: fileSha,
-                        branch: BRANCH_NAME
+                        fileName: posterFileName,
+                        fileContent: posterContentOnly,
+                        jsonPath: 'movies.json',
+                        jsonData: newMovie,
+                        commitMessage: `Tambah film baru: ${title}`
                     })
                 });
 
-                if (!updateJsonResponse.ok) throw new Error('Gagal memperbarui file movies.json di GitHub.');
+                const result = await response.json();
+                if (!result.success) throw new Error(result.error || 'Gagal memproses data ke GitHub.');
 
                 alert('Sukses! Film baru berhasil ditambahkan dan tersimpan otomatis di website.');
                 document.getElementById('addMovieForm').reset();
@@ -447,7 +394,7 @@
             }
         });
 
-        // Script Otomatis Upload Banner & Update banners.json ke GitHub
+        // Script Otomatis Upload Banner via Cloudflare Worker
         document.getElementById('bannerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const title = document.getElementById('bannerTitleInput').value.trim();
@@ -461,65 +408,31 @@
             const file = fileInput.files[0];
             const fileName = `banner-${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
 
-            alert('Sedang mengunggah banner slider ke GitHub...');
+            alert('Sedang mengunggah banner slider via Cloudflare...');
 
             try {
                 const base64Content = await toBase64(file);
                 const imageContentOnly = base64Content.split(',')[1];
 
-                const uploadImageResponse = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${fileName}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: `Upload banner baru: ${title}`,
-                        content: imageContentOnly,
-                        branch: BRANCH_NAME
-                    })
-                });
-
-                if (!uploadImageResponse.ok) throw new Error('Gagal mengunggah file banner ke GitHub.');
-
-                const getJsonUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/banners.json`;
-                const jsonFileResponse = await fetch(getJsonUrl, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-                });
-
-                let existingBanners = [];
-                let fileSha = '';
-
-                if (jsonFileResponse.ok) {
-                    const jsonDat = await jsonFileResponse.json();
-                    fileSha = jsonDat.sha;
-                    const decodedJson = base64ToUtf8(jsonDat.content);
-                    existingBanners = JSON.parse(decodedJson);
-                }
-
-                existingBanners.push({
+                const newBanner = {
                     title: title,
                     image: fileName
-                });
+                };
 
-                const updatedJsonContent = utf8ToBase64(JSON.stringify(existingBanners, null, 4));
-
-                const updateJsonResponse = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/banners.json`;
-                const updateResponse = await fetch(updateJsonResponse, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Content-Type': 'application/json',
-                    },
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: `Update banners.json dengan banner: ${title}`,
-                        content: updatedJsonContent,
-                        sha: fileSha,
-                        branch: BRANCH_NAME
+                        fileName: fileName,
+                        fileContent: imageContentOnly,
+                        jsonPath: 'banners.json',
+                        jsonData: newBanner,
+                        commitMessage: `Update banners.json dengan banner: ${title}`
                     })
                 });
 
-                if (!updateResponse.ok) throw new Error('Gagal memperbarui file banners.json.');
+                const result = await response.json();
+                if (!result.success) throw new Error(result.error || 'Gagal memproses banner ke GitHub.');
 
                 alert('Sukses! Banner berhasil di-upload dan otomatis masuk ke website.');
                 document.getElementById('bannerForm').reset();
