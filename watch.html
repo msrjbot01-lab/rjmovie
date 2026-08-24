@@ -7,24 +7,36 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Video.js untuk Pemutar Stabil Desktop & Mobile -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* Rasio 16:9 */
-            height: 0;
             background: #000;
             border-radius: 8px;
             overflow: hidden;
         }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Kustomisasi Video.js agar pas dengan tema web Anda */
+        .video-js {
             width: 100%;
-            height: 100%;
-            border: none;
+            height: auto;
+            aspect-ratio: 16 / 9;
             border-radius: 8px;
+        }
+        .vjs-big-play-button {
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%);
+            border-radius: 50% !important;
+            width: 80px !important;
+            height: 80px !important;
+            line-height: 80px !important;
+            background-color: rgba(59, 130, 246, 0.9) !important;
+            border: none !important;
+        }
+        .vjs-big-play-button:hover {
+            background-color: #3b82f6 !important;
         }
     </style>
 </head>
@@ -53,10 +65,21 @@
     <!-- Konten Detail & Streaming -->
     <main class="main-container watch-container">
         
-        <!-- Pemutar Video menggunakan Embed Iframe Internet Archive -->
+        <!-- Pemutar Video Menggunakan Video.js -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
-                <iframe id="archivePlayer" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+                <video
+                    id="my-video"
+                    class="video-js vjs-big-play-centered vjs-theme-city"
+                    controls
+                    preload="auto"
+                    playsinline
+                    data-setup='{}'>
+                    <source id="videoSource" src="" type="video/mp4" />
+                    <p class="vjs-no-js">
+                        Peramban Anda harus mengaktifkan JavaScript untuk melihat video ini.
+                    </p>
+                </video>
             </div>
             
             <!-- Tombol Aksi Bawah Player -->
@@ -114,7 +137,8 @@
         </div>
     </footer>
 
-    <!-- JavaScript Logika Film & Embed URL Generator -->
+    <!-- JavaScript Video.js & Logika Film -->
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script>
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -140,17 +164,14 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Mengonversi link download mp4 internet archive menjadi link embed resmi yang stabil di PC & HP
+                    // Mengatur link video ke Video.js
                     if(currentMovie.videoUrl) {
-                        // Contoh link asli: https://archive.org/download/tumbal-dukun-jahanam/Tumbal%20Dukun%20Jahanam.mp4
-                        // Diubah ke format embed: https://archive.org/embed/tumbal-dukun-jahanam
-                        let embedUrl = currentMovie.videoUrl;
-                        if (embedUrl.includes('archive.org/download/')) {
-                            let parts = embedUrl.split('/');
-                            let identifier = parts[4]; // Mengambil 'tumbal-dukun-jahanam'
-                            embedUrl = `https://archive.org/embed/${identifier}?autoplay=0`;
-                        }
-                        document.getElementById('archivePlayer').src = embedUrl;
+                        var player = videojs('my-video');
+                        player.src({
+                            src: currentMovie.videoUrl,
+                            type: 'video/mp4'
+                        });
+                        player.load();
                     }
 
                     if(currentMovie.downloadUrl) {
