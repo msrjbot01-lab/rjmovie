@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "title": "Cyberpunk 2077: Edgerunners",
+    "genre": "Sci-Fi / Action",
+    "year": "2026",
+    "poster": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+    "synopsis": "Kisah menegangkan seorang anak jalanan yang mencoba bertahan hidup di kota masa depan yang penuh teknologi tinggi.",
+    "streamUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "downloadUrl": "#"
+  },
+  {
+    "id": 2,
+    "title": "The Last Horizon",
+    "genre": "Adventure / Drama",
+    "year": "2025",
+    "poster": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500",
+    "synopsis": "Ekspedisi luar angkasa terakhir umat manusia untuk mencari planet baru yang dapat dihuni.",
+    "streamUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "downloadUrl": "#"
+  }
+]
