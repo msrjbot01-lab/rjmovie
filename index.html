@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* CSS Perbaikan untuk Banner Full-Width & Responsif */
+        /* Perbaikan Banner agar tampil utuh dan proporsional */
         .hero-banner {
             position: relative;
             width: 100vw;
@@ -17,40 +17,50 @@
             right: 50%;
             margin-left: -50vw;
             margin-right: -50vw;
-            height: 380px;
+            background-color: #0b0f19;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
-            background-color: #111;
+            padding: 20px 0;
             margin-bottom: 25px;
         }
+
+        /* Mengubah agar gambar tampil penuh secara utuh */
         .hero-banner img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-width: 1200px;
+            height: auto;
+            object-fit: contain;
             display: block;
+            margin: 0 auto;
         }
+
+        /* Memindahkan teks deskripsi ke bawah banner agar tidak bertumpuk */
         .hero-content {
-            position: absolute;
-            bottom: 30px;
-            left: 6%;
-            right: 6%;
-            z-index: 5;
+            text-align: center;
+            max-width: 900px;
+            margin: 15px auto 0 auto;
+            padding: 0 20px;
             color: #fff;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
         }
+
         .hero-content h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 8px;
-            font-weight: 800;
+            font-weight: 700;
+            color: #ffffff;
         }
+
         .hero-content p {
-            font-size: 1rem;
-            color: #ddd;
-            max-width: 650px;
+            font-size: 0.95rem;
+            color: #aaa;
+            line-height: 1.4;
         }
+
+        /* Responsif untuk HP (Mobile) */
         @media screen and (max-width: 768px) {
-            .hero-banner {
-                height: 220px;
-            }
             .hero-content h1 {
                 font-size: 1.2rem;
             }
