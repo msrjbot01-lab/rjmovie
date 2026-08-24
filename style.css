@@ -17,16 +17,20 @@ body {
     box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
 }
 
-.logo {
-    font-size: 26px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    color: #3b82f6;
-    text-transform: uppercase;
+/* Styling untuk Logo Gambar */
+.logo-container {
+    display: flex;
+    align-items: center;
 }
-.logo span { 
-    color: #e2e8f0; 
-    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+.site-logo {
+    height: 42px; /* Ukuran tinggi logo, bisa diubah sesuai kebutuhan */
+    width: auto;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.2s;
+}
+.site-logo:hover {
+    transform: scale(1.03);
 }
 
 .nav-links {
