@@ -11,7 +11,7 @@
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* Rasio 16:9 */
+            padding-bottom: 56.25%;
             height: 0;
             background: #000;
             border-radius: 8px;
@@ -25,6 +25,31 @@
             height: 100%;
             border: none;
             border-radius: 8px;
+        }
+        /* Style khusus jika dibuka di desktop dan error */
+        .desktop-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background: #111;
+            text-align: center;
+            padding: 20px;
+        }
+        .desktop-fallback a {
+            margin-top: 15px;
+            background: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -53,7 +78,7 @@
     <!-- Konten Detail & Streaming -->
     <main class="main-container watch-container">
         
-        <!-- Pemutar Video Embed -->
+        <!-- Pemutar Video -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
                 <iframe id="archivePlayer" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
@@ -114,7 +139,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript Logika & Penanganan URL Embed -->
+    <!-- JavaScript Deteksi Perangkat & Embed -->
     <script>
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -128,7 +153,6 @@
                 const currentMovie = movies.find(m => m.title.toLowerCase() === decodeURIComponent(titleParam).toLowerCase());
 
                 if (currentMovie) {
-                    // Menampilkan data informasi film
                     document.getElementById('movieTitleDisplay').innerText = `${currentMovie.title} (${currentMovie.year})`;
                     document.getElementById('moviePosterDisplay').src = currentMovie.poster;
                     document.getElementById('movieGenreDisplay').innerText = currentMovie.genre;
@@ -140,19 +164,32 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Mengonversi link MP4 langsung menjadi link iframe embed yang aman untuk PC & Mobile
                     if(currentMovie.videoUrl) {
                         let videoUrl = currentMovie.videoUrl;
-                        let embedUrl = videoUrl;
-
-                        // Jika link dari archive.org/download/, ubah otomatis ke format /embed/
-                        if (videoUrl.includes('archive.org/download/')) {
-                            let parts = videoUrl.split('/');
-                            let identifier = parts[4]; // Mengambil nama unik file di archive
-                            embedUrl = `https://archive.org/embed/${identifier}`;
-                        }
                         
-                        document.getElementById('archivePlayer').src = embedUrl;
+                        // Deteksi apakah pengguna menggunakan Komputer / Desktop
+                        const isDesktop = !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+
+                        if (isDesktop) {
+                            // Jika di Komputer, tampilkan pesan informasi interaktif agar tidak error 224002
+                            const container = document.getElementById('videoContainer');
+                            container.innerHTML = `
+                                <div class="desktop-fallback">
+                                    <i class="fas fa-exclamation-triangle fa-2x" style="color: #f59e0b; margin-bottom: 10px;"></i>
+                                    <p>Format server video ini tidak didukung pemutar langsung di browser Desktop.<br>Silakan tonton atau unduh melalui tombol di bawah:</p>
+                                    <a href="${currentMovie.downloadUrl || videoUrl}" target="_blank"><i class="fas fa-play-circle"></i> Putar/Download di Tab Baru</a>
+                                </div>
+                            `;
+                        } else {
+                            // Jika di Mobile, gunakan embed standar Internet Archive yang sudah berjalan baik
+                            let embedUrl = videoUrl;
+                            if (videoUrl.includes('archive.org/download/')) {
+                                let parts = videoUrl.split('/');
+                                let identifier = parts[4];
+                                embedUrl = `https://archive.org/embed/${identifier}`;
+                            }
+                            document.getElementById('archivePlayer').src = embedUrl;
+                        }
                     }
 
                     if(currentMovie.downloadUrl) {
