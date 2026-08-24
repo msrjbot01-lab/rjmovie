@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* CSS Banner Full 100% Lebar Layar Tanpa Samping Kosong */
+        /* CSS Banner Full 100% Lebar Layar dengan Model Slider */
         .hero-banner {
             width: 100vw;
             position: relative;
@@ -19,17 +19,77 @@
             margin-right: -50vw;
             margin-bottom: 25px;
             overflow: hidden;
-            background: transparent;
+            background: #000;
         }
 
-        .hero-banner img {
+        .slider-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .slide img {
             width: 100%;
             height: auto;
             display: block;
             object-fit: cover;
         }
 
-        /* Menyembunyikan teks sambutan agar murni hanya menampilkan banner */
+        /* Tombol Navigasi Slider (Kiri & Kanan) */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+            transition: background 0.3s;
+            border-radius: 4px;
+        }
+
+        .slider-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+
+        /* Titik Indikator Slider di Bawah */
+        .slider-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .dot.active {
+            background-color: #ffffff;
+            width: 25px;
+            border-radius: 5px;
+        }
+
+        /* Menyembunyikan teks sambutan lama */
         .hero-content {
             display: none;
         }
@@ -57,13 +117,30 @@
         </div>
     </header>
 
-    <!-- Hero Banner / Full Banner Murni -->
+    <!-- Hero Banner / Full Banner Slider -->
     <div class="hero-banner">
-        <img src="banner1.png" alt="Banner RJMOVIE">
-        <div class="hero-content">
-            <h1>Nonton Film & Series Sub Indo Gratis</h1>
-            <p>Streaming ribuan film bioskop, box office, dan serial TV terbaru dengan kualitas HD terbaik tanpa iklan mengganggu.</p>
+        <div class="slider-container" id="sliderContainer">
+            <!-- Tambahkan tag <div class="slide"><img src="nama-banner.png"></div> di bawah jika ingin menambah banner baru -->
+            <div class="slide">
+                <img src="banner1.png" alt="Banner 1">
+            </div>
+            <div class="slide">
+                <img src="banner2.png" alt="Banner 2">
+            </div>
+            <!-- Contoh banner ke-3 (hapus komentar jika file gambarnya sudah ada) -->
+            <!-- 
+            <div class="slide">
+                <img src="banner3.png" alt="Banner 3">
+            </div> 
+            -->
         </div>
+
+        <!-- Tombol Panah Slider -->
+        <button class="slider-btn prev-btn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-btn next-btn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+
+        <!-- Titik Indikator -->
+        <div class="slider-dots" id="sliderDots"></div>
     </div>
 
     <!-- Filter Section -->
@@ -94,8 +171,64 @@
         </div>
     </footer>
 
-    <!-- Script JavaScript Filter & Search -->
+    <!-- Script JavaScript untuk Slider & Film -->
     <script>
+        // --- Logika Banner Slider ---
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const sliderContainer = document.getElementById('sliderContainer');
+        const dotsContainer = document.getElementById('sliderDots');
+
+        // Membuat titik indikator secara otomatis sesuai jumlah banner
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlider() {
+            sliderContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function moveSlide(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = totalSlides - 1;
+            } else if (currentIndex >= totalSlides) {
+                currentIndex = 0;
+            }
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateSlider();
+        }
+
+        // Auto slide berganti otomatis tiap 4 detik
+        let slideInterval = setInterval(() => {
+            moveSlide(1);
+        }, 4000);
+
+        // Hentikan auto-slide saat mouse diarahkan ke banner (agar nyaman dibaca)
+        const bannerElement = document.querySelector('.hero-banner');
+        bannerElement.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        bannerElement.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(() => {
+                moveSlide(1);
+            }, 4000);
+        });
+
+
+        // --- Logika Film & Pencarian ---
         let allMovies = [];
         let currentFilter = 'Semua';
 
@@ -170,10 +303,8 @@
             const keyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
             let result = allMovies.filter(movie => {
-                // Filter berdasarkan pencarian judul
                 const matchTitle = movie.title.toLowerCase().includes(keyword);
 
-                // Filter berdasarkan kategori tombol
                 let matchCategory = true;
                 if (currentFilter === 'Terbaru') {
                     matchCategory = parseInt(movie.year) >= 2024;
@@ -187,7 +318,6 @@
             renderMovies(result);
         }
 
-        // Jalankan saat pertama kali dimuat
         loadMovies();
     </script>
 </body>
