@@ -7,12 +7,83 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .admin-form, .login-box { max-width: 500px; margin: 60px auto; background: #1e1e1e; padding: 30px; border-radius: 8px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .admin-form label, .login-box label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; }
-        .admin-form input, .admin-form textarea, .admin-form select, .login-box input { width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid #444; color: white; border-radius: 4px; box-sizing: border-box; }
-        .admin-form button, .login-box button { margin-top: 25px; width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; }
-        .admin-form button:hover, .login-box button:hover { background: #2563eb; }
-        .error-msg { color: #ef4444; margin-top: 10px; font-size: 14px; text-align: center; display: none; }
+        .admin-form { max-width: 600px; margin: 40px auto; background: #1e1e1e; padding: 30px; border-radius: 8px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .admin-form label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; }
+        .admin-form input, .admin-form textarea, .admin-form select { width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid #444; color: white; border-radius: 4px; box-sizing: border-box; }
+        .admin-form button { margin-top: 25px; width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .admin-form button:hover { background: #2563eb; }
+
+        /* Style untuk Kotak Login Terpusat */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            background: #1e1e1e;
+            padding: 40px 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            border: 1px solid #333;
+        }
+        .login-logo {
+            width: 140px; /* Ukuran logo diperbesar */
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+        .login-box h2 {
+            color: #ffffff;
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+        .login-box p {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+        .login-box label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #ccc;
+            font-size: 14px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+        .login-box button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: #3b82f6;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .login-box button:hover {
+            background: #2563eb;
+        }
+        .error-msg {
+            color: #ef4444;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -25,21 +96,24 @@
         </ul>
     </header>
 
-    <!-- BAGIAN LOGIN -->
-    <div id="loginSection" class="login-box">
-        <h2><i class="fas fa-lock"></i> Login Admin RJMOVIE</h2>
-        <p style="color: #888; font-size: 14px; margin-top: 5px;">Masukkan password untuk mengakses panel.</p>
-        <form id="loginForm">
-            <label>Password:</label>
-            <input type="password" id="adminPassword" required placeholder="Masukkan password...">
-            <button type="submit"><i class="fas fa-sign-in-alt"></i> Masuk</button>
-            <p id="errorMsg" class="error-msg">Password salah! Silakan coba lagi.</p>
-        </form>
+    <!-- BAGIAN LOGIN DENGAN LOGO BESAR DI TENGAH -->
+    <div id="loginSection" class="login-wrapper">
+        <div class="login-box">
+            <img src="logorjmovie.png" alt="RJMOVIE Logo" class="login-logo">
+            <h2>Admin Panel Login</h2>
+            <p>Masukkan password rahasia untuk mengelola film.</p>
+            <form id="loginForm">
+                <label>Password:</label>
+                <input type="password" id="adminPassword" required placeholder="Masukkan password...">
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> Masuk</button>
+                <p id="errorMsg" class="error-msg"><i class="fas fa-exclamation-circle"></i> Password salah! Silakan coba lagi.</p>
+            </form>
+        </div>
     </div>
 
-    <!-- BAGIAN PANEL ADMIN (Disembunyikan sebelum login) -->
+    <!-- BAGIAN PANEL ADMIN UTAMA (Disembunyikan sebelum login) -->
     <main class="main-container" id="adminMain" style="display: none;">
-        <div class="admin-form" style="max-width: 600px;">
+        <div class="admin-form">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2><i class="fas fa-plus-circle"></i> Tambah Film Baru</h2>
                 <button onclick="logoutAdmin()" style="width: auto; padding: 6px 12px; margin: 0; background: #ef4444; font-size: 12px;"><i class="fas fa-sign-out-alt"></i> Keluar</button>
@@ -96,17 +170,14 @@
     </main>
 
     <script>
-        // ATUR PASSWORD ANDA DI SINI
-        const CORRECT_PASSWORD = "matthewsel18"; // Silakan ubah sesuai keinginan Anda
+        const CORRECT_PASSWORD = "matthewsel18"; // Ganti password sesuai keinginan Anda
 
-        // Cek apakah sudah login sebelumnya di sesi browser ini
         window.onload = function() {
             if (sessionStorage.getItem("isLoggedIn") === "true") {
                 showAdminPanel();
             }
         };
 
-        // Handle Login
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const passInput = document.getElementById('adminPassword').value;
@@ -129,7 +200,6 @@
             location.reload();
         }
 
-        // Handle Form Submit Tambah Film
         document.getElementById('addMovieForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -146,7 +216,7 @@
                 country: document.getElementById('country').value,
                 cast: document.getElementById('cast').value,
                 synopsis: document.getElementById('synopsis').value,
-                videoUrl: document.getElementById('videoUrl').value,
+                    videoUrl: document.getElementById('videoUrl').value,
                 downloadUrl: document.getElementById('videoUrl').value
             };
 
