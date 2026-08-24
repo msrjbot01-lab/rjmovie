@@ -48,7 +48,7 @@
             align-items: center;
             color: white;
             font-size: 30px;
-            padding-left: 5px; /* Sedikit menggeser ikon play agar tampak pas di tengah */
+            padding-left: 5px;
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
             transition: transform 0.3s ease, background 0.3s ease;
         }
@@ -95,6 +95,7 @@
 
                 <!-- Video Player HTML5 -->
                 <video id="videoPlayer" playsinline preload="metadata">
+                    <source id="videoSource" src="" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video ini.
                 </video>
             </div>
@@ -182,24 +183,23 @@
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
                     const videoPlayer = document.getElementById('videoPlayer');
+                    const videoSource = document.getElementById('videoSource');
                     const playOverlay = document.getElementById('playOverlay');
 
                     if(currentMovie.videoUrl) {
-                        videoPlayer.src = currentMovie.videoUrl;
+                        videoSource.src = currentMovie.videoUrl;
+                        videoPlayer.load(); // Memuat ulang buffer video agar siap diputar di desktop
                     }
 
                     // Logika Klik Tombol Play Kustom
                     playOverlay.addEventListener('click', function() {
-                        videoPlayer.play();
-                        videoPlayer.setAttribute('controls', 'true'); // Menampilkan kontrol bawaan setelah diputar
-                        playOverlay.style.display = 'none'; // Menyembunyikan tombol play tengah
-                    });
-
-                    // Jika video dipause lewat kontrol bawaan, tombol play tengah bisa dimunculkan kembali jika diinginkan
-                    videoPlayer.addEventListener('pause', function() {
-                        if (videoPlayer.currentTime < videoPlayer.duration && videoPlayer.currentTime > 0) {
-                            // Opsional jika ingin tombol muncul lagi saat dipause
-                        }
+                        videoPlayer.play().then(() => {
+                            videoPlayer.setAttribute('controls', 'true'); // Memunculkan kontrol bawah
+                            playOverlay.style.display = 'none'; // Sembunyikan tombol play tengah
+                        }).catch(error => {
+                            console.error("Gagal memutar video:", error);
+                            alert("Gagal memutar video. Pastikan link video valid.");
+                        });
                     });
 
                     if(currentMovie.downloadUrl) {
