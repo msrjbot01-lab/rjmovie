@@ -324,19 +324,19 @@
         }
         .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Tabel Data Film untuk Hapus */
-        .movie-list-table {
+        /* Tabel Data Film & Banner */
+        .data-list-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
-        .movie-list-table th, .movie-list-table td {
+        .data-list-table th, .data-list-table td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #1e293b;
             font-size: 13px;
         }
-        .movie-list-table th {
+        .data-list-table th {
             color: var(--neon-cyan);
             font-family: 'Orbitron', sans-serif;
             font-size: 12px;
@@ -382,7 +382,7 @@
 <body>
     <!-- Header Cyberpunk -->
     <header class="header">
-        <div class="admin-brand"><i class="fas5 fa-terminal"></i> RJMOVIE // CONTROL CENTER</div>
+        <div class="admin-brand"><i class="fas fa-terminal"></i> RJMOVIE // CONTROL CENTER</div>
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> Beranda Website</a></li>
         </ul>
@@ -415,8 +415,8 @@
             <button class="menu-btn" onclick="switchTab('manageMovieTab', this); loadMovieList();">
                 <i class="fas fa-film"></i> Kelola & Hapus Film
             </button>
-            <button class="menu-btn" onclick="switchTab('bannerTab', this)">
-                <i class="fas fa-images"></i> Kelola Banner Slider
+            <button class="menu-btn" onclick="switchTab('bannerTab', this); loadBannerList();">
+                <i class="fas fa-images"></i> Kelola & Hapus Banner
             </button>
             
             <div class="sidebar-title" style="margin-top: auto;">Sistem</div>
@@ -472,7 +472,17 @@
                     <input type="text" id="director" required>
 
                     <label>Negara:</label>
-                    <input type="text" id="country" required value="USA / Jepang">
+                    <select id="country" required>
+                        <option value="Indonesia">Indonesia</option>
+                        <option value="USA / Jepang">USA / Jepang</option>
+                        <option value="USA">USA</option>
+                        <option value="Jepang">Jepang</option>
+                        <option value="Korea Selatan">Korea Selatan</option>
+                        <option value="China">China</option>
+                        <option value="India">India</option>
+                        <option value="Inggris">Inggris</option>
+                        <option value="Perancis">Perancis</option>
+                    </select>
 
                     <label>Pemeran (Cast):</label>
                     <input type="text" id="cast" required placeholder="Contoh: Keanu Reeves, Aktor Dua">
@@ -501,7 +511,7 @@
                     Daftar film di bawah ini diambil langsung dari server GitHub Anda. Menghapus film akan otomatis menghapus data JSON dan file posternya.
                 </p>
                 <div style="overflow-x: auto;">
-                    <table class="movie-list-table">
+                    <table class="data-list-table">
                         <thead>
                             <tr>
                                 <th>Poster</th>
@@ -519,10 +529,10 @@
                 </div>
             </div>
 
-            <!-- TAB 3: KELOLA BANNER WEBSITE -->
+            <!-- TAB 3: KELOLA & HAPUS BANNER WEBSITE -->
             <div id="bannerTab" class="content-panel">
                 <div class="panel-header">
-                    <i class="fas fa-images"></i> Kelola Banner Website (Home Slider)
+                    <i class="fas fa-images"></i> Kelola & Hapus Banner Website
                 </div>
                 
                 <div style="background: rgba(243, 230, 0, 0.05); border-left: 3px solid var(--neon-yellow); padding: 12px 15px; margin-bottom: 20px; border-radius: 2px;">
@@ -535,7 +545,7 @@
                     </p>
                 </div>
 
-                <form id="bannerForm" class="admin-form">
+                <form id="bannerForm" class="admin-form" style="margin-bottom: 30px;">
                     <label>Pilih File Gambar Banner:</label>
                     <input type="file" id="bannerImageFile" accept="image/*" required>
 
@@ -543,9 +553,31 @@
                     <input type="text" id="bannerTitleInput" required placeholder="Contoh: Promo Spesial Bioskop Cyber">
 
                     <button type="submit" id="submitBannerBtn" class="btn-submit" style="border-color: #238636; color: #238636;">
-                        <i class="fas fa-cloud-upload-alt"></i> UPLOAD & SIMPAN BANNER
+                        <i class="fas fa-cloud-upload-alt"></i> UPLOAD & SIMPAN BANNER BARU
                     </button>
                 </form>
+
+                <div style="border-top: 1px solid rgba(0, 240, 255, 0.2); padding-top: 20px; margin-top: 20px;">
+                    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 15px; color: var(--neon-cyan); margin-bottom: 10px;">
+                        <i class="fas fa-list"></i> Daftar Banner Aktif (Hapus Banner)
+                    </h3>
+                    <div style="overflow-x: auto;">
+                        <table class="data-list-table">
+                            <thead>
+                                <tr>
+                                    <th>Banner</th>
+                                    <th>Keterangan / Judul</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bannerTableBody">
+                                <tr>
+                                    <td colspan="3" style="text-align: center; color: #64748b; padding: 20px;">Memuat daftar banner...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -693,7 +725,7 @@
                         <td style="font-weight: 600; color: #fff;">${movie.title}</td>
                         <td>${movie.year || '-'}</td>
                         <td>
-                            <button class="btn-delete" onclick="deleteMovie('${movie.id}', '${movie.poster}')">
+                            <button class="btn-delete" onclick="deleteItem('movies.json', '${movie.id}', '${movie.title}', '${movie.poster}', loadMovieList)">
                                 <i class="fas fa-trash-alt"></i> Hapus
                             </button>
                         </td>
@@ -706,33 +738,68 @@
             }
         }
 
-        // 3. Fungsi Hapus Film via Cloudflare Worker (DELETE)
-        async function deleteMovie(movieId, posterFileName) {
-            if (!confirm(`Konfirmasi hapus film ini dari server?`)) return;
+        // 3. Muat Daftar Banner untuk Hapus
+        async function loadBannerList() {
+            const tableBody = document.getElementById('bannerTableBody');
+            tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Menghubungkan ke server...</td></tr>`;
+
+            try {
+                const res = await fetch('banners.json?v=' + Date.now());
+                if (!res.ok) throw new Error('Gagal memuat file banners.json');
+                const banners = await res.json();
+
+                if (!banners || banners.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b; padding: 20px;">Belum ada banner di database.</td></tr>`;
+                    return;
+                }
+
+                tableBody.innerHTML = '';
+                banners.forEach(banner => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><img src="${banner.image}" alt="" style="width: 80px; height: 30px; object-fit: cover; border-radius: 2px;"></td>
+                        <td style="font-weight: 600; color: #fff;">${banner.title}</td>
+                        <td>
+                            <button class="btn-delete" onclick="deleteItem('banners.json', '${banner.title}', '${banner.title}', '${banner.image}', loadBannerList)">
+                                <i class="fas fa-trash-alt"></i> Hapus
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error(err);
+                tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #ef4444; padding: 20px;">Gagal memuat daftar banner.</td></tr>`;
+            }
+        }
+
+        // 4. Fungsi Umum Hapus Data & File via Cloudflare Worker (DELETE)
+        async function deleteItem(jsonPath, itemId, itemTitle, imageFileName, callbackRefresh) {
+            if (!confirm(`Konfirmasi hapus item "${itemTitle}" dari server?`)) return;
 
             try {
                 const response = await fetch(WORKER_URL, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        jsonPath: 'movies.json',
-                        itemId: movieId,
-                        imageFileName: posterFileName
+                        jsonPath: jsonPath,
+                        itemId: itemId,
+                        imageFileName: imageFileName
                     })
                 });
 
                 const result = await response.json();
                 if (!result.success) throw new Error(result.error || 'Gagal menghapus data.');
 
-                alert('Film berhasil dihapus dari sistem!');
-                loadMovieList(); // Refresh tabel
+                alert('Data berhasil dihapus dari sistem!');
+                callbackRefresh(); // Refresh tabel terkait
             } catch (error) {
                 console.error(error);
                 alert('Gagal menghapus: ' + error.message);
             }
         }
 
-        // 4. Upload Banner Website
+        // 5. Upload Banner Website Baru
         document.getElementById('bannerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const title = document.getElementById('bannerTitleInput').value.trim();
@@ -776,12 +843,13 @@
 
                 alert('Sukses! Banner baru berhasil di-upload.');
                 document.getElementById('bannerForm').reset();
+                loadBannerList();
             } catch (error) {
                 console.error(error);
                 alert('Error: ' + error.message);
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> UPLOAD & SIMPAN BANNER';
+                submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> UPLOAD & SIMPAN BANNER BARU';
             }
         });
     </script>
