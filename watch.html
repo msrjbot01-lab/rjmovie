@@ -7,29 +7,24 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- CSS Plyr Player untuk Mengatasi Error Streaming -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         .video-container {
             position: relative;
             width: 100%;
+            padding-bottom: 56.25%; /* Rasio 16:9 */
+            height: 0;
             background: #000;
             border-radius: 8px;
             overflow: hidden;
         }
-        #videoPlayer {
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            display: block;
+            height: 100%;
+            border: none;
             border-radius: 8px;
-            max-height: 80vh;
-        }
-        /* Penyesuaian tema Plyr agar menyatu dengan web Anda */
-        .plyr {
-            border-radius: 8px;
-            width: 100%;
-        }
-        .plyr--video {
-            background: #000;
         }
     </style>
 </head>
@@ -58,14 +53,10 @@
     <!-- Konten Detail & Streaming -->
     <main class="main-container watch-container">
         
-        <!-- Pemutar Video -->
+        <!-- Pemutar Video menggunakan Embed Iframe Internet Archive -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
-                <!-- Ditambahkan crossorigin="anonymous" agar lolos sensor CORS browser komputer -->
-                <video id="videoPlayer" crossorigin="anonymous" playsinline controls preload="metadata">
-                    <source id="videoSource" src="" type="video/mp4">
-                    Browser Anda tidak mendukung pemutar video ini.
-                </video>
+                <iframe id="archivePlayer" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
             </div>
             
             <!-- Tombol Aksi Bawah Player -->
@@ -123,8 +114,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript Plyr & Logika Film -->
-    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+    <!-- JavaScript Logika Film & Embed URL Generator -->
     <script>
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -150,26 +140,17 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Inisialisasi pemutar Plyr
-                    const player = new Plyr('#videoPlayer', {
-                        controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'settings', 'fullscreen'],
-                        settings: ['quality', 'speed'],
-                        fullscreen: { iosNative: true }
-                    });
-
-                    const videoSource = document.getElementById('videoSource');
-                    const videoPlayer = document.getElementById('videoPlayer');
-
+                    // Mengonversi link download mp4 internet archive menjadi link embed resmi yang stabil di PC & HP
                     if(currentMovie.videoUrl) {
-                        videoSource.src = currentMovie.videoUrl;
-                        videoPlayer.load();
-                        
-                        // Sinkronisasi otomatis agar dekoder komputer langsung membaca aliran data video
-                        videoPlayer.addEventListener('loadeddata', () => {
-                            if (videoPlayer.paused) {
-                                videoPlayer.currentTime = 0;
-                            }
-                        });
+                        // Contoh link asli: https://archive.org/download/tumbal-dukun-jahanam/Tumbal%20Dukun%20Jahanam.mp4
+                        // Diubah ke format embed: https://archive.org/embed/tumbal-dukun-jahanam
+                        let embedUrl = currentMovie.videoUrl;
+                        if (embedUrl.includes('archive.org/download/')) {
+                            let parts = embedUrl.split('/');
+                            let identifier = parts[4]; // Mengambil 'tumbal-dukun-jahanam'
+                            embedUrl = `https://archive.org/embed/${identifier}?autoplay=0`;
+                        }
+                        document.getElementById('archivePlayer').src = embedUrl;
                     }
 
                     if(currentMovie.downloadUrl) {
