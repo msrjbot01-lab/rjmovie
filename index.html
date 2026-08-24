@@ -40,13 +40,13 @@
     </div>
 
     <!-- Filter Section -->
-    <div class="filter-section">
-        <button class="filter-btn active">Semua</button>
-        <button class="filter-btn">Terbaru</button>
-        <button class="filter-btn">Action</button>
-        <button class="filter-btn">Horror</button>
-        <button class="filter-btn">Comedy</button>
-        <button class="filter-btn">Sci-Fi</button>
+    <div class="filter-section" id="filterContainer">
+        <button class="filter-btn active" data-filter="Semua">Semua</button>
+        <button class="filter-btn" data-filter="Terbaru">Terbaru</button>
+        <button class="filter-btn" data-filter="Action">Action</button>
+        <button class="filter-btn" data-filter="Horror">Horror</button>
+        <button class="filter-btn" data-filter="Comedy">Comedy</button>
+        <button class="filter-btn" data-filter="Sci-Fi">Sci-Fi</button>
     </div>
 
     <!-- Konten Utama (Grid Film) -->
@@ -67,47 +67,101 @@
         </div>
     </footer>
 
-    <!-- Script JavaScript -->
+    <!-- Script JavaScript Filter & Search -->
     <script>
+        let allMovies = [];
+        let currentFilter = 'Semua';
+
         async function loadMovies() {
             try {
                 const response = await fetch('movies.json');
-                const movies = await response.json();
-                const grid = document.getElementById('movieGrid');
-                grid.innerHTML = '';
-
-                movies.forEach(movie => {
-                    const qualityClass = movie.quality === 'CAM' ? 'cam' : '';
-                    
-                    // Membuat kartu film dengan link menuju halaman watch.html berdasarkan judul/id
-                    const card = `
-                        <div class="movie-card">
-                            <a href="watch.html?title=${encodeURIComponent(movie.title)}" class="movie-link">
-                                <div class="movie-poster-container">
-                                    <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
-                                    <div class="overlay-top">
-                                        <span class="rating-tag"><i class="fas fa-star"></i> ${movie.rating}</span>
-                                        <span class="duration-tag"><i class="far fa-clock"></i> ${movie.duration}</span>
-                                    </div>
-                                    <span class="quality-tag ${qualityClass}">${movie.quality}</span>
-                                    <div class="play-overlay">
-                                        <i class="fas fa-play-circle play-icon"></i>
-                                    </div>
-                                </div>
-                                <div class="movie-info">
-                                    <h3 class="movie-title">${movie.title}</h3>
-                                    <p class="movie-meta">${movie.year} &bull; ${movie.genre}</p>
-                                </div>
-                            </a>
-                        </div>
-                    `;
-                    grid.innerHTML += card;
-                });
+                allMovies = await response.json();
+                renderMovies(allMovies);
             } catch (error) {
                 console.error("Gagal memuat data film:", error);
             }
         }
 
+        function renderMovies(moviesToRender) {
+            const grid = document.getElementById('movieGrid');
+            grid.innerHTML = '';
+
+            if (moviesToRender.length === 0) {
+                grid.innerHTML = '<p style="color: #888; grid-column: 1/-1; text-align: center; padding: 40px;">Film tidak ditemukan.</p>';
+                return;
+            }
+
+            moviesToRender.forEach(movie => {
+                const qualityClass = movie.quality === 'CAM' ? 'cam' : '';
+                
+                const card = `
+                    <div class="movie-card">
+                        <a href="watch.html?title=${encodeURIComponent(movie.title)}" class="movie-link">
+                            <div class="movie-poster-container">
+                                <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
+                                <div class="overlay-top">
+                                    <span class="rating-tag"><i class="fas fa-star"></i> ${movie.rating}</span>
+                                    <span class="duration-tag"><i class="far fa-clock"></i> ${movie.duration}</span>
+                                </div>
+                                <span class="quality-tag ${qualityClass}">${movie.quality || 'HD'}</span>
+                                <div class="play-overlay">
+                                    <i class="fas fa-play-circle play-icon"></i>
+                                </div>
+                            </div>
+                            <div class="movie-info">
+                                <h3 class="movie-title">${movie.title}</h3>
+                                <p class="movie-meta">${movie.year} &bull; ${movie.genre}</p>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        // Logika Tombol Filter
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                currentFilter = button.getAttribute('data-filter');
+                applyFilterAndSearch();
+            });
+        });
+
+        // Logika Kotak Pencarian (Search Input)
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                applyFilterAndSearch();
+            });
+        }
+
+        function applyFilterAndSearch() {
+            const keyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+            let result = allMovies.filter(movie => {
+                // Filter berdasarkan pencarian judul
+                const matchTitle = movie.title.toLowerCase().includes(keyword);
+
+                // Filter berdasarkan kategori tombol
+                let matchCategory = true;
+                if (currentFilter === 'Terbaru') {
+                    // Mengambil film tahun terbaru (misal 2024 - 2026)
+                    matchCategory = parseInt(movie.year) >= 2024;
+                } else if (currentFilter !== 'Semua') {
+                    matchCategory = movie.genre && movie.genre.toLowerCase().includes(currentFilter.toLowerCase());
+                }
+
+                return matchTitle && matchCategory;
+            });
+
+            renderMovies(result);
+        }
+
+        // Jalankan saat pertama kali dimuat
         loadMovies();
     </script>
 </body>
