@@ -335,6 +335,19 @@
             reader.onerror = error => reject(error);
         });
 
+        // Helper aman untuk Encode/Decode UTF-8 ke Base64 (Mencegah error karakter khusus)
+        function utf8ToBase64(str) {
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            }));
+        }
+
+        function base64ToUtf8(base64Str) {
+            return decodeURIComponent(atob(base64Str).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+        }
+
         // Script Otomatis Upload Film & Update movies.json ke GitHub
         document.getElementById('addMovieForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -401,14 +414,14 @@
                 if (jsonFileResponse.ok) {
                     const jsonDat = await jsonFileResponse.json();
                     fileSha = jsonDat.sha;
-                    const decodedJson = decodeURIComponent(escape(atob(jsonDat.content)));
+                    const decodedJson = base64ToUtf8(jsonDat.content);
                     existingMovies = JSON.parse(decodedJson);
                 }
 
                 existingMovies.push(newMovie);
 
-                // 3. Update kembali movies.json ke GitHub
-                const updatedJsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(existingMovies, null, 4))));
+                // 3. Update kembali movies.json ke GitHub dengan pengkodean UTF-8 yang aman
+                const updatedJsonContent = utf8ToBase64(JSON.stringify(existingMovies, null, 4));
 
                 const updateJsonResponse = await fetch(getJsonUrl, {
                     method: 'PUT',
@@ -481,7 +494,7 @@
                 if (jsonFileResponse.ok) {
                     const jsonDat = await jsonFileResponse.json();
                     fileSha = jsonDat.sha;
-                    const decodedJson = decodeURIComponent(escape(atob(jsonDat.content)));
+                    const decodedJson = base64ToUtf8(jsonDat.content);
                     existingBanners = JSON.parse(decodedJson);
                 }
 
@@ -490,7 +503,7 @@
                     image: fileName
                 });
 
-                const updatedJsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(existingBanners, null, 4))));
+                const updatedJsonContent = utf8ToBase64(JSON.stringify(existingBanners, null, 4));
 
                 const updateJsonResponse = await fetch(getJsonUrl, {
                     method: 'PUT',
