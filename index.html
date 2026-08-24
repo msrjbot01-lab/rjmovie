@@ -11,9 +11,13 @@
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Header dengan Logo Gambar -->
     <header class="header">
-        <div class="logo">RJ<span>MOVIE</span></div>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
+            </a>
+        </div>
         <ul class="nav-links">
             <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="#"><i class="fas fa-film"></i> Movies</a></li>
@@ -23,7 +27,7 @@
             <li><a href="#"><i class="fas fa-calendar-alt"></i> Tahun</a></li>
         </ul>
         <div class="search-box">
-            <input type="text" placeholder="Search..">
+            <input type="text" id="searchInput" placeholder="Search..">
             <button><i class="fas fa-search"></i></button>
         </div>
     </header>
@@ -58,12 +62,10 @@
                 const response = await fetch('movies.json');
                 const movies = await response.json();
                 const grid = document.getElementById('movieGrid');
+                grid.innerHTML = '';
 
                 movies.forEach(movie => {
-                    // Tentukan warna label kualitas
                     const qualityClass = movie.quality === 'CAM' ? 'cam' : '';
-                    
-                    // Tentukan link bendera (menggunakan emoji untuk kesederhanaan)
                     const flag = movie.country === 'ID' ? '🇮🇩' : '🇺🇸';
 
                     const card = `
@@ -76,7 +78,7 @@
                                         <span class="duration-tag"><i class="far fa-clock"></i> ${movie.duration}</span>
                                     </div>
                                     <span class="quality-tag ${qualityClass}">${movie.quality}</span>
-                                    <div class="flag-icon" style="font-size: 16px; color: transparent;">${flag}</div> <!-- Placeholder bendera -->
+                                    <div class="flag-icon" style="font-size: 16px; color: transparent; display:none;">${flag}</div>
                                     <i class="fas fa-play-circle play-icon"></i>
                                 </div>
                                 <div class="movie-info">
