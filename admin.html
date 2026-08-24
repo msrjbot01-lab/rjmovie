@@ -298,7 +298,10 @@
         const GITHUB_USERNAME = 'msrjbot01-lab';
         const REPO_NAME = 'rjmovie';
         const BRANCH_NAME = 'main';
-        const GITHUB_TOKEN = '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';
+        const GITHUB_TOKEN = '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'; 
+        // ⚠️ Catatan Keamanan: Token di atas terlihat di browser. 
+        // Disarankan untuk segera melakukan revoke/generate ulang token ini di GitHub 
+        // setelah website selesai di-setup, atau gunakan backend/Serverless Function.
 
         window.onload = function() {
             if (sessionStorage.getItem("isLoggedIn") === "true") {
@@ -335,7 +338,6 @@
             reader.onerror = error => reject(error);
         });
 
-        // Helper aman untuk Encode/Decode UTF-8 ke Base64 (Mencegah error karakter khusus)
         function utf8ToBase64(str) {
             return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
                 return String.fromCharCode('0x' + p1);
@@ -366,7 +368,6 @@
             alert('Sedang mengunggah poster dan memperbarui movies.json ke GitHub...');
 
             try {
-                // 1. Convert poster ke base64 lalu upload ke GitHub
                 const base64Poster = await toBase64(posterFile);
                 const posterContentOnly = base64Poster.split(',')[1];
 
@@ -402,7 +403,6 @@
                     downloadUrl: document.getElementById('videoUrl').value
                 };
 
-                // 2. Ambil movies.json yang ada di GitHub saat ini
                 const getJsonUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/movies.json`;
                 const jsonFileResponse = await fetch(getJsonUrl, {
                     headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
@@ -420,7 +420,6 @@
 
                 existingMovies.push(newMovie);
 
-                // 3. Update kembali movies.json ke GitHub dengan pengkodean UTF-8 yang aman
                 const updatedJsonContent = utf8ToBase64(JSON.stringify(existingMovies, null, 4));
 
                 const updateJsonResponse = await fetch(getJsonUrl, {
@@ -505,7 +504,8 @@
 
                 const updatedJsonContent = utf8ToBase64(JSON.stringify(existingBanners, null, 4));
 
-                const updateJsonResponse = await fetch(getJsonUrl, {
+                const updateJsonResponse = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/banners.json`;
+                const updateResponse = await fetch(updateJsonResponse, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `token ${GITHUB_TOKEN}`,
@@ -519,7 +519,7 @@
                     })
                 });
 
-                if (!updateJsonResponse.ok) throw new Error('Gagal memperbarui file banners.json.');
+                if (!updateResponse.ok) throw new Error('Gagal memperbarui file banners.json.');
 
                 alert('Sukses! Banner berhasil di-upload dan otomatis masuk ke website.');
                 document.getElementById('bannerForm').reset();
