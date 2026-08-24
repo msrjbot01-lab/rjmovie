@@ -155,7 +155,7 @@
 
         /* Styling Form Panel Admin Utama */
         .admin-form {
-            max-width: 600px;
+            max-width: 650px;
             margin: 40px auto;
             background: #141824;
             padding: 30px;
@@ -172,7 +172,7 @@
     </style>
 </head>
 <body>
-    <!-- Header Minimalis (Tanpa Logo di Kiri) -->
+    <!-- Header Minimalis -->
     <header class="header">
         <div class="admin-brand"><i class="fas fa-lock"></i> RJMOVIE Control Center</div>
         <ul class="nav-links">
@@ -180,7 +180,7 @@
         </ul>
     </header>
 
-    <!-- TAMPILAN LOGIN DENGAN EFEK & LOGO DI TENGAH -->
+    <!-- TAMPILAN LOGIN -->
     <div id="loginSection" class="login-wrapper">
         <div class="login-box">
             <img src="logorjmovie.png" alt="RJMOVIE Logo" class="login-logo">
@@ -197,9 +197,11 @@
 
     <!-- PANEL ADMIN UTAMA (Tersembunyi Sebelum Login) -->
     <main class="main-container" id="adminMain" style="display: none;">
+        
+        <!-- Form Tambah Film -->
         <div class="admin-form">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 15px; margin-bottom: 15px;">
-                <h2 style="margin:0; font-size: 20px;"><i class="fas fa-plus-circle text-blue"></i> Tambah Film Baru</h2>
+                <h2 style="margin:0; font-size: 20px;"><i class="fas fa-plus-circle" style="color:#3b82f6;"></i> Tambah Film Baru</h2>
                 <button onclick="logoutAdmin()" style="width: auto; padding: 6px 14px; margin: 0; background: #ef4444; font-size: 12px;"><i class="fas fa-sign-out-alt"></i> Keluar</button>
             </div>
             
@@ -210,10 +212,20 @@
                 <label>Tahun Rilis:</label>
                 <input type="number" id="year" required value="2026">
 
-                <label>Genre (Pisahkan dengan koma):</label>
-                <input type="text" id="genre" required placeholder="Horror, Action, Comedy">
+                <!-- MODIFIKASI: Genre Menjadi Dropdown -->
+                <label>Genre Film:</label>
+                <select id="genre" required>
+                    <option value="" disabled selected>-- Pilih Genre --</option>
+                    <option value="Action">Action</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Comedy">Comedy</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Animation">Animation</option>
+                </select>
 
-                <label>Rating (Contoh: 6.8):</label>
+                <label>Rating (Contoh: 7.0):</label>
                 <input type="text" id="rating" required value="7.0">
 
                 <label>Durasi (Contoh: 90 Menit):</label>
@@ -234,8 +246,12 @@
                 <label>Negara:</label>
                 <input type="text" id="country" required value="Indonesia">
 
+                <!-- MODIFIKASI: Format Pemeran (Cast) -->
                 <label>Pemeran (Cast):</label>
-                <input type="text" id="cast" required>
+                <input type="text" id="cast" required placeholder="Contoh: Aktor Pertama, Aktor Kedua, Aktor Ketiga">
+                <small style="color: #94a3b8; font-size: 12px; display: block; margin-top: 4px;">
+                    💡 <strong>Format:</strong> Pisahkan nama pemeran dengan tanda koma (<code>,</code>).
+                </small>
 
                 <label>Sinopsis:</label>
                 <textarea id="synopsis" rows="4" required></textarea>
@@ -243,18 +259,57 @@
                 <label>Link Direct Video (.mp4 Internet Archive):</label>
                 <input type="text" id="videoUrl" required placeholder="https://archive.org/download/.../file.mp4">
 
-                <button type="submit"><i class="fas fa-save"></i> Generate JSON Data</button>
+                <button type="submit"><i class="fas fa-save"></i> Generate JSON Data Film</button>
             </form>
 
             <div id="outputSection" style="margin-top: 25px; display: none;">
-                <label>Hasil JSON (Salin dan perbarui isi file <code>movies.json</code> Anda):</label>
+                <label>Hasil JSON Film (Salin & perbarui isi file <code>movies.json</code>):</label>
                 <textarea id="jsonOutput" rows="6" readonly style="font-family: monospace; font-size: 12px; background: #0f1015; color: #4ade80; border: 1px solid #334155; padding: 10px; border-radius: 6px; width: 100%;"></textarea>
             </div>
         </div>
+
+        <!-- MODIFIKASI: Menu Tambahan Kelola Banner & Peringatan Ukuran -->
+        <div class="admin-form" style="margin-top: 40px;">
+            <h2 style="margin:0 0 15px 0; font-size: 20px; border-bottom: 1px solid #334155; padding-bottom: 15px;">
+                <i class="fas fa-images" style="color:#3b82f6;"></i> Kelola Banner Website (Home Slider)
+            </h2>
+            
+            <!-- Peringatan Ukuran Ideal Banner -->
+            <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 12px 15px; margin-bottom: 20px; border-radius: 4px;">
+                <p style="color: #ffc107; font-weight: bold; margin: 0 0 5px 0; font-size: 14px;">
+                    <i class="fas fa-exclamation-triangle"></i> Peringatan & Panduan Ukuran Banner:
+                </p>
+                <p style="color: #cbd5e1; font-size: 13px; margin: 0; line-height: 1.5;">
+                    Agar banner bergeser secara mulus dan tampil penuh proporsional di semua perangkat (HP/PC), perhatikan ketentuan berikut:<br>
+                    • <strong>Resolusi Ideal:</strong> Lebar <code>1920 px</code> x Tinggi <code>600 px</code> (Rasio Aspek <strong>16:5</strong>).<br>
+                    • <strong>Format Gambar:</strong> Disarankan menggunakan <code>.png</code>, <code>.jpg</code>, atau <code>.webp</code>.<br>
+                    • <strong>Ukuran File:</strong> Usahakan di bawah 2MB agar kecepatan muat website (loading) tetap optimal.
+                </p>
+            </div>
+
+            <form id="bannerForm">
+                <label>Nama File Banner (Contoh: banner2.png):</label>
+                <input type="text" id="bannerFile" required placeholder="banner2.png">
+                <small style="color: #94a3b8; font-size: 12px; display: block; margin-top: 4px;">
+                    Pastikan file gambar sudah diunggah ke folder project website Anda.
+                </small>
+
+                <label>Keterangan / Judul Banner:</label>
+                <input type="text" id="bannerTitleInput" required placeholder="Contoh: Promo Spesial Film Bioskop Terbaru">
+
+                <button type="submit" style="background: #238636;"><i class="fas fa-plus"></i> Tambah Kode Banner Slider</button>
+            </form>
+
+            <div id="bannerOutputSection" style="margin-top: 25px; display: none;">
+                <label>Salin kode HTML Slide ini ke file <code>index.html</code> (di dalam kontainer slider):</label>
+                <textarea id="bannerJsonOutput" rows="4" readonly style="font-family: monospace; font-size: 12px; background: #0f1015; color: #4ade80; border: 1px solid #334155; padding: 10px; border-radius: 6px; width: 100%;"></textarea>
+            </div>
+        </div>
+
     </main>
 
     <script>
-        const CORRECT_PASSWORD = "matthewsel18"; // Silakan ubah password sesuai keinginan
+        const CORRECT_PASSWORD = "matthewsel18"; // Password admin
 
         window.onload = function() {
             if (sessionStorage.getItem("isLoggedIn") === "true") {
@@ -284,6 +339,7 @@
             location.reload();
         }
 
+        // Script Generator Data Film ke JSON
         document.getElementById('addMovieForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -316,12 +372,26 @@
                 document.getElementById('jsonOutput').value = jsonString;
                 document.getElementById('outputSection').style.display = 'block';
                 
-                alert('Berhasil digenerate! Silakan salin teks JSON di bawah dan perbarui file movies.json Anda.');
+                alert('Data film berhasil digenerate! Silakan salin teks JSON di bawah.');
             } catch (error) {
                 const jsonString = JSON.stringify([newMovie], null, 4);
                 document.getElementById('jsonOutput').value = jsonString;
                 document.getElementById('outputSection').style.display = 'block';
             }
+        });
+
+        // Script Generator Kode Banner Baru
+        document.getElementById('bannerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const filename = document.getElementById('bannerFile').value.trim();
+            const title = document.getElementById('bannerTitleInput').value.trim();
+
+            const bannerHtmlCode = `<div class="slide">\n    <img src="${filename}" alt="${title}">\n</div>`;
+
+            document.getElementById('bannerJsonOutput').value = bannerHtmlCode;
+            document.getElementById('bannerOutputSection').style.display = 'block';
+
+            alert('Kode banner berhasil dibuat! Silakan salin dan tambahkan ke dalam file index.html Anda.');
         });
     </script>
 </body>
