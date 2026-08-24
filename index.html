@@ -313,10 +313,29 @@
             });
         });
 
-        // Logika Kotak Pencarian (Search Input)
+        // Logika Kotak Pencarian & Tombol Cari
         const searchInput = document.getElementById('searchInput');
+        const searchBoxContainer = document.querySelector('.search-box');
+        const searchButton = searchBoxContainer ? searchBoxContainer.querySelector('button') : null;
+
         if (searchInput) {
+            // Pencarian otomatis saat diketik
             searchInput.addEventListener('input', () => {
+                applyFilterAndSearch();
+            });
+
+            // Pencarian saat tombol Enter ditekan
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    applyFilterAndSearch();
+                }
+            });
+        }
+
+        // Pencarian saat tombol kaca pembesar diklik
+        if (searchButton) {
+            searchButton.addEventListener('click', (e) => {
+                e.preventDefault();
                 applyFilterAndSearch();
             });
         }
