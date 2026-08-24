@@ -7,36 +7,24 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- CSS Video.js untuk Pemutar Stabil Desktop & Mobile -->
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         .video-container {
             position: relative;
             width: 100%;
+            padding-bottom: 56.25%; /* Rasio 16:9 */
+            height: 0;
             background: #000;
             border-radius: 8px;
             overflow: hidden;
         }
-        /* Kustomisasi Video.js agar pas dengan tema web Anda */
-        .video-js {
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            aspect-ratio: 16 / 9;
+            height: 100%;
+            border: none;
             border-radius: 8px;
-        }
-        .vjs-big-play-button {
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%);
-            border-radius: 50% !important;
-            width: 80px !important;
-            height: 80px !important;
-            line-height: 80px !important;
-            background-color: rgba(59, 130, 246, 0.9) !important;
-            border: none !important;
-        }
-        .vjs-big-play-button:hover {
-            background-color: #3b82f6 !important;
         }
     </style>
 </head>
@@ -65,21 +53,10 @@
     <!-- Konten Detail & Streaming -->
     <main class="main-container watch-container">
         
-        <!-- Pemutar Video Menggunakan Video.js -->
+        <!-- Pemutar Video Embed -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
-                <video
-                    id="my-video"
-                    class="video-js vjs-big-play-centered vjs-theme-city"
-                    controls
-                    preload="auto"
-                    playsinline
-                    data-setup='{}'>
-                    <source id="videoSource" src="" type="video/mp4" />
-                    <p class="vjs-no-js">
-                        Peramban Anda harus mengaktifkan JavaScript untuk melihat video ini.
-                    </p>
-                </video>
+                <iframe id="archivePlayer" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
             </div>
             
             <!-- Tombol Aksi Bawah Player -->
@@ -137,8 +114,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript Video.js & Logika Film -->
-    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <!-- JavaScript Logika & Penanganan URL Embed -->
     <script>
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -164,14 +140,19 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Mengatur link video ke Video.js
+                    // Mengonversi link MP4 langsung menjadi link iframe embed yang aman untuk PC & Mobile
                     if(currentMovie.videoUrl) {
-                        var player = videojs('my-video');
-                        player.src({
-                            src: currentMovie.videoUrl,
-                            type: 'video/mp4'
-                        });
-                        player.load();
+                        let videoUrl = currentMovie.videoUrl;
+                        let embedUrl = videoUrl;
+
+                        // Jika link dari archive.org/download/, ubah otomatis ke format /embed/
+                        if (videoUrl.includes('archive.org/download/')) {
+                            let parts = videoUrl.split('/');
+                            let identifier = parts[4]; // Mengambil nama unik file di archive
+                            embedUrl = `https://archive.org/embed/${identifier}`;
+                        }
+                        
+                        document.getElementById('archivePlayer').src = embedUrl;
                     }
 
                     if(currentMovie.downloadUrl) {
