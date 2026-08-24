@@ -55,7 +55,7 @@
         <!-- Pemutar Video Menggunakan Iframe Internet Archive -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
-                <iframe id="videoIframe" src="" allowfullscreen></iframe>
+                <iframe id="videoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             
             <!-- Tombol Aksi Bawah Player -->
@@ -142,8 +142,6 @@
 
                     // Otomatis mengubah link download/direct menjadi format embed Internet Archive
                     if(currentMovie.videoUrl) {
-                        // Contoh link original: https://archive.org/download/tumbal-dukun-jahanam/Tumbal%20Dukun%20Jahanam.mp4
-                        // Diubah otomatis menjadi link embed: https://archive.org/embed/tumbal-dukun-jahanam
                         let embedUrl = currentMovie.videoUrl;
                         if (embedUrl.includes('archive.org/download/')) {
                             let parts = embedUrl.split('/');
@@ -153,7 +151,9 @@
                                 embedUrl = `https://archive.org/embed/${identifier}`;
                             }
                         }
-                        document.getElementById('videoIframe').src = embedUrl;
+                        
+                        const iframe = document.getElementById('videoIframe');
+                        iframe.src = embedUrl;
                     }
 
                     if(currentMovie.downloadUrl) {
