@@ -20,6 +20,9 @@
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
+            <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
+            <li><a href="genre.html"><i class="fas fa-tags"></i> Genre</a></li>
+            <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
         </ul>
         <div class="search-box">
             <input type="text" placeholder="Cari film...">
@@ -33,17 +36,17 @@
         <!-- Pemutar Video -->
         <div class="player-wrapper">
             <div class="video-container">
-                <div class="video-placeholder">
-                    <i class="fas fa-play-circle" style="font-size: 64px; color: #3b82f6;"></i>
-                    <p>Memuat Pemutar Video Streaming...</p>
-                </div>
+                <!-- Video Player HTML5 yang akan diisi otomatis linknya oleh JavaScript -->
+                <video id="videoPlayer" controls width="100%" style="border-radius: 8px; background: #000;">
+                    Browser Anda tidak mendukung pemutar video ini.
+                </video>
             </div>
             
             <!-- Tombol Aksi Bawah Player -->
             <div class="player-actions">
                 <div class="view-count"><i class="fas fa-eye"></i> 814,497 views</div>
                 <div class="action-buttons">
-                    <button class="btn-action"><i class="fas fa-download"></i> DOWNLOAD</button>
+                    <a id="downloadBtn" href="#" target="_blank" class="btn-action" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"><i class="fas fa-download"></i> DOWNLOAD</a>
                     <button class="btn-action"><i class="fas fa-closed-captioning"></i> SUB INDO</button>
                 </div>
             </div>
@@ -51,37 +54,36 @@
 
         <!-- Informasi & Sinopsis Film -->
         <div class="movie-detail-box">
-            <h1 id="movieTitleDisplay" class="detail-title">Ghost in the Cell (2026)</h1>
+            <h1 id="movieTitleDisplay" class="detail-title">Memuat Judul...</h1>
             <div class="detail-badges">
                 <span class="badge hd">HD</span>
                 <span class="badge">Indonesia</span>
-                <span id="movieGenreDisplay" class="badge genre-tag">Horror, Comedy, Action</span>
+                <span id="movieGenreDisplay" class="badge genre-tag">-</span>
             </div>
 
             <div class="detail-grid">
                 <div class="detail-poster-col">
                     <img id="moviePosterDisplay" src="" alt="Poster Film" class="detail-poster-img">
                     <div class="rating-box-large">
-                        <i class="fas fa-star text-yellow"></i> <strong id="movieRatingDisplay">4.8</strong> / 5 <span>(Berlinale Premiere)</span>
+                        <i class="fas fa-star text-yellow"></i> <strong id="movieRatingDisplay">0.0</strong> / 5
                     </div>
                 </div>
 
                 <div class="detail-info-col">
                     <h3>Sinopsis Resmi</h3>
                     <p id="movieSynopsis" class="synopsis-text">
-                        Narapidana di penjara Labuhan Angsana menghadapi teror kekuatan gaib yang membunuh tahanan dengan aura paling negatif. Para tahanan mencoba berbuat baik demi menjaga aura positif, hingga akhirnya sadar bahwa satu-satunya cara bertahan hidup adalah bersatu melawan penindas dan hantu tersebut.
+                        Memuat sinopsis...
                     </p>
 
                     <div class="cast-info">
                         <h4><i class="fas fa-users"></i> Pemeran Utama / Cast:</h4>
-                        <p id="movieCastDisplay">Abimana Aryasatya, Endy Arfian, Yoga Pratama, Aming, Bront Palarae</p>
+                        <p id="movieCastDisplay">-</p>
                     </div>
 
                     <div class="movie-metadata-grid">
-                        <div><strong>Rilis Bioskop:</strong> <span id="movieReleaseDisplay">16 April 2026</span></div>
-                        <div><strong>Negara:</strong> <span id="movieCountryDisplay">Indonesia</span></div>
-                        <div><strong>Sutradara:</strong> <span id="movieDirectorDisplay">Joko Anwar</span></div>
-                        <div><strong>World Premiere:</strong> <span id="moviePremiereDisplay">13 Feb 2026 (Berlinale)</span></div>
+                        <div><strong>Rilis:</strong> <span id="movieReleaseDisplay">-</span></div>
+                        <div><strong>Negara:</strong> <span id="movieCountryDisplay">-</span></div>
+                        <div><strong>Sutradara:</strong> <span id="movieDirectorDisplay">-</span></div>
                     </div>
                 </div>
             </div>
@@ -91,10 +93,13 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
+        <div class="footer-content">
+            <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
+            <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
+        </div>
     </footer>
 
-    <!-- Script JavaScript untuk Memuat Detail Dinamis -->
+    <!-- Script JavaScript untuk Memuat Detail & Video Dinamis -->
     <script>
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -121,6 +126,24 @@
                     }
                     if(currentMovie.director) {
                         document.getElementById('movieDirectorDisplay').innerText = currentMovie.director;
+                    }
+                    if(currentMovie.country) {
+                        document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
+                    }
+                    if(currentMovie.year) {
+                        document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
+                    }
+
+                    // Memasukkan link video streaming ke pemutar video HTML5
+                    if(currentMovie.videoUrl) {
+                        const videoPlayer = document.getElementById('videoPlayer');
+                        videoPlayer.src = currentMovie.videoUrl;
+                        videoPlayer.load();
+                    }
+
+                    // Memasukkan link download ke tombol download
+                    if(currentMovie.downloadUrl) {
+                        document.getElementById('downloadBtn').href = currentMovie.downloadUrl;
                     }
                     
                     document.title = `Nonton ${currentMovie.title} Sub Indo - RJMOVIE`;
