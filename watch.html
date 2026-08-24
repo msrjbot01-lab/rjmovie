@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming Film - RJMOVIE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
+        </ul>
+        <div class="search-box">
+            <input type="text" placeholder="Cari film...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </header>
+
+    <!-- Konten Detail & Streaming -->
+    <main class="main-container watch-container">
+        
+        <!-- Pemutar Video -->
+        <div class="player-wrapper">
+            <div class="video-container">
+                <!-- Placeholder iframe / video player simulasi -->
+                <div class="video-placeholder">
+                    <i class="fas fa-play-circle" style="font-size: 64px; color: #3b82f6;"></i>
+                    <p>Memuat Pemutar Video Streaming...</p>
+                </div>
+            </div>
+            
+            <!-- Tombol Aksi Bawah Player -->
+            <div class="player-actions">
+                <div class="view-count"><i class="fas fa-eye"></i> 814,497 views</div>
+                <div class="action-buttons">
+                    <button class="btn-action"><i class="fas fa-download"></i> DOWNLOAD</button>
+                    <button class="btn-action"><i class="fas fa-closed-captioning"></i> SUB INDO</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informasi & Sinopsis Film -->
+        <div class="movie-detail-box">
+            <h1 id="movieTitleDisplay" class="detail-title">Ghost In The Cell (2025)</h1>
+            <div class="detail-badges">
+                <span class="badge hd">HD</span>
+                <span class="badge">Indonesia</span>
+                <span class="badge genre-tag">Komedi, Horor, Populer</span>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-poster-col">
+                    <img id="moviePosterDisplay" src="" alt="Poster Film" class="detail-poster-img">
+                    <div class="rating-box-large">
+                        <i class="fas fa-star text-yellow"></i> <strong>3.9</strong> / 5 <span>(374 votes)</span>
+                    </div>
+                </div>
+
+                <div class="detail-info-col">
+                    <h3>Sinopsis Resmi</h3>
+                    <p id="movieSynopsis" class="synopsis-text">
+                        Film ini mengisahkan tentang sekelompok narapidana pria di sebuah penjara Jakarta yang terjebak dalam situasi mencekam ketika teror supranatural tiba-tiba menyerang tempat mereka ditahan. Dua kubu geng yang selama ini saling bermusuhan terpaksa harus mengesampingkan ego dan bersatu demi bisa bertahan hidup dari ancaman hantu penasaran yang berkeliaran di dalam sel.
+                    </p>
+
+                    <div class="cast-info">
+                        <h4><i class="fas fa-users"></i> Pemeran Utama / Cast:</h4>
+                        <p>Dwiki Albiansyah, Reza Rahadian, Tio Pakusadewo, Indro Warkop</p>
+                    </div>
+
+                    <div class="movie-metadata-grid">
+                        <div><strong>Rilis:</strong> 2025</div>
+                        <div><strong>Negara:</strong> Indonesia</div>
+                        <div><strong>Direktur:</strong> Tim Produksi RJMOVIE</div>
+                        <div><strong>Durasi:</strong> 112 Menit</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
+    </footer>
+
+    <!-- Script untuk Menangkap Data Film yang Diklik -->
+    <script>
+        async function loadMovieDetails() {
+            const params = new URLSearchParams(window.location.search);
+            const titleParam = params.get('title');
+
+            if (!titleParam) return;
+
+            try {
+                const response = await fetch('movies.json');
+                const movies = await response.json();
+                const currentMovie = movies.find(m => m.title.toLowerCase() === decodeURIComponent(titleParam).toLowerCase());
+
+                if (currentMovie) {
+                    document.getElementById('movieTitleDisplay').innerText = `${currentMovie.title} (${currentMovie.year})`;
+                    document.getElementById('moviePosterDisplay').src = currentMovie.poster;
+                    document.title = `Nonton ${currentMovie.title} Sub Indo - RJMOVIE`;
+                }
+            } catch (e) {
+                console.error("Gagal meload detail film", e);
+            }
+        }
+
+        loadMovieDetails();
+    </script>
+</body>
+</html>
