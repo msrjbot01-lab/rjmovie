@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - RJMOVIE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-form { max-width: 600px; margin: 40px auto; background: #1e1e1e; padding: 30px; border-radius: 8px; color: white; }
+        .admin-form label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; }
+        .admin-form input, .admin-form textarea, .admin-form select { width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid #444; color: white; border-radius: 4px; }
+        .admin-form button { margin-top: 25px; width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .admin-form button:hover { background: #2563eb; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <a href="index.html"><img src="logorjmovie.png" alt="Logo" class="site-logo"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="admin.html" class="active"><i class="fas fa-lock"></i> Admin Panel</a></li>
+        </ul>
+    </header>
+
+    <main class="main-container">
+        <div class="admin-form">
+            <h2><i class="fas fa-plus-circle"></i> Tambah Film Baru</h2>
+            <form id="addMovieForm">
+                <label>Judul Film:</label>
+                <input type="text" id="title" required placeholder="Contoh: Tumbal Birahi">
+
+                <label>Tahun Rilis:</label>
+                <input type="number" id="year" required value="2026">
+
+                <label>Genre (Pisahkan dengan koma):</label>
+                <input type="text" id="genre" required placeholder="Horror, Action, Comedy">
+
+                <label>Rating (Contoh: 6.8):</label>
+                <input type="text" id="rating" required value="7.0">
+
+                <label>Durasi (Contoh: 90 Menit):</label>
+                <input type="text" id="duration" required value="90 Menit">
+
+                <label>Kualitas (HD / CAM):</label>
+                <select id="quality">
+                    <option value="HD">HD</option>
+                    <option value="CAM">CAM</option>
+                </select>
+
+                <label>Nama File Poster (Contoh: film1.png):</label>
+                <input type="text" id="poster" required value="film1.png">
+
+                <label>Sutradara:</label>
+                <input type="text" id="director" required>
+
+                <label>Negara:</label>
+                <input type="text" id="country" required value="Indonesia">
+
+                <label>Pemeran (Cast):</label>
+                <input type="text" id="cast" required>
+
+                <label>Sinopsis:</label>
+                <textarea id="synopsis" rows="4" required></textarea>
+
+                <label>Link Direct Video (.mp4 Internet Archive):</label>
+                <input type="text" id="videoUrl" required placeholder="https://archive.org/download/.../file.mp4">
+
+                <button type="submit"><i class="fas fa-save"></i> Generate JSON Data</button>
+            </form>
+
+            <div id="outputSection" style="margin-top: 20px; display: none;">
+                <label>Hasil JSON (Salin dan perbarui isi file <code>movies.json</code> Anda):</label>
+                <textarea id="jsonOutput" rows="6" readonly style="font-family: monospace; font-size: 12px;"></textarea>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('addMovieForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Ambil data dari form
+            const newMovie = {
+                id: Date.now(), // ID unik berdasarkan waktu
+                title: document.getElementById('title').value,
+                year: parseInt(document.getElementById('year').value),
+                genre: document.getElementById('genre').value,
+                rating: document.getElementById('rating').value,
+                duration: document.getElementById('duration').value,
+                quality: document.getElementById('quality').value,
+                poster: document.getElementById('poster').value,
+                director: document.getElementById('director').value,
+                country: document.getElementById('country').value,
+                cast: document.getElementById('cast').value,
+                synopsis: document.getElementById('synopsis').value,
+                videoUrl: document.getElementById('videoUrl').value,
+                downloadUrl: document.getElementById('videoUrl').value
+            };
+
+            try {
+                // Coba ambil data movies.json yang lama jika ada
+                let existingMovies = [];
+                const response = await fetch('movies.json');
+                if (response.ok) {
+                    existingMovies = await response.json();
+                }
+
+                // Tambahkan film baru ke dalam array
+                existingMovies.push(newMovie);
+
+                // Tampilkan hasilnya dalam bentuk format JSON
+                const jsonString = JSON.stringify(existingMovies, null, 4);
+                document.getElementById('jsonOutput').value = jsonString;
+                document.getElementById('outputSection').style.display = 'block';
+                
+                alert('Berhasil digenerate! Silakan salin teks JSON di bawah dan perbarui file movies.json Anda.');
+            } catch (error) {
+                // Jika offline atau gagal fetch, buat array baru isi film ini saja
+                const jsonString = JSON.stringify([newMovie], null, 4);
+                document.getElementById('jsonOutput').value = jsonString;
+                document.getElementById('outputSection').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
