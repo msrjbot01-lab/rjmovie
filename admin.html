@@ -212,7 +212,6 @@
                 <label>Tahun Rilis:</label>
                 <input type="number" id="year" required value="2026">
 
-                <!-- MODIFIKASI: Genre Menjadi Dropdown -->
                 <label>Genre Film:</label>
                 <select id="genre" required>
                     <option value="" disabled selected>-- Pilih Genre --</option>
@@ -237,8 +236,8 @@
                     <option value="CAM">CAM</option>
                 </select>
 
-                <label>Nama File Poster (Contoh: film1.png):</label>
-                <input type="text" id="poster" required value="film1.png">
+                <label>Pilih File Poster Film (Gambar):</label>
+                <input type="file" id="posterFile" accept="image/*" required>
 
                 <label>Sutradara:</label>
                 <input type="text" id="director" required>
@@ -246,9 +245,8 @@
                 <label>Negara:</label>
                 <input type="text" id="country" required value="Indonesia">
 
-                <!-- MODIFIKASI: Format Pemeran (Cast) -->
                 <label>Pemeran (Cast):</label>
-                <input type="text" id="cast" required placeholder="Contoh: Aktor Pertama, Aktor Kedua, Aktor Ketiga">
+                <input type="text" id="cast" required placeholder="Contoh: Aktor Pertama, Aktor Kedua">
                 <small style="color: #94a3b8; font-size: 12px; display: block; margin-top: 4px;">
                     💡 <strong>Format:</strong> Pisahkan nama pemeran dengan tanda koma (<code>,</code>).
                 </small>
@@ -259,57 +257,48 @@
                 <label>Link Direct Video (.mp4 Internet Archive):</label>
                 <input type="text" id="videoUrl" required placeholder="https://archive.org/download/.../file.mp4">
 
-                <button type="submit"><i class="fas fa-save"></i> Generate JSON Data Film</button>
+                <button type="submit"><i class="fas fa-cloud-upload-alt"></i> Upload & Simpan Film ke GitHub</button>
             </form>
-
-            <div id="outputSection" style="margin-top: 25px; display: none;">
-                <label>Hasil JSON Film (Salin & perbarui isi file <code>movies.json</code>):</label>
-                <textarea id="jsonOutput" rows="6" readonly style="font-family: monospace; font-size: 12px; background: #0f1015; color: #4ade80; border: 1px solid #334155; padding: 10px; border-radius: 6px; width: 100%;"></textarea>
-            </div>
         </div>
 
-        <!-- MODIFIKASI: Menu Tambahan Kelola Banner & Peringatan Ukuran -->
+        <!-- Kelola Banner Website (Home Slider) -->
         <div class="admin-form" style="margin-top: 40px;">
             <h2 style="margin:0 0 15px 0; font-size: 20px; border-bottom: 1px solid #334155; padding-bottom: 15px;">
                 <i class="fas fa-images" style="color:#3b82f6;"></i> Kelola Banner Website (Home Slider)
             </h2>
             
-            <!-- Peringatan Ukuran Ideal Banner -->
             <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 12px 15px; margin-bottom: 20px; border-radius: 4px;">
                 <p style="color: #ffc107; font-weight: bold; margin: 0 0 5px 0; font-size: 14px;">
                     <i class="fas fa-exclamation-triangle"></i> Peringatan & Panduan Ukuran Banner:
                 </p>
                 <p style="color: #cbd5e1; font-size: 13px; margin: 0; line-height: 1.5;">
-                    Agar banner bergeser secara mulus dan tampil penuh proporsional di semua perangkat (HP/PC), perhatikan ketentuan berikut:<br>
                     • <strong>Resolusi Ideal:</strong> Lebar <code>1920 px</code> x Tinggi <code>600 px</code> (Rasio Aspek <strong>16:5</strong>).<br>
-                    • <strong>Format Gambar:</strong> Disarankan menggunakan <code>.png</code>, <code>.jpg</code>, atau <code>.webp</code>.<br>
-                    • <strong>Ukuran File:</strong> Usahakan di bawah 2MB agar kecepatan muat website (loading) tetap optimal.
+                    • <strong>Format Gambar:</strong> Disarankan <code>.png</code>, <code>.jpg</code>, atau <code>.webp</code>.<br>
+                    • <strong>Ukuran File:</strong> Di bawah 2MB agar kecepatan muat website tetap optimal.
                 </p>
             </div>
 
             <form id="bannerForm">
-                <label>Nama File Banner (Contoh: banner2.png):</label>
-                <input type="text" id="bannerFile" required placeholder="banner2.png">
-                <small style="color: #94a3b8; font-size: 12px; display: block; margin-top: 4px;">
-                    Pastikan file gambar sudah diunggah ke folder project website Anda.
-                </small>
+                <label>Pilih File Gambar Banner:</label>
+                <input type="file" id="bannerImageFile" accept="image/*" required>
 
                 <label>Keterangan / Judul Banner:</label>
                 <input type="text" id="bannerTitleInput" required placeholder="Contoh: Promo Spesial Film Bioskop Terbaru">
 
-                <button type="submit" style="background: #238636;"><i class="fas fa-plus"></i> Tambah Kode Banner Slider</button>
+                <button type="submit" style="background: #238636;"><i class="fas fa-cloud-upload-alt"></i> Upload & Simpan Banner ke GitHub</button>
             </form>
-
-            <div id="bannerOutputSection" style="margin-top: 25px; display: none;">
-                <label>Salin kode HTML Slide ini ke file <code>index.html</code> (di dalam kontainer slider):</label>
-                <textarea id="bannerJsonOutput" rows="4" readonly style="font-family: monospace; font-size: 12px; background: #0f1015; color: #4ade80; border: 1px solid #334155; padding: 10px; border-radius: 6px; width: 100%;"></textarea>
-            </div>
         </div>
 
     </main>
 
     <script>
         const CORRECT_PASSWORD = "matthewsel18"; // Password admin
+        
+        // Konfigurasi GitHub Repository Anda
+        const GITHUB_USERNAME = 'msrjbot01-lab';
+        const REPO_NAME = 'rjmovie';
+        const BRANCH_NAME = 'main';
+        const GITHUB_TOKEN = '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';
 
         window.onload = function() {
             if (sessionStorage.getItem("isLoggedIn") === "true") {
@@ -339,59 +328,193 @@
             location.reload();
         }
 
-        // Script Generator Data Film ke JSON
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        // Script Otomatis Upload Film & Update movies.json ke GitHub
         document.getElementById('addMovieForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const newMovie = {
-                id: Date.now(),
-                title: document.getElementById('title').value,
-                year: parseInt(document.getElementById('year').value),
-                genre: document.getElementById('genre').value,
-                rating: document.getElementById('rating').value,
-                duration: document.getElementById('duration').value,
-                quality: document.getElementById('quality').value,
-                poster: document.getElementById('poster').value,
-                director: document.getElementById('director').value,
-                country: document.getElementById('country').value,
-                cast: document.getElementById('cast').value,
-                synopsis: document.getElementById('synopsis').value,
-                videoUrl: document.getElementById('videoUrl').value,
-                downloadUrl: document.getElementById('videoUrl').value
-            };
+            const title = document.getElementById('title').value.trim();
+            const posterInput = document.getElementById('posterFile');
+
+            if (!posterInput.files || !posterInput.files[0]) {
+                alert('Pilih file poster film terlebih dahulu!');
+                return;
+            }
+
+            const posterFile = posterInput.files[0];
+            const posterFileName = `poster-${Date.now()}-${posterFile.name.replace(/\s+/g, '-')}`;
+
+            alert('Sedang mengunggah poster dan memperbarui movies.json ke GitHub...');
 
             try {
+                // 1. Convert poster ke base64 lalu upload ke GitHub
+                const base64Poster = await toBase64(posterFile);
+                const posterContentOnly = base64Poster.split(',')[1];
+
+                const uploadPosterRes = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${posterFileName}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: `Upload poster film: ${title}`,
+                        content: posterContentOnly,
+                        branch: BRANCH_NAME
+                    })
+                });
+
+                if (!uploadPosterRes.ok) throw new Error('Gagal mengunggah file poster ke GitHub.');
+
+                const newMovie = {
+                    id: Date.now(),
+                    title: title,
+                    year: parseInt(document.getElementById('year').value),
+                    genre: document.getElementById('genre').value,
+                    rating: document.getElementById('rating').value,
+                    duration: document.getElementById('duration').value,
+                    quality: document.getElementById('quality').value,
+                    poster: posterFileName,
+                    director: document.getElementById('director').value,
+                    country: document.getElementById('country').value,
+                    cast: document.getElementById('cast').value,
+                    synopsis: document.getElementById('synopsis').value,
+                    videoUrl: document.getElementById('videoUrl').value,
+                    downloadUrl: document.getElementById('videoUrl').value
+                };
+
+                // 2. Ambil movies.json yang ada di GitHub saat ini
+                const getJsonUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/movies.json`;
+                const jsonFileResponse = await fetch(getJsonUrl, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+
                 let existingMovies = [];
-                const response = await fetch('movies.json');
-                if (response.ok) {
-                    existingMovies = await response.json();
+                let fileSha = '';
+
+                if (jsonFileResponse.ok) {
+                    const jsonDat = await jsonFileResponse.json();
+                    fileSha = jsonDat.sha;
+                    const decodedJson = decodeURIComponent(escape(atob(jsonDat.content)));
+                    existingMovies = JSON.parse(decodedJson);
                 }
 
                 existingMovies.push(newMovie);
-                const jsonString = JSON.stringify(existingMovies, null, 4);
-                document.getElementById('jsonOutput').value = jsonString;
-                document.getElementById('outputSection').style.display = 'block';
-                
-                alert('Data film berhasil digenerate! Silakan salin teks JSON di bawah.');
+
+                // 3. Update kembali movies.json ke GitHub
+                const updatedJsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(existingMovies, null, 4))));
+
+                const updateJsonResponse = await fetch(getJsonUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: `Tambah film baru: ${title}`,
+                        content: updatedJsonContent,
+                        sha: fileSha,
+                        branch: BRANCH_NAME
+                    })
+                });
+
+                if (!updateJsonResponse.ok) throw new Error('Gagal memperbarui file movies.json di GitHub.');
+
+                alert('Sukses! Film baru berhasil ditambahkan dan tersimpan otomatis di website.');
+                document.getElementById('addMovieForm').reset();
+
             } catch (error) {
-                const jsonString = JSON.stringify([newMovie], null, 4);
-                document.getElementById('jsonOutput').value = jsonString;
-                document.getElementById('outputSection').style.display = 'block';
+                console.error(error);
+                alert('Terjadi kesalahan: ' + error.message);
             }
         });
 
-        // Script Generator Kode Banner Baru
-        document.getElementById('bannerForm').addEventListener('submit', function(e) {
+        // Script Otomatis Upload Banner & Update banners.json ke GitHub
+        document.getElementById('bannerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const filename = document.getElementById('bannerFile').value.trim();
             const title = document.getElementById('bannerTitleInput').value.trim();
+            const fileInput = document.getElementById('bannerImageFile');
 
-            const bannerHtmlCode = `<div class="slide">\n    <img src="${filename}" alt="${title}">\n</div>`;
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('Pilih file gambar banner terlebih dahulu!');
+                return;
+            }
 
-            document.getElementById('bannerJsonOutput').value = bannerHtmlCode;
-            document.getElementById('bannerOutputSection').style.display = 'block';
+            const file = fileInput.files[0];
+            const fileName = `banner-${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
 
-            alert('Kode banner berhasil dibuat! Silakan salin dan tambahkan ke dalam file index.html Anda.');
+            alert('Sedang mengunggah banner slider ke GitHub...');
+
+            try {
+                const base64Content = await toBase64(file);
+                const imageContentOnly = base64Content.split(',')[1];
+
+                const uploadImageResponse = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${fileName}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: `Upload banner baru: ${title}`,
+                        content: imageContentOnly,
+                        branch: BRANCH_NAME
+                    })
+                });
+
+                if (!uploadImageResponse.ok) throw new Error('Gagal mengunggah file banner ke GitHub.');
+
+                const getJsonUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/banners.json`;
+                const jsonFileResponse = await fetch(getJsonUrl, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+
+                let existingBanners = [];
+                let fileSha = '';
+
+                if (jsonFileResponse.ok) {
+                    const jsonDat = await jsonFileResponse.json();
+                    fileSha = jsonDat.sha;
+                    const decodedJson = decodeURIComponent(escape(atob(jsonDat.content)));
+                    existingBanners = JSON.parse(decodedJson);
+                }
+
+                existingBanners.push({
+                    title: title,
+                    image: fileName
+                });
+
+                const updatedJsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(existingBanners, null, 4))));
+
+                const updateJsonResponse = await fetch(getJsonUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: `Update banners.json dengan banner: ${title}`,
+                        content: updatedJsonContent,
+                        sha: fileSha,
+                        branch: BRANCH_NAME
+                    })
+                });
+
+                if (!updateJsonResponse.ok) throw new Error('Gagal memperbarui file banners.json.');
+
+                alert('Sukses! Banner berhasil di-upload dan otomatis masuk ke website.');
+                document.getElementById('bannerForm').reset();
+
+            } catch (error) {
+                console.error(error);
+                alert('Terjadi kesalahan: ' + error.message);
+            }
         });
     </script>
 </body>
