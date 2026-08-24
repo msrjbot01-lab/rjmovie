@@ -1,153 +1,177 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background-color: #0b0f19; /* Latar belakang gelap kebiruan ala sci-fi */
-    color: #f1f5f9;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #07090e;
+    color: #e2e8f0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
 }
 
 /* Header & Navbar */
 .header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    padding: 12px 25px;
-    border-bottom: 2px solid #3b82f6; /* Garis aksen biru terang */
+    background: rgba(11, 15, 25, 0.95);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 12px 30px;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Styling untuk Logo Gambar */
-.logo-container {
-    display: flex;
-    align-items: center;
-}
 .site-logo {
-    height: 42px; /* Ukuran tinggi logo, bisa diubah sesuai kebutuhan */
+    height: 38px;
     width: auto;
     object-fit: contain;
-    display: block;
     transition: transform 0.2s;
 }
-.site-logo:hover {
-    transform: scale(1.03);
-}
+.site-logo:hover { transform: scale(1.05); }
 
 .nav-links {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     list-style: none;
 }
 .nav-links a {
     text-decoration: none;
     color: #94a3b8;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     padding: 6px 12px;
-    border-radius: 4px;
+    border-radius: 6px;
     transition: all 0.2s ease;
 }
-.nav-links a:hover { 
+.nav-links a:hover, .nav-links a.active { 
     background-color: rgba(59, 130, 246, 0.15); 
     color: #3b82f6; 
 }
 
 /* Search Bar */
 .search-box {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 6px;
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     overflow: hidden;
+    padding-left: 10px;
 }
 .search-box input {
     background: transparent;
     border: none;
-    padding: 6px 12px;
+    padding: 8px 10px;
     color: #fff;
     outline: none;
     font-size: 13px;
+    width: 180px;
 }
 .search-box button {
     background: #3b82f6;
     border: none;
     color: white;
-    padding: 7px 14px;
+    padding: 9px 15px;
     cursor: pointer;
     transition: background 0.2s;
 }
 .search-box button:hover { background: #2563eb; }
 
+/* Hero Banner */
+.hero-banner {
+    background: linear-gradient(rgba(11, 15, 25, 0.8), rgba(7, 9, 14, 0.95)), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 50px 20px;
+    text-align: center;
+    border-bottom: 1px solid #1f2937;
+    margin-bottom: 20px;
+}
+.hero-content h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+}
+.hero-content p {
+    font-size: 14px;
+    color: #94a3b8;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* Filter Section */
 .filter-section {
-    background-color: #111827;
-    padding: 12px 20px;
-    margin: 15px auto;
     max-width: 1200px;
-    border-radius: 8px;
-    border: 1px solid #1f2937;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 8px;
+    margin: 0 auto 25px auto;
+    padding: 0 15px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
 }
 .filter-btn {
-    background-color: #1f2937;
-    color: #cbd5e1;
-    border: 1px solid #374151;
-    padding: 8px;
-    text-align: center;
-    font-size: 12px;
+    background-color: #111827;
+    color: #94a3b8;
+    border: 1px solid #1f2937;
+    padding: 8px 18px;
+    font-size: 13px;
     font-weight: 600;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
+    white-space: nowrap;
     transition: all 0.2s;
 }
-.filter-btn:hover { 
+.filter-btn:hover, .filter-btn.active { 
     background-color: #3b82f6; 
     color: #fff;
     border-color: #3b82f6;
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
 }
 
 /* Main Container & Grid Film */
 .main-container {
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 0 auto 40px auto;
     padding: 0 15px;
 }
+.section-title h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #f8fafc;
+}
+.text-blue { color: #3b82f6; }
 
 .movie-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
     gap: 20px;
 }
 
-/* Kartu Film (Movie Card) */
+/* Movie Card */
 .movie-card {
-    background-color: #161e2e;
-    border-radius: 8px;
+    background-color: #111827;
+    border-radius: 10px;
     overflow: hidden;
-    border: 1px solid #1e293b;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border: 1px solid #1f2937;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
 }
 .movie-card:hover { 
     transform: translateY(-6px); 
-    box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 12px 25px -5px rgba(59, 130, 246, 0.3);
     border-color: #3b82f6;
 }
-
-.movie-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
+.movie-link { text-decoration: none; color: inherit; display: block; }
 
 .movie-poster-container {
     position: relative;
     width: 100%;
-    height: 260px; /* Tinggi proporsional agar gambar tidak gepeng */
+    height: 270px;
     background: #000;
     overflow: hidden;
 }
@@ -155,13 +179,10 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
 }
-.movie-card:hover .movie-poster {
-    transform: scale(1.05);
-}
+.movie-card:hover .movie-poster { transform: scale(1.06); }
 
-/* Overlay Atas Poster */
 .overlay-top {
     position: absolute;
     top: 8px;
@@ -174,7 +195,7 @@ body {
     z-index: 2;
 }
 .rating-tag {
-    background-color: rgba(234, 179, 8, 0.95); /* Kuning Emas */
+    background-color: rgba(234, 179, 8, 0.95);
     color: #111;
     padding: 2px 6px;
     border-radius: 4px;
@@ -184,49 +205,38 @@ body {
 }
 .duration-tag {
     background-color: rgba(15, 23, 42, 0.85);
-    color: #e2e8f0;
+    color: #cbd5e1;
     padding: 2px 6px;
     border-radius: 4px;
-    backdrop-filter: blur(4px);
 }
-
 .quality-tag {
     position: absolute;
-    top: 38px;
+    bottom: 8px;
     left: 8px;
-    background-color: #3b82f6; /* Biru Neon */
+    background-color: #3b82f6;
     color: white;
-    padding: 2px 6px;
+    padding: 2px 8px;
     font-size: 10px;
     font-weight: bold;
     border-radius: 4px;
     z-index: 2;
-    box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
 }
-.quality-tag.cam {
-    background-color: #ef4444; /* Merah menyala untuk CAM */
-}
+.quality-tag.cam { background-color: #ef4444; }
 
-/* Tombol Play saat Hover */
-.play-icon {
+.play-overlay {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    font-size: 45px;
-    color: #3b82f6;
-    text-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
-    transition: transform 0.25s ease;
-    z-index: 3;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
-.movie-poster-container:hover .play-icon {
-    transform: translate(-50%, -50%) scale(1);
-}
+.movie-poster-container:hover .play-overlay { opacity: 1; }
+.play-icon { font-size: 48px; color: #3b82f6; filter: drop-shadow(0 0 10px rgba(59,130,246,0.8)); }
 
-/* Info Bawah Kartu */
-.movie-info { 
-    padding: 12px; 
-}
+.movie-info { padding: 12px; }
 .movie-title {
     font-size: 14px;
     font-weight: 700;
@@ -236,27 +246,137 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.movie-meta {
-    font-size: 12px;
-    color: #64748b;
+.movie-meta { font-size: 12px; color: #64748b; }
+
+/* Halaman Watch / Streaming Styles */
+.watch-container { padding-top: 25px; }
+.video-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #020617;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
+.video-placeholder { text-align: center; color: #64748b; }
+.video-placeholder p { margin-top: 10px; font-size: 14px; }
+
+.player-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111827;
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+    border: 1px solid #1f2937;
+}
+.view-count { font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 6px; }
+.action-buttons { display: flex; gap: 10px; }
+.btn-action {
+    background: #1f2937;
+    color: #fff;
+    border: 1px solid #374151;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+.btn-action:hover { background: #3b82f6; border-color: #3b82f6; }
+
+/* Kotak Detail & Sinopsis */
+.movie-detail-box {
+    background: #111827;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 20px;
+    border: 1px solid #1f2937;
+}
+.detail-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+.detail-badges { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.badge {
+    background: #1f2937;
+    color: #cbd5e1;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+}
+.badge.hd { background: #3b82f6; color: white; }
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 25px;
+}
+.detail-poster-img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+.rating-box-large {
+    margin-top: 12px;
+    background: #1a2234;
+    padding: 8px;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 13px;
+    border: 1px solid #2d3748;
+}
+.text-yellow { color: #eab308; }
+
+.detail-info-col h3 { font-size: 16px; color: #f8fafc; margin-bottom: 8px; font-weight: 700; }
+.synopsis-text { font-size: 14px; color: #94a3b8; line-height: 1.6; margin-bottom: 20px; }
+
+.cast-info {
+    background: #161e2e;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 3px solid #3b82f6;
+}
+.cast-info h4 { font-size: 13px; color: #e2e8f0; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.cast-info p { font-size: 13px; color: #94a3b8; }
+
+.movie-metadata-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    font-size: 13px;
+    color: #94a3b8;
+    background: #161e2e;
+    padding: 15px;
+    border-radius: 8px;
+}
+.movie-metadata-grid strong { color: #e2e8f0; }
 
 /* Footer */
 .footer {
-    background-color: #080c14;
+    background-color: #04060a;
     text-align: center;
-    padding: 25px;
-    margin-top: 40px;
+    padding: 30px 20px;
+    margin-top: 50px;
     font-size: 12px;
     color: #64748b;
-    border-top: 1px solid #1e293b;
+    border-top: 1px solid #111827;
 }
 
 /* Responsif Mobile */
 @media (max-width: 768px) {
-    .header { flex-direction: column; gap: 12px; text-align: center; }
-    .nav-links { flex-wrap: wrap; justify-content: center; }
-    .filter-section { grid-template-columns: repeat(3, 1fr); }
-    .movie-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .movie-poster-container { height: 210px; }
+    .header { padding: 12px 15px; flex-direction: column; gap: 10px; }
+    .nav-links { display: none; } /* Sembunyikan navigasi berlebih di HP */
+    .detail-grid { grid-template-columns: 1fr; }
+    .detail-poster-img { max-width: 180px; margin: 0 auto; display: block; }
+    .player-actions { flex-direction: column; gap: 12px; align-items: stretch; text-align: center; }
+    .action-buttons { justify-content: center; }
 }
