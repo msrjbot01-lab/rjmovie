@@ -1,71 +1,18 @@
 [
   {
     "id": 1,
-    "title": "Ghost in the Cell",
-    "year": 2026,
-    "genre": "Horror, Comedy, Action",
-    "rating": "4.8",
-    "duration": "106 Menit",
-    "quality": "HD",
-    "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80",
-    "director": "Joko Anwar",
-    "country": "Indonesia",
-    "cast": "Abimana Aryasatya, Endy Arfian, Yoga Pratama, Aming, Bront Palarae",
-    "synopsis": "Narapidana di penjara Labuhan Angsana menghadapi teror kekuatan gaib yang membunuh tahanan dengan aura paling negatif. Para tahanan mencoba berbuat baik demi menjaga aura positif, hingga akhirnya sadar bahwa satu-satunya cara bertahan hidup adalah bersatu melawan penindas dan hantu tersebut."
-  },
-  {
-    "id": 2,
-    "title": "Gudang Merica",
-    "year": "2026",
-    "genre": "Comedy",
-    "poster": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500",
-    "rating": "5.3",
-    "duration": "95 min",
-    "quality": "CAM",
-    "country": "ID"
-  },
-  {
-    "id": 3,
-    "title": "Tunggu Aku Sukses Nanti",
-    "year": "2024",
-    "genre": "Drama",
-    "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500",
-    "rating": "8.9",
-    "duration": "110 min",
-    "quality": "HD",
-    "country": "ID"
-  },
-  {
-    "id": 4,
-    "title": "Ain",
-    "year": "2026",
+    "title": "Tumbal Birahi Dukun Jahanam",
+    "year": 2025,
     "genre": "Horror",
-    "poster": "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?w=500",
-    "rating": "6.1",
-    "duration": "105 min",
-    "quality": "CAM",
-    "country": "ID"
-  },
-  {
-    "id": 5,
-    "title": "Children of the Stars",
-    "year": "2025",
-    "genre": "Sci-Fi",
-    "poster": "https://images.unsplash.com/photo-1534796389281-b613ec6a9f5e?w=500",
-    "rating": "8.1",
-    "duration": "135 min",
+    "rating": "6.8",
+    "duration": "70 Menit",
     "quality": "HD",
-    "country": "US"
-  },
-  {
-    "id": 6,
-    "title": "Kisah diantara Kita",
-    "year": "2024",
-    "genre": "Romance",
-    "poster": "https://images.unsplash.com/photo-1502657877623-f66bf489d236?w=500",
-    "rating": "7.2",
-    "duration": "100 min",
-    "quality": "HD",
-    "country": "ID"
+    "poster": "film1.png",
+    "director": "Bram Ferino",
+    "country": "Indonesia",
+    "cast": "Fitriyani Abdul Roni, Dian Fitra, Inung Hartati",
+    "synopsis": "Zakia membuat keputusan salah karena ingin cepat menemukan pasangan hidup. Ia meminta bantuan kepada seorang dukun. Alih-alih mendapat jodoh, ia malah masuk perangkap ritual sesat penuh nafsu milik sang dukun.",
+    "videoUrl": "Tumbal Dukun Jahanam.mp4",
+    "downloadUrl": "Tumbal Dukun Jahanam.mp4"
   }
 ]
