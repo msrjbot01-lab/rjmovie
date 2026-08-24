@@ -7,6 +7,43 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .page-header {
+            text-align: center;
+            margin: 30px 0 20px 0;
+            color: white;
+        }
+        .country-filter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 35px;
+            padding: 0 20px;
+        }
+        .country-btn {
+            background-color: #1a202c;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .country-btn:hover {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .country-btn.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+        }
+    </style>
 </head>
 <body>
     <!-- Header & Navbar -->
@@ -24,15 +61,26 @@
             <li><a href="negara.html" class="active"><i class="fas fa-globe"></i> Negara</a></li>
         </ul>
         <div class="search-box">
-            <input type="text" placeholder="Cari negara...">
+            <input type="text" id="searchInput" placeholder="Cari negara...">
             <button><i class="fas fa-search"></i></button>
         </div>
     </header>
 
     <!-- Konten Utama -->
-    <main class="main-container" style="padding: 50px; text-align: center; color: white;">
-        <h2>Daftar Berdasarkan Negara</h2>
-        <p style="margin-top: 20px; color: #888;">Fitur negara sedang disiapkan.</p>
+    <main class="main-container" style="padding: 30px 20px;">
+        <div class="page-header">
+            <h2><i class="fas fa-globe" style="color: #3b82f6;"></i> Daftar Berdasarkan Negara</h2>
+        </div>
+
+        <!-- Tombol Filter Negara (Dibuat Otomatis via JS) -->
+        <div class="country-filter-container" id="countryFilterContainer">
+            <!-- Tombol filter akan dimuat di sini -->
+        </div>
+
+        <!-- Grid Film Berdasarkan Negara -->
+        <div id="movieGrid" class="movie-grid">
+            <!-- Film akan dimuat di sini -->
+        </div>
     </main>
 
     <!-- Footer -->
@@ -42,5 +90,131 @@
             <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Script JavaScript untuk Menampilkan Negara & Film -->
+    <script>
+        let allMovies = [];
+        let selectedCountry = 'Semua';
+
+        async function loadMoviesByCountry() {
+            try {
+                const response = await fetch('movies.json');
+                allMovies = await response.json();
+                
+                generateCountryButtons();
+                renderMovies(allMovies);
+            } catch (error) {
+                console.error("Gagal memuat data film:", error);
+                document.getElementById('movieGrid').innerHTML = '<p style="color: #ef4444; grid-column: 1/-1; text-align: center;">Gagal memuat data film.</p>';
+            }
+        }
+
+        function generateCountryButtons() {
+            const container = document.getElementById('countryFilterContainer');
+            
+            // Ambil daftar negara unik dari movies.json
+            let countries = ['Semua'];
+            allMovies.forEach(movie => {
+                if (movie.country) {
+                    // Tangani jika ada beberapa negara dipisah koma
+                    const splitCountries = movie.country.split(',').map(c => c.trim());
+                    splitCountries.forEach(c => {
+                        if (c && !countries.includes(c)) {
+                            countries.push(c);
+                        }
+                    });
+                }
+            });
+
+            container.innerHTML = '';
+
+            countries.forEach(country => {
+                const btn = document.createElement('button');
+                btn.className = `country-btn ${country === selectedCountry ? 'active' : ''}`;
+                btn.textContent = country;
+                btn.setAttribute('data-country', country);
+                
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    selectedCountry = country;
+                    filterAndRenderMovies();
+                });
+
+                container.appendChild(btn);
+            });
+        }
+
+        function filterAndRenderMovies() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            let filtered = allMovies.filter(movie => {
+                const matchCountry = selectedCountry === 'Semua' || (movie.country && movie.country.toLowerCase().includes(selectedCountry.toLowerCase()));
+                const matchSearch = selectedCountry.toLowerCase().includes(keyword) || (movie.country && movie.country.toLowerCase().includes(keyword));
+                
+                return matchCountry;
+            });
+
+            renderMovies(filtered);
+        }
+
+        function renderMovies(moviesToRender) {
+            const grid = document.getElementById('movieGrid');
+            grid.innerHTML = '';
+
+            if (moviesToRender.length === 0) {
+                grid.innerHTML = '<p style="color: #888; grid-column: 1/-1; text-align: center; padding: 40px;">Tidak ada film untuk negara ini.</p>';
+                return;
+            }
+
+            moviesToRender.forEach(movie => {
+                const qualityClass = movie.quality === 'CAM' ? 'cam' : '';
+                
+                const card = `
+                    <div class="movie-card">
+                        <a href="watch.html?title=${encodeURIComponent(movie.title)}" class="movie-link">
+                            <div class="movie-poster-container">
+                                <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
+                                <div class="overlay-top">
+                                    <span class="rating-tag"><i class="fas fa-star"></i> ${movie.rating}</span>
+                                    <span class="duration-tag"><i class="far fa-clock"></i> ${movie.duration}</span>
+                                </div>
+                                <span class="quality-tag ${qualityClass}">${movie.quality || 'HD'}</span>
+                                <div class="play-overlay">
+                                    <i class="fas fa-play-circle play-icon"></i>
+                                </div>
+                            </div>
+                            <div class="movie-info">
+                                <h3 class="movie-title">${movie.title}</h3>
+                                <p class="movie-meta">${movie.year} &bull; ${movie.country || 'Indonesia'}</p>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        // Fitur Pencarian di Input Header
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase().trim();
+                const buttons = document.querySelectorAll('.country-btn');
+                
+                buttons.forEach(btn => {
+                    const countryName = btn.textContent.toLowerCase();
+                    if (countryName.includes(term)) {
+                        btn.style.display = 'inline-block';
+                    } else {
+                        btn.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Jalankan fungsi saat halaman dimuat
+        loadMoviesByCountry();
+    </script>
 </body>
 </html>
