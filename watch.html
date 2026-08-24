@@ -7,6 +7,56 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Styling untuk Custom Play Button Overlay */
+        .video-container {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #videoPlayer {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+        .custom-play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.3s ease;
+        }
+        .custom-play-overlay:hover {
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .play-icon-btn {
+            width: 80px;
+            height: 80px;
+            background: rgba(59, 130, 246, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 30px;
+            padding-left: 5px; /* Sedikit menggeser ikon play agar tampak pas di tengah */
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .custom-play-overlay:hover .play-icon-btn {
+            transform: scale(1.1);
+            background: #3b82f6;
+        }
+    </style>
 </head>
 <body>
 
@@ -35,9 +85,16 @@
         
         <!-- Pemutar Video -->
         <div class="player-wrapper">
-            <div class="video-container">
-                <!-- Video Player HTML5 yang akan diisi otomatis linknya oleh JavaScript -->
-                <video id="videoPlayer" controls width="100%" style="border-radius: 8px; background: #000;">
+            <div class="video-container" id="videoContainer">
+                <!-- Tombol Play Kustom di Tengah -->
+                <div class="custom-play-overlay" id="playOverlay">
+                    <div class="play-icon-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+
+                <!-- Video Player HTML5 -->
+                <video id="videoPlayer" playsinline preload="metadata">
                     Browser Anda tidak mendukung pemutar video ini.
                 </video>
             </div>
@@ -99,7 +156,7 @@
         </div>
     </footer>
 
-    <!-- Script JavaScript untuk Memuat Detail & Video Dinamis -->
+    <!-- Script JavaScript -->
     <script>
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -118,30 +175,33 @@
                     document.getElementById('movieGenreDisplay').innerText = currentMovie.genre;
                     document.getElementById('movieRatingDisplay').innerText = currentMovie.rating;
                     
-                    if(currentMovie.synopsis) {
-                        document.getElementById('movieSynopsis').innerText = currentMovie.synopsis;
-                    }
-                    if(currentMovie.cast) {
-                        document.getElementById('movieCastDisplay').innerText = currentMovie.cast;
-                    }
-                    if(currentMovie.director) {
-                        document.getElementById('movieDirectorDisplay').innerText = currentMovie.director;
-                    }
-                    if(currentMovie.country) {
-                        document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
-                    }
-                    if(currentMovie.year) {
-                        document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
-                    }
+                    if(currentMovie.synopsis) document.getElementById('movieSynopsis').innerText = currentMovie.synopsis;
+                    if(currentMovie.cast) document.getElementById('movieCastDisplay').innerText = currentMovie.cast;
+                    if(currentMovie.director) document.getElementById('movieDirectorDisplay').innerText = currentMovie.director;
+                    if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
+                    if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Memasukkan link video streaming ke pemutar video HTML5
+                    const videoPlayer = document.getElementById('videoPlayer');
+                    const playOverlay = document.getElementById('playOverlay');
+
                     if(currentMovie.videoUrl) {
-                        const videoPlayer = document.getElementById('videoPlayer');
                         videoPlayer.src = currentMovie.videoUrl;
-                        videoPlayer.load();
                     }
 
-                    // Memasukkan link download ke tombol download
+                    // Logika Klik Tombol Play Kustom
+                    playOverlay.addEventListener('click', function() {
+                        videoPlayer.play();
+                        videoPlayer.setAttribute('controls', 'true'); // Menampilkan kontrol bawaan setelah diputar
+                        playOverlay.style.display = 'none'; // Menyembunyikan tombol play tengah
+                    });
+
+                    // Jika video dipause lewat kontrol bawaan, tombol play tengah bisa dimunculkan kembali jika diinginkan
+                    videoPlayer.addEventListener('pause', function() {
+                        if (videoPlayer.currentTime < videoPlayer.duration && videoPlayer.currentTime > 0) {
+                            // Opsional jika ingin tombol muncul lagi saat dipause
+                        }
+                    });
+
                     if(currentMovie.downloadUrl) {
                         document.getElementById('downloadBtn').href = currentMovie.downloadUrl;
                     }
