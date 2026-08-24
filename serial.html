@@ -6,20 +6,41 @@
     <title>Serial TV - RJMOVIE</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Header & Navbar -->
     <header class="header">
-        <div class="logo-container"><a href="index.html"><img src="logorjmovie.png" alt="Logo" class="site-logo"></a></div>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
+            </a>
+        </div>
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
-            <li><a href="serial.html"><i class="fas fa-tv"></i> Serial TV</a></li>
+            <li><a href="serial.html" class="active"><i class="fas fa-tv"></i> Serial Tv</a></li>
+            <li><a href="genre.html"><i class="fas fa-tags"></i> Genre</a></li>
+            <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
         </ul>
+        <div class="search-box">
+            <input type="text" placeholder="Cari serial...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
     </header>
+
+    <!-- Konten Utama -->
     <main class="main-container" style="padding: 50px; text-align: center; color: white;">
         <h2>Daftar Serial TV</h2>
         <p style="margin-top: 20px; color: #888;">Belum ada serial TV yang ditambahkan. Segera hadir!</p>
     </main>
-    <footer class="footer"><p>&copy; 2026 RJMOVIE. All rights reserved.</p></footer>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
+            <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
