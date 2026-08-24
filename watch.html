@@ -11,25 +11,45 @@
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* Rasio aspek 16:9 */
             background: #000;
             border-radius: 8px;
             overflow: hidden;
         }
-        .video-container iframe {
+        #videoPlayer {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+        .custom-play-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .play-icon-btn {
+            width: 80px;
+            height: 80px;
+            background: rgba(59, 130, 246, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 30px;
+            padding-left: 5px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header class="header">
         <div class="logo-container">
             <a href="index.html">
@@ -39,83 +59,38 @@
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
-            <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
-            <li><a href="genre.html"><i class="fas fa-tags"></i> Genre</a></li>
-            <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
         </ul>
-        <div class="search-box">
-            <input type="text" placeholder="Cari film...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
     </header>
 
-    <!-- Konten Detail & Streaming -->
     <main class="main-container watch-container">
-        
-        <!-- Pemutar Video Menggunakan Iframe Internet Archive -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
-                <iframe id="videoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="custom-play-overlay" id="playOverlay">
+                    <div class="play-icon-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <!-- Menggunakan native HTML5 video player -->
+                <video id="videoPlayer" playsinline preload="metadata">
+                    <source id="videoSource" src="" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video ini.
+                </video>
             </div>
             
-            <!-- Tombol Aksi Bawah Player -->
             <div class="player-actions">
                 <div class="view-count"><i class="fas fa-eye"></i> 814,497 views</div>
                 <div class="action-buttons">
                     <a id="downloadBtn" href="#" target="_blank" class="btn-action" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"><i class="fas fa-download"></i> DOWNLOAD</a>
-                    <button class="btn-action"><i class="fas fa-closed-captioning"></i> SUB INDO</button>
                 </div>
             </div>
         </div>
 
-        <!-- Informasi & Sinopsis Film -->
         <div class="movie-detail-box">
             <h1 id="movieTitleDisplay" class="detail-title">Memuat Judul...</h1>
-            <div class="detail-badges">
-                <span class="badge hd">HD</span>
-                <span class="badge">Indonesia</span>
-                <span id="movieGenreDisplay" class="badge genre-tag">-</span>
-            </div>
-
-            <div class="detail-grid">
-                <div class="detail-poster-col">
-                    <img id="moviePosterDisplay" src="" alt="Poster Film" class="detail-poster-img">
-                    <div class="rating-box-large">
-                        <i class="fas fa-star text-yellow"></i> <strong id="movieRatingDisplay">0.0</strong> / 5
-                    </div>
-                </div>
-
-                <div class="detail-info-col">
-                    <h3>Sinopsis Resmi</h3>
-                    <p id="movieSynopsis" class="synopsis-text">
-                        Memuat sinopsis...
-                    </p>
-
-                    <div class="cast-info">
-                        <h4><i class="fas fa-users"></i> Pemeran Utama / Cast:</h4>
-                        <p id="movieCastDisplay">-</p>
-                    </div>
-
-                    <div class="movie-metadata-grid">
-                        <div><strong>Rilis:</strong> <span id="movieReleaseDisplay">-</span></div>
-                        <div><strong>Negara:</strong> <span id="movieCountryDisplay">-</span></div>
-                        <div><strong>Sutradara:</strong> <span id="movieDirectorDisplay">-</span></div>
-                    </div>
-                </div>
-            </div>
+            <p id="movieSynopsis" class="synopsis-text">Memuat sinopsis...</p>
         </div>
-
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
-            <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Script JavaScript -->
     <script>
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -130,37 +105,27 @@
 
                 if (currentMovie) {
                     document.getElementById('movieTitleDisplay').innerText = `${currentMovie.title} (${currentMovie.year})`;
-                    document.getElementById('moviePosterDisplay').src = currentMovie.poster;
-                    document.getElementById('movieGenreDisplay').innerText = currentMovie.genre;
-                    document.getElementById('movieRatingDisplay').innerText = currentMovie.rating;
-                    
                     if(currentMovie.synopsis) document.getElementById('movieSynopsis').innerText = currentMovie.synopsis;
-                    if(currentMovie.cast) document.getElementById('movieCastDisplay').innerText = currentMovie.cast;
-                    if(currentMovie.director) document.getElementById('movieDirectorDisplay').innerText = currentMovie.director;
-                    if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
-                    if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Otomatis mengubah link download/direct menjadi format embed Internet Archive
+                    const videoPlayer = document.getElementById('videoPlayer');
+                    const videoSource = document.getElementById('videoSource');
+                    const playOverlay = document.getElementById('playOverlay');
+
                     if(currentMovie.videoUrl) {
-                        let embedUrl = currentMovie.videoUrl;
-                        if (embedUrl.includes('archive.org/download/')) {
-                            let parts = embedUrl.split('/');
-                            let identifierIndex = parts.indexOf('download') + 1;
-                            if (identifierIndex < parts.length) {
-                                let identifier = parts[identifierIndex];
-                                embedUrl = `https://archive.org/embed/${identifier}`;
-                            }
-                        }
-                        
-                        const iframe = document.getElementById('videoIframe');
-                        iframe.src = embedUrl;
+                        videoSource.src = currentMovie.videoUrl;
+                        videoPlayer.load();
                     }
+
+                    playOverlay.addEventListener('click', function() {
+                        videoPlayer.play().then(() => {
+                            videoPlayer.setAttribute('controls', 'true');
+                            playOverlay.style.display = 'none';
+                        }).catch(err => console.log(err));
+                    });
 
                     if(currentMovie.downloadUrl) {
                         document.getElementById('downloadBtn').href = currentMovie.downloadUrl;
                     }
-                    
-                    document.title = `Nonton ${currentMovie.title} Sub Indo - RJMOVIE`;
                 }
             } catch (e) {
                 console.error("Gagal meload detail film", e);
