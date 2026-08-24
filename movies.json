@@ -1,22 +1,68 @@
 [
   {
     "id": 1,
-    "title": "Cyberpunk 2077: Edgerunners",
-    "genre": "Sci-Fi / Action",
-    "year": "2026",
+    "title": "Ghost In The Cell",
+    "year": "2025",
+    "genre": "Horror",
     "poster": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
-    "synopsis": "Kisah menegangkan seorang anak jalanan yang mencoba bertahan hidup di kota masa depan yang penuh teknologi tinggi.",
-    "streamUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "downloadUrl": "#"
+    "rating": "7.5",
+    "duration": "120 min",
+    "quality": "HD",
+    "country": "ID"
   },
   {
     "id": 2,
-    "title": "The Last Horizon",
-    "genre": "Adventure / Drama",
-    "year": "2025",
+    "title": "Gudang Merica",
+    "year": "2026",
+    "genre": "Comedy",
     "poster": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500",
-    "synopsis": "Ekspedisi luar angkasa terakhir umat manusia untuk mencari planet baru yang dapat dihuni.",
-    "streamUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "downloadUrl": "#"
+    "rating": "5.3",
+    "duration": "95 min",
+    "quality": "CAM",
+    "country": "ID"
+  },
+  {
+    "id": 3,
+    "title": "Tunggu Aku Sukses Nanti",
+    "year": "2024",
+    "genre": "Drama",
+    "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500",
+    "rating": "8.9",
+    "duration": "110 min",
+    "quality": "HD",
+    "country": "ID"
+  },
+  {
+    "id": 4,
+    "title": "Ain",
+    "year": "2026",
+    "genre": "Horror",
+    "poster": "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?w=500",
+    "rating": "6.1",
+    "duration": "105 min",
+    "quality": "CAM",
+    "country": "ID"
+  },
+  {
+    "id": 5,
+    "title": "Children of the Stars",
+    "year": "2025",
+    "genre": "Sci-Fi",
+    "poster": "https://images.unsplash.com/photo-1534796389281-b613ec6a9f5e?w=500",
+    "rating": "8.1",
+    "duration": "135 min",
+    "quality": "HD",
+    "country": "US"
+  },
+  {
+    "id": 6,
+    "title": "Kisah diantara Kita",
+    "year": "2024",
+    "genre": "Romance",
+    "poster": "https://images.unsplash.com/photo-1502657877623-f66bf489d236?w=500",
+    "rating": "7.2",
+    "duration": "100 min",
+    "quality": "HD",
+    "country": "ID"
   }
 ]
