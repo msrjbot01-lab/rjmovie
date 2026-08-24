@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Plyr Player untuk Mengatasi Error Streaming -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         .video-container {
             position: relative;
@@ -21,41 +23,13 @@
             border-radius: 8px;
             max-height: 80vh;
         }
-        /* Tombol Play Kustom di Tengah */
-        .custom-play-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Penyesuaian tema Plyr agar menyatu dengan web Anda */
+        .plyr {
+            border-radius: 8px;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: background 0.3s ease;
         }
-        .custom-play-overlay:hover {
-            background: rgba(0, 0, 0, 0.6);
-        }
-        .play-icon-btn {
-            width: 80px;
-            height: 80px;
-            background: rgba(59, 130, 246, 0.9);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 30px;
-            padding-left: 5px;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-        .custom-play-overlay:hover .play-icon-btn {
-            transform: scale(1.1);
-            background: #3b82f6;
+        .plyr--video {
+            background: #000;
         }
     </style>
 </head>
@@ -87,15 +61,8 @@
         <!-- Pemutar Video -->
         <div class="player-wrapper">
             <div class="video-container" id="videoContainer">
-                <!-- Tombol Play Kustom di Tengah -->
-                <div class="custom-play-overlay" id="playOverlay">
-                    <div class="play-icon-btn">
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-
-                <!-- Video Player HTML5 dengan playsinline agar tidak otomatis fullscreen di HP -->
-                <video id="videoPlayer" playsinline webkit-playsinline preload="metadata">
+                <!-- Video Player dengan crossOrigin agar lolos sensor CORS browser -->
+                <video id="videoPlayer" playsinline controls preload="metadata">
                     <source id="videoSource" src="" type="video/mp4">
                     Browser Anda tidak mendukung pemutar video ini.
                 </video>
@@ -156,7 +123,8 @@
         </div>
     </footer>
 
-    <!-- Script JavaScript -->
+    <!-- JavaScript Plyr & Logika Film -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
         async function loadMovieDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -182,26 +150,21 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Mengatur video player HTML5
-                    const videoPlayer = document.getElementById('videoPlayer');
+                    // Mengatur video dan mengaktifkan Plyr Player
                     const videoSource = document.getElementById('videoSource');
-                    const playOverlay = document.getElementById('playOverlay');
+                    const videoPlayer = document.getElementById('videoPlayer');
 
                     if(currentMovie.videoUrl) {
                         videoSource.src = currentMovie.videoUrl;
-                        videoPlayer.load(); // Memuat buffer dari link Internet Archive
-                    }
-
-                    // Logika Klik Tombol Play Kustom
-                    playOverlay.addEventListener('click', function() {
-                        videoPlayer.play().then(() => {
-                            videoPlayer.setAttribute('controls', 'true'); // Menampilkan kontrol pemutar standar
-                            playOverlay.style.display = 'none'; // Menyembunyikan tombol play tengah
-                        }).catch(error => {
-                            console.error("Gagal memutar video:", error);
-                            alert("Gagal memutar video. Pastikan link video valid.");
+                        videoPlayer.load();
+                        
+                        // Inisialisasi pemutar Plyr agar video langsung di-decode dengan benar di komputer
+                        const player = new Plyr('#videoPlayer', {
+                            controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'settings', 'fullscreen'],
+                            settings: ['quality', 'speed'],
+                            fullscreen: { iosNative: true }
                         });
-                    });
+                    }
 
                     if(currentMovie.downloadUrl) {
                         document.getElementById('downloadBtn').href = currentMovie.downloadUrl;
