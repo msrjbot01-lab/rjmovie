@@ -169,6 +169,7 @@
         .admin-form input:focus, .admin-form textarea:focus, .admin-form select:focus { outline: none; border-color: #3b82f6; }
         .admin-form button { margin-top: 25px; width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
         .admin-form button:hover { background: #2563eb; }
+        .admin-form button:disabled { opacity: 0.6; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -257,7 +258,7 @@
                 <label>Link Direct Video (.mp4 Internet Archive):</label>
                 <input type="text" id="videoUrl" required placeholder="https://archive.org/download/.../file.mp4">
 
-                <button type="submit"><i class="fas fa-cloud-upload-alt"></i> Upload & Simpan Film ke GitHub</button>
+                <button type="submit" id="submitMovieBtn"><i class="fas fa-cloud-upload-alt"></i> Upload & Simpan Film ke GitHub</button>
             </form>
         </div>
 
@@ -285,7 +286,7 @@
                 <label>Keterangan / Judul Banner:</label>
                 <input type="text" id="bannerTitleInput" required placeholder="Contoh: Promo Spesial Film Bioskop Terbaru">
 
-                <button type="submit" style="background: #238636;"><i class="fas fa-cloud-upload-alt"></i> Upload & Simpan Banner ke GitHub</button>
+                <button type="submit" id="submitBannerBtn" style="background: #238636;"><i class="fas fa-cloud-upload-alt"></i> Upload & Simpan Banner ke GitHub</button>
             </form>
         </div>
 
@@ -294,7 +295,7 @@
     <script>
         const CORRECT_PASSWORD = "matthewsel18"; // Password admin
         
-        // URL Cloudflare Worker Backend (Aman dari Error 401 dan Secret Scanning)
+        // URL Cloudflare Worker Backend
         const WORKER_URL = 'https://rjmovie-backend.trbmaster.workers.dev';
 
         window.onload = function() {
@@ -347,7 +348,9 @@
             const posterFile = posterInput.files[0];
             const posterFileName = `poster-${Date.now()}-${posterFile.name.replace(/\s+/g, '-')}`;
 
-            alert('Sedang mengunggah poster dan memperbarui movies.json via Cloudflare...');
+            const submitBtn = document.getElementById('submitMovieBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sedang Mengunggah Film...';
 
             try {
                 const base64Poster = await toBase64(posterFile);
@@ -391,6 +394,9 @@
             } catch (error) {
                 console.error(error);
                 alert('Terjadi kesalahan: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Upload & Simpan Film ke GitHub';
             }
         });
 
@@ -408,7 +414,9 @@
             const file = fileInput.files[0];
             const fileName = `banner-${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
 
-            alert('Sedang mengunggah banner slider via Cloudflare...');
+            const submitBtn = document.getElementById('submitBannerBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sedang Mengunggah Banner...';
 
             try {
                 const base64Content = await toBase64(file);
@@ -440,6 +448,9 @@
             } catch (error) {
                 console.error(error);
                 alert('Terjadi kesalahan: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Upload & Simpan Banner ke GitHub';
             }
         });
     </script>
