@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .admin-form { max-width: 600px; margin: 40px auto; background: #1e1e1e; padding: 30px; border-radius: 8px; color: white; }
-        .admin-form label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; }
-        .admin-form input, .admin-form textarea, .admin-form select { width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid #444; color: white; border-radius: 4px; }
-        .admin-form button { margin-top: 25px; width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; }
-        .admin-form button:hover { background: #2563eb; }
+        .admin-form, .login-box { max-width: 500px; margin: 60px auto; background: #1e1e1e; padding: 30px; border-radius: 8px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .admin-form label, .login-box label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; }
+        .admin-form input, .admin-form textarea, .admin-form select, .login-box input { width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid #444; color: white; border-radius: 4px; box-sizing: border-box; }
+        .admin-form button, .login-box button { margin-top: 25px; width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .admin-form button:hover, .login-box button:hover { background: #2563eb; }
+        .error-msg { color: #ef4444; margin-top: 10px; font-size: 14px; text-align: center; display: none; }
     </style>
 </head>
 <body>
@@ -21,13 +22,29 @@
         </div>
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="admin.html" class="active"><i class="fas fa-lock"></i> Admin Panel</a></li>
         </ul>
     </header>
 
-    <main class="main-container">
-        <div class="admin-form">
-            <h2><i class="fas fa-plus-circle"></i> Tambah Film Baru</h2>
+    <!-- BAGIAN LOGIN -->
+    <div id="loginSection" class="login-box">
+        <h2><i class="fas fa-lock"></i> Login Admin RJMOVIE</h2>
+        <p style="color: #888; font-size: 14px; margin-top: 5px;">Masukkan password untuk mengakses panel.</p>
+        <form id="loginForm">
+            <label>Password:</label>
+            <input type="password" id="adminPassword" required placeholder="Masukkan password...">
+            <button type="submit"><i class="fas fa-sign-in-alt"></i> Masuk</button>
+            <p id="errorMsg" class="error-msg">Password salah! Silakan coba lagi.</p>
+        </form>
+    </div>
+
+    <!-- BAGIAN PANEL ADMIN (Disembunyikan sebelum login) -->
+    <main class="main-container" id="adminMain" style="display: none;">
+        <div class="admin-form" style="max-width: 600px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2><i class="fas fa-plus-circle"></i> Tambah Film Baru</h2>
+                <button onclick="logoutAdmin()" style="width: auto; padding: 6px 12px; margin: 0; background: #ef4444; font-size: 12px;"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+            </div>
+            
             <form id="addMovieForm">
                 <label>Judul Film:</label>
                 <input type="text" id="title" required placeholder="Contoh: Tumbal Birahi">
@@ -73,18 +90,51 @@
 
             <div id="outputSection" style="margin-top: 20px; display: none;">
                 <label>Hasil JSON (Salin dan perbarui isi file <code>movies.json</code> Anda):</label>
-                <textarea id="jsonOutput" rows="6" readonly style="font-family: monospace; font-size: 12px;"></textarea>
+                <textarea id="jsonOutput" rows="6" readonly style="font-family: monospace; font-size: 12px; background: #111; color: #4ade80;"></textarea>
             </div>
         </div>
     </main>
 
     <script>
+        // ATUR PASSWORD ANDA DI SINI
+        const CORRECT_PASSWORD = "rjmovie123"; // Silakan ubah sesuai keinginan Anda
+
+        // Cek apakah sudah login sebelumnya di sesi browser ini
+        window.onload = function() {
+            if (sessionStorage.getItem("isLoggedIn") === "true") {
+                showAdminPanel();
+            }
+        };
+
+        // Handle Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const passInput = document.getElementById('adminPassword').value;
+            
+            if (passInput === CORRECT_PASSWORD) {
+                sessionStorage.setItem("isLoggedIn", "true");
+                showAdminPanel();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        });
+
+        function showAdminPanel() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminMain').style.display = 'block';
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem("isLoggedIn");
+            location.reload();
+        }
+
+        // Handle Form Submit Tambah Film
         document.getElementById('addMovieForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Ambil data dari form
             const newMovie = {
-                id: Date.now(), // ID unik berdasarkan waktu
+                id: Date.now(),
                 title: document.getElementById('title').value,
                 year: parseInt(document.getElementById('year').value),
                 genre: document.getElementById('genre').value,
@@ -101,24 +151,19 @@
             };
 
             try {
-                // Coba ambil data movies.json yang lama jika ada
                 let existingMovies = [];
                 const response = await fetch('movies.json');
                 if (response.ok) {
                     existingMovies = await response.json();
                 }
 
-                // Tambahkan film baru ke dalam array
                 existingMovies.push(newMovie);
-
-                // Tampilkan hasilnya dalam bentuk format JSON
                 const jsonString = JSON.stringify(existingMovies, null, 4);
                 document.getElementById('jsonOutput').value = jsonString;
                 document.getElementById('outputSection').style.display = 'block';
                 
                 alert('Berhasil digenerate! Silakan salin teks JSON di bawah dan perbarui file movies.json Anda.');
             } catch (error) {
-                // Jika offline atau gagal fetch, buat array baru isi film ini saja
                 const jsonString = JSON.stringify([newMovie], null, 4);
                 document.getElementById('jsonOutput').value = jsonString;
                 document.getElementById('outputSection').style.display = 'block';
