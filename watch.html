@@ -41,7 +41,7 @@
             overflow-x: hidden;
         }
 
-        /* --- HEADER PERSIS HALAMAN UTAMA --- */
+        /* --- HEADER --- */
         .header {
             width: 100%;
             background-color: #0f172a;
@@ -202,7 +202,7 @@
             padding: 4px;
         }
 
-        /* --- VIDEO PLAYER & TOMBOL PLAY PRESISI --- */
+        /* --- VIDEO PLAYER & TOMBOL PLAY --- */
         .watch-main-wrapper {
             width: 100%;
             max-width: 950px;
@@ -298,7 +298,7 @@
             transform: translateY(-2px);
         }
 
-        /* --- INFORMASI FILM ANIMASI & TEMA MODERN (GLASSMORPHISM) --- */
+        /* --- INFORMASI FILM --- */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -324,7 +324,6 @@
             overflow: hidden;
         }
 
-        /* Aksen glow bercahaya di sudut box info */
         .movie-detail-box::before {
             content: '';
             position: absolute;
@@ -375,7 +374,6 @@
             align-items: flex-start;
         }
 
-        /* --- KONTainer POSTER OTOMATIS (PORTRAIT / LANDSCAPE) --- */
         .detail-poster-col {
             width: 180px;
             flex-shrink: 0;
@@ -398,7 +396,6 @@
             transform: scale(1.02);
         }
 
-        /* Gambar poster akan menyesuaikan secara dinamis proporsinya */
         .detail-poster-img {
             width: 100%;
             height: 100%;
@@ -465,18 +462,23 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
+        /* --- FOOTER (DIPERKETAT/DIPETISKAN) --- */
         .footer {
             width: 100%;
             background-color: #0f172a;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 20px 16px;
+            padding: 10px 16px; /* Diubah agar lebih tipis */
             color: #94a3b8;
-            font-size: 0.8rem;
+            font-size: 0.75rem; /* Ukuran teks disesuaikan */
             text-align: center;
             margin-top: auto;
         }
 
-        /* --- RESPONSIF KHUSUS MOBILE --- */
+        .footer p {
+            margin: 0; /* Menghilangkan margin bawaan */
+        }
+
+        /* --- RESPONSIF MOBILE --- */
         @media screen and (max-width: 768px) {
             .header {
                 padding: 10px 14px;
@@ -615,7 +617,7 @@
                 </div>
             </div>
 
-            <!-- Informasi & Sinopsis Film dengan Tema Animasi Modern -->
+            <!-- Informasi & Sinopsis Film -->
             <div class="movie-detail-box">
                 <h1 id="movieTitleDisplay" class="detail-title">Memuat Judul...</h1>
                 <div class="detail-badges">
@@ -626,7 +628,6 @@
 
                 <div class="detail-grid">
                     <div class="detail-poster-col">
-                        <!-- Poster Dynamic Wrapper untuk Portrait / Landscape otomatis -->
                         <div class="poster-wrapper-dynamic" id="posterWrapper">
                             <img id="moviePosterDisplay" src="" alt="Poster Film" class="detail-poster-img">
                         </div>
@@ -664,7 +665,6 @@
     <!-- JavaScript Video.js & Logika Data Film -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script>
-        // Logika Menu Toggle & Mobile Search Modal
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
 
@@ -700,7 +700,6 @@
             });
         }
 
-        // Inisialisasi Player Video.js
         var player = videojs('rjPlayer');
 
         async function loadMovieDetails() {
@@ -725,32 +724,26 @@
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
 
-                    // Mengatur Gambar Poster secara Otomatis (Mendukung Portrait / Landscape)
                     const posterImg = document.getElementById('moviePosterDisplay');
                     const posterWrapper = document.getElementById('posterWrapper');
                     
                     posterImg.src = currentMovie.poster;
                     
-                    // Skrip deteksi dimensi asli gambar poster setelah dimuat
                     posterImg.onload = function() {
                         const width = posterImg.naturalWidth;
                         const height = posterImg.naturalHeight;
                         
                         if (width > height) {
-                            // Jika Landscape (Lebar > Tinggi)
                             posterWrapper.style.aspectRatio = "16 / 9";
                             posterWrapper.style.width = "100%";
-                            // Menyesuaikan lebar kolom jika poster landscape agar proporsional
                             document.querySelector('.detail-poster-col').style.width = "240px";
                         } else {
-                            // Jika Portrait (Tinggi >= Lebar)
                             posterWrapper.style.aspectRatio = "2 / 3";
                             posterWrapper.style.width = "100%";
                             document.querySelector('.detail-poster-col').style.width = "180px";
                         }
                     };
 
-                    // Masukkan link video ke pemutar Video.js
                     if(currentMovie.videoUrl) {
                         player.src({
                             src: currentMovie.videoUrl,
