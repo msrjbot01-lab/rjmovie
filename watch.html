@@ -206,7 +206,7 @@
         .watch-main-wrapper {
             width: 100%;
             max-width: 950px;
-            padding: 20px 16px;
+            padding: 24px 16px;
             box-sizing: border-box;
             margin: 0 auto;
         }
@@ -217,7 +217,7 @@
             background: #000;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         
@@ -227,7 +227,6 @@
             aspect-ratio: 16 / 9;
         }
 
-        /* Memaksa tombol play berada persis di titik tengah mutlak */
         .video-js.vjs-controls-enabled .vjs-big-play-button,
         .video-js .vjs-big-play-button {
             position: absolute !important;
@@ -245,10 +244,13 @@
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            transition: transform 0.2s, background-color 0.2s;
         }
         
         .video-js .vjs-big-play-button:hover {
             background-color: #3b82f6 !important;
+            transform: translate(-50%, -50%) scale(1.08) !important;
         }
 
         .player-actions {
@@ -287,77 +289,133 @@
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
         }
 
         .btn-action:hover {
             border-color: #3b82f6;
             background: #1e293b;
+            transform: translateY(-2px);
         }
 
-        /* --- INFORMASI & POSTER FILM --- */
+        /* --- INFORMASI FILM ANIMASI & TEMA MODERN (GLASSMORPHISM) --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .movie-detail-box {
-            margin-top: 25px;
-            background: #162032;
-            padding: 24px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
+            margin-top: 28px;
+            background: linear-gradient(135deg, rgba(22, 32, 50, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 28px;
+            border-radius: 16px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Aksen glow bercahaya di sudut box info */
+        .movie-detail-box::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(59, 130, 246, 0.15);
+            border-radius: 50%;
+            filter: blur(40px);
+            pointer-events: none;
         }
 
         .detail-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin: 0 0 10px 0;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 0 0 12px 0;
             color: #fff;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .detail-badges {
             display: flex;
             gap: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             flex-wrap: wrap;
         }
 
         .badge {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             color: #cbd5e1;
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 6px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s;
         }
-        .badge.hd { background: #3b82f6; color: #fff; }
+        .badge:hover { transform: scale(1.05); }
+        .badge.hd { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none; }
 
         .detail-grid {
             display: flex;
-            gap: 24px;
+            gap: 28px;
             align-items: flex-start;
         }
 
+        /* --- KONTainer POSTER OTOMATIS (PORTRAIT / LANDSCAPE) --- */
         .detail-poster-col {
-            width: 160px;
+            width: 180px;
             flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Mengunci bentuk poster sesuai rasio cover film vertikal asli */
+        .poster-wrapper-dynamic {
+            width: 100%;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #000;
+            transition: transform 0.3s ease;
+        }
+        .poster-wrapper-dynamic:hover {
+            transform: scale(1.02);
+        }
+
+        /* Gambar poster akan menyesuaikan secara dinamis proporsinya */
         .detail-poster-img {
             width: 100%;
-            aspect-ratio: 2 / 3;
+            height: 100%;
             object-fit: cover;
-            border-radius: 10px;
             display: block;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.08);
         }
 
         .rating-box-large {
-            margin-top: 10px;
+            margin-top: 12px;
+            width: 100%;
             text-align: center;
             font-size: 0.9rem;
-            background: #0b0f19;
-            padding: 6px;
-            border-radius: 6px;
-            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(11, 15, 25, 0.7);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
         }
 
         .detail-info-col {
@@ -365,25 +423,29 @@
         }
 
         .detail-info-col h3 {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             margin: 0 0 8px 0;
             color: #f8fafc;
+            font-weight: 700;
         }
 
         .synopsis-text {
             color: #94a3b8;
             font-size: 0.9rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            line-height: 1.7;
+            margin-bottom: 22px;
         }
 
         .cast-info {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         .cast-info h4 {
             font-size: 0.9rem;
-            margin: 0 0 4px 0;
+            margin: 0 0 6px 0;
             color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .cast-info p {
             color: #94a3b8;
@@ -397,9 +459,10 @@
             gap: 12px;
             font-size: 0.85rem;
             color: #cbd5e1;
-            background: rgba(11, 15, 25, 0.5);
-            padding: 12px;
-            border-radius: 8px;
+            background: rgba(11, 15, 25, 0.6);
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .footer {
@@ -472,7 +535,7 @@
             }
 
             .detail-poster-col {
-                width: 130px;
+                width: 150px;
             }
 
             .detail-badges {
@@ -552,7 +615,7 @@
                 </div>
             </div>
 
-            <!-- Informasi & Sinopsis Film -->
+            <!-- Informasi & Sinopsis Film dengan Tema Animasi Modern -->
             <div class="movie-detail-box">
                 <h1 id="movieTitleDisplay" class="detail-title">Memuat Judul...</h1>
                 <div class="detail-badges">
@@ -563,9 +626,12 @@
 
                 <div class="detail-grid">
                     <div class="detail-poster-col">
-                        <img id="moviePosterDisplay" src="" alt="Poster Film" class="detail-poster-img">
+                        <!-- Poster Dynamic Wrapper untuk Portrait / Landscape otomatis -->
+                        <div class="poster-wrapper-dynamic" id="posterWrapper">
+                            <img id="moviePosterDisplay" src="" alt="Poster Film" class="detail-poster-img">
+                        </div>
                         <div class="rating-box-large">
-                            <i class="fas fa-star" style="color: #fbbf24;"></i> <strong id="movieRatingDisplay">0.0</strong> / 10
+                            <i class="fas fa-star" style="color: #fbbf24;"></i> <strong id="movieRatingDisplay">0.0</strong> / 5
                         </div>
                     </div>
 
@@ -574,7 +640,7 @@
                         <p id="movieSynopsis" class="synopsis-text">Memuat sinopsis...</p>
 
                         <div class="cast-info">
-                            <h4><i class="fas fa-users"></i> Pemeran Utama / Cast:</h4>
+                            <h4><i class="fas fa-users" style="color: #3b82f6;"></i> Pemeran Utama / Cast:</h4>
                             <p id="movieCastDisplay">-</p>
                         </div>
 
@@ -653,7 +719,6 @@
 
                 if (currentMovie) {
                     document.getElementById('movieTitleDisplay').innerText = `${currentMovie.title} (${currentMovie.year})`;
-                    document.getElementById('moviePosterDisplay').src = currentMovie.poster;
                     document.getElementById('movieGenreDisplay').innerText = currentMovie.genre;
                     document.getElementById('movieRatingDisplay').innerText = currentMovie.rating;
                     
@@ -662,6 +727,31 @@
                     if(currentMovie.director) document.getElementById('movieDirectorDisplay').innerText = currentMovie.director;
                     if(currentMovie.country) document.getElementById('movieCountryDisplay').innerText = currentMovie.country;
                     if(currentMovie.year) document.getElementById('movieReleaseDisplay').innerText = currentMovie.year;
+
+                    // Mengatur Gambar Poster secara Otomatis (Mendukung Portrait / Landscape)
+                    const posterImg = document.getElementById('moviePosterDisplay');
+                    const posterWrapper = document.getElementById('posterWrapper');
+                    
+                    posterImg.src = currentMovie.poster;
+                    
+                    // Skrip deteksi dimensi asli gambar poster setelah dimuat
+                    posterImg.onload = function() {
+                        const width = posterImg.naturalWidth;
+                        const height = posterImg.naturalHeight;
+                        
+                        if (width > height) {
+                            // Jika Landscape (Lebar > Tinggi)
+                            posterWrapper.style.aspectRatio = "16 / 9";
+                            posterWrapper.style.width = "100%";
+                            // Menyesuaikan lebar kolom jika poster landscape agar proporsional
+                            document.querySelector('.detail-poster-col').style.width = "240px";
+                        } else {
+                            // Jika Portrait (Tinggi >= Lebar)
+                            posterWrapper.style.aspectRatio = "2 / 3";
+                            posterWrapper.style.width = "100%";
+                            document.querySelector('.detail-poster-col').style.width = "180px";
+                        }
+                    };
 
                     // Masukkan link video ke pemutar Video.js
                     if(currentMovie.videoUrl) {
