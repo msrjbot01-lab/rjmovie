@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- KUNCI ANTI GESER & STICKY FOOTER --- * /
+        /* --- KUNCI ANTI GESER & STICKY FOOTER --- */
         html, body {
             width: 100%;
             height: 100%;
@@ -87,12 +87,12 @@
             color: #3b82f6;
         }
 
-        /* --- DESAIN SEARCH BAR BARU (KEREN & BULAT BIRU DENGAN ANIMASI) --- */
+        /* --- DESAIN SEARCH BAR BARU (BULAT BIRU & ANIMASI) --- */
         .search-box {
             display: flex;
             align-items: center;
             background: #162032;
-            border-radius: 50px; /* Bentuk Kapsul */
+            border-radius: 50px;
             padding: 4px 4px 4px 16px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -103,7 +103,7 @@
         .search-box:focus-within {
             border-color: #3b82f6;
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
-            width: 320px; /* Sedikit memanjang halus saat diklik */
+            width: 320px;
         }
 
         .search-box input {
@@ -126,7 +126,7 @@
             color: white;
             width: 36px;
             height: 36px;
-            border-radius: 50%; /* Tombol bulat sempurna */
+            border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
@@ -137,8 +137,8 @@
         }
 
         .search-box button:hover {
-            transform: scale(1.1) rotate(15deg); /* Efek animasi putar & membesar saat di-hover */
-            background: linear-gradient(135deg, #2563eb, #1e40af;
+            transform: scale(1.1) rotate(15deg);
+            background: linear-gradient(135deg, #2563eb, #1e40af);
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.6);
         }
 
@@ -160,7 +160,7 @@
             overflow: hidden;
             background: #000;
             border-radius: 12px;
-            aspect-ratio: 1200 / 450; /* Menjaga rasio fix */
+            aspect-ratio: 1200 / 450; /* Kunci rasio tampilan fix */
             max-height: 450px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
@@ -412,7 +412,7 @@
             color: #94a3b8;
             font-size: 0.88rem;
             text-align: center;
-            margin-top: auto; /* Memastikan footer selalu turun ke paling bawah */
+            margin-top: auto;
         }
     </style>
 </head>
@@ -444,8 +444,8 @@
             <!-- Hero Banner Slider -->
             <div class="hero-banner">
                 <div class="slider-container" id="sliderContainer"></div>
-                <button class="slider-btn prev-btn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
-                <button class="slider-btn next-btn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+                <button class="slider-btn prev-btn" id="prevBtn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn next-btn" id="nextBtn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
                 <div class="slider-dots" id="sliderDots"></div>
             </div>
 
@@ -489,6 +489,8 @@
                 
                 const sliderContainer = document.getElementById('sliderContainer');
                 const dotsContainer = document.getElementById('sliderDots');
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
                 
                 sliderContainer.innerHTML = '';
                 dotsContainer.innerHTML = '';
@@ -496,9 +498,12 @@
 
                 if (totalSlides === 0) {
                     sliderContainer.innerHTML = '<div class="slide"><p style="text-align:center; padding:50px; color:#888;">Belum ada banner tersedia.</p></div>';
+                    if(prevBtn) prevBtn.style.display = 'none';
+                    if(nextBtn) nextBtn.style.display = 'none';
                     return;
                 }
 
+                // Render banner-banner
                 banners.forEach((banner, index) => {
                     const slideDiv = document.createElement('div');
                     slideDiv.classList.add('slide');
@@ -512,7 +517,18 @@
                     dotsContainer.appendChild(dot);
                 });
 
-                startAutoSlide();
+                // LOGIKA PINTAR: Jika banner hanya 1 atau kurang, sembunyikan tombol panah & titik navigasi
+                if (totalSlides <= 1) {
+                    if(prevBtn) prevBtn.style.display = 'none';
+                    if(nextBtn) nextBtn.style.display = 'none';
+                    dotsContainer.style.display = 'none';
+                } else {
+                    if(prevBtn) prevBtn.style.display = 'block';
+                    if(nextBtn) nextBtn.style.display = 'block';
+                    dotsContainer.style.display = 'flex';
+                    startAutoSlide();
+                }
+
             } catch (error) {
                 console.error("Gagal memuat banner:", error);
                 document.getElementById('sliderContainer').innerHTML = '<div class="slide"><p style="text-align:center; padding:50px; color:#ef4444;">Gagal memuat banners.json</p></div>';
@@ -529,7 +545,7 @@
         }
 
         function moveSlide(direction) {
-            if (totalSlides === 0) return;
+            if (totalSlides <= 1) return;
             currentIndex += direction;
             if (currentIndex < 0) {
                 currentIndex = totalSlides - 1;
@@ -545,6 +561,8 @@
         }
 
         function startAutoSlide() {
+            if (totalSlides <= 1) return;
+
             slideInterval = setInterval(() => {
                 moveSlide(1);
             }, 4000);
@@ -552,9 +570,11 @@
             const bannerElement = document.querySelector('.hero-banner');
             bannerElement.addEventListener('mouseenter', () => clearInterval(slideInterval));
             bannerElement.addEventListener('mouseleave', () => {
-                slideInterval = setInterval(() => {
-                    moveSlide(1);
-                }, 4000);
+                if (totalSlides > 1) {
+                    slideInterval = setInterval(() => {
+                        moveSlide(1);
+                    }, 4000);
+                }
             });
         }
 
