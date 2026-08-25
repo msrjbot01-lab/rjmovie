@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* CSS Banner Full 100% Lebar Layar dengan Model Slider */
+        /* CSS Banner Diperbaiki Sesuai Batas Kotak Merah & Responsif Mobile */
         .hero-banner {
             width: 100vw;
             position: relative;
@@ -20,6 +20,7 @@
             margin-bottom: 25px;
             overflow: hidden;
             background: #000;
+            max-height: 380px; /* Batasi tinggi maksimal di komputer sesuai kotak merah */
         }
 
         .slider-container {
@@ -35,9 +36,19 @@
 
         .slide img {
             width: 100%;
-            height: auto;
+            height: 380px; /* Tinggi tetap di komputer */
             display: block;
-            object-fit: cover;
+            object-fit: cover; /* Gambar pas tanpa distorsi/gepeng */
+        }
+
+        /* Penyesuaian khusus Tampilan Mobile (HP) agar tetap proporsional */
+        @media (max-width: 768px) {
+            .hero-banner {
+                max-height: 180px; /* Tinggi lebih kecil di HP */
+            }
+            .slide img {
+                height: 180px; /* Menyesuaikan tinggi gambar di HP */
+            }
         }
 
         /* Tombol Navigasi Slider (Kiri & Kanan) */
@@ -48,9 +59,9 @@
             background-color: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
-            padding: 12px 15px;
+            padding: 10px 14px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1rem;
             z-index: 10;
             transition: background 0.3s;
             border-radius: 4px;
@@ -66,17 +77,17 @@
         /* Titik Indikator Slider di Bawah */
         .slider-dots {
             position: absolute;
-            bottom: 15px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 8px;
+            gap: 6px;
             z-index: 10;
         }
 
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background-color: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             cursor: pointer;
@@ -85,8 +96,8 @@
 
         .dot.active {
             background-color: #ffffff;
-            width: 25px;
-            border-radius: 5px;
+            width: 20px;
+            border-radius: 4px;
         }
 
         /* Menyembunyikan teks sambutan lama */
@@ -249,7 +260,6 @@
             });
         }
 
-
         // --- Logika Film & Pencarian ---
         let allMovies = [];
         let currentFilter = 'Semua';
@@ -319,12 +329,10 @@
         const searchButton = searchBoxContainer ? searchBoxContainer.querySelector('button') : null;
 
         if (searchInput) {
-            // Pencarian otomatis saat diketik
             searchInput.addEventListener('input', () => {
                 applyFilterAndSearch();
             });
 
-            // Pencarian saat tombol Enter ditekan
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     applyFilterAndSearch();
@@ -332,7 +340,6 @@
             });
         }
 
-        // Pencarian saat tombol kaca pembesar diklik
         if (searchButton) {
             searchButton.addEventListener('click', (e) => {
                 e.preventDefault();
