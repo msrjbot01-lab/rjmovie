@@ -35,6 +35,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         /* --- HEADER --- */
@@ -202,11 +204,13 @@
             max-width: 1350px;
             padding: 0 24px;
             margin: 0 auto;
+            box-sizing: border-box;
         }
 
-        /* --- HERO BANNER --- */
+        /* --- HERO BANNER (DIPERBAIKI AGAR TIDAK GESER KANAN-KIRI) --- */
         .hero-banner {
             width: 100%;
+            max-width: 100%;
             position: relative;
             margin-top: 20px;
             margin-bottom: 25px;
@@ -217,6 +221,7 @@
             aspect-ratio: 16 / 5.2;
             max-height: 280px;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            box-sizing: border-box;
         }
 
         .slider-container {
@@ -227,6 +232,7 @@
             width: 100%;
             height: 100%;
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         .slider-container::-webkit-scrollbar {
@@ -235,6 +241,7 @@
 
         .slide {
             min-width: 100%;
+            width: 100%;
             height: 100%;
             scroll-snap-align: start;
             flex-shrink: 0;
@@ -812,49 +819,6 @@
                 return matchTitle && matchCategory;
             });
             renderMovies(result);
-        }
-
-        // --- FUNGSI HELPER UPLOAD KE GITHUB DENGAN PENGECEKAN SHA (FIX ERROR 422) ---
-        async function uploadToGitHubWithSha(token, repo, path, contentBase64, message) {
-            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
-            let sha = null;
-
-            try {
-                const checkRes = await fetch(url, {
-                    headers: { 'Authorization': `token ${token}` }
-                });
-                if (checkRes.ok) {
-                    const fileData = await checkRes.json();
-                    sha = fileData.sha;
-                }
-            } catch (e) {
-                // File belum ada di repository, lewati
-            }
-
-            const bodyData = {
-                message: message,
-                content: contentBase64
-            };
-
-            if (sha) {
-                bodyData.sha = sha; // Wajib ada agar tidak error "sha wasn't supplied" saat menimpa file yang ada
-            }
-
-            const response = await fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(bodyData)
-            });
-
-            if (!response.ok) {
-                const errJson = await response.json();
-                throw new Error(errJson.message || 'Gagal upload file ke GitHub');
-            }
-
-            return await response.json();
         }
 
         loadBanners();
