@@ -413,7 +413,7 @@
 
         /* ========================================================
             RESPONSIVE KHUSUS MOBILE / HP (Maksimal Lebar 768px)
-            Banner Diubah Menjadi Model Kartu Geser (Modern Carousel Card)
+            Diperbaiki agar banner tampil utuh (tidak terpotong)
             ======================================================== */
         @media screen and (max-width: 768px) {
             .header {
@@ -457,13 +457,13 @@
                 padding: 0 15px;
             }
 
-            /* --- BANNER MOBILE: MODEL KARTU GESER KEREN --- */
+            /* --- PERBAIKAN BANNER MOBILE --- */
             .hero-banner {
-                aspect-ratio: 16 / 9; /* Proporsi kartu yang pas di layar HP */
+                aspect-ratio: 16 / 9;
                 height: auto;
-                max-height: 230px;
-                border-radius: 14px;
-                background: #162032;
+                max-height: 210px;
+                border-radius: 12px;
+                background: #0f172a;
                 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 margin-bottom: 22px;
@@ -475,16 +475,17 @@
 
             .slide {
                 height: 100%;
-                padding: 6px; /* Memberikan efek bingkai/frame kartu di dalam */
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .slide img {
                 width: 100%;
                 height: 100%;
                 display: block;
-                object-fit: cover;
-                border-radius: 10px; /* Sudut melengkung di dalam kartu */
-                box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+                object-fit: contain; /* Banner tampil utuh tidak terpotong */
+                border-radius: 8px;
             }
 
             .slider-btn {
