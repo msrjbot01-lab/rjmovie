@@ -382,7 +382,7 @@
 <body>
     <!-- Header Cyberpunk -->
     <header class="header">
-        <div class="admin-brand"><i class="fas fa-terminal"></i> RJMOVIE // CONTROL CENTER</div>
+        <div class="admin-brand"><i class="fas fa-terminal"></i> RJMOVIE MASTER </div>
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> Beranda Website</a></li>
         </ul>
@@ -848,8 +848,9 @@
             const desktopFile = desktopFileInput.files[0];
             const mobileFile = mobileFileInput.files[0];
 
+            // FIX: Menggunakan timestamp terpisah untuk mencegah bentrok nama file statis
             const desktopFileName = `banner-desk-${Date.now()}-${desktopFile.name.replace(/\s+/g, '-')}`;
-            const mobileFileName = `banner-mob-${Date.now()}-${mobileFile.name.replace(/\s+/g, '-')}`;
+            const mobileFileName = `banner-mob-${Date.now() + 1}-${mobileFile.name.replace(/\s+/g, '-')}`;
 
             const submitBtn = document.getElementById('submitBannerBtn');
             submitBtn.disabled = true;
@@ -870,7 +871,7 @@
                     body: JSON.stringify({
                         fileName: desktopFileName,
                         fileContent: desktopContentOnly,
-                        jsonPath: '', // Kosongkan dulu agar hanya upload file gambar
+                        jsonPath: '', // Kosongkan agar hanya upload file gambar
                         commitMessage: `Upload banner desktop: ${title}`
                     })
                 });
@@ -898,7 +899,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        fileName: 'dummy.txt', // Diabaikan worker karena jsonPath terisi
+                        fileName: 'dummy.txt', 
                         fileContent: '',
                         jsonPath: 'banners.json',
                         jsonData: newBanner,
