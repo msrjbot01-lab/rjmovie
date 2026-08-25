@@ -151,10 +151,10 @@
             position: relative;
             margin-bottom: 30px;
             border-radius: 16px;
-            background: #000;
+            background: transparent; /* Diubah agar tidak ada kotak hitam latar belakang */
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
             overflow: hidden;
-            aspect-ratio: 21 / 9; /* Rasio Desktop */
+            aspect-ratio: 21 / 9; 
             max-height: 480px;
         }
 
@@ -178,15 +178,19 @@
             height: 100%;
             scroll-snap-align: start;
             flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Pengaturan Tampilan Gambar Desktop vs Mobile */
+        /* Perbaikan Tampilan Gambar agar tidak terpotong & pas di frame */
         .slide img {
             width: 100%;
             height: 100%;
             display: block;
-            object-fit: cover;
+            object-fit: contain; /* Mengubah dari cover ke contain agar gambar tampil utuh */
             object-position: center;
+            background: transparent;
         }
 
         /* Kontrol Gambar via CSS */
@@ -448,12 +452,13 @@
                 padding: 0 15px;
             }
 
-            /* --- BANNER MOBILE (Rasio 16:9 Pas untuk HP) --- */
+            /* --- BANNER MOBILE --- */
             .hero-banner {
                 aspect-ratio: 16 / 9;
-                max-height: 220px;
+                max-height: 200px;
                 border-radius: 12px;
                 margin-bottom: 22px;
+                background: transparent;
             }
 
             /* Beralih menampilkan gambar khusus HP dan menyembunyikan gambar Desktop */
@@ -461,8 +466,9 @@
             .img-mobile { display: block; }
 
             .slide img {
-                object-fit: cover;
+                object-fit: contain; /* Memastikan gambar mobile tampil utuh tanpa terpotong */
                 border-radius: 12px;
+                background: transparent;
             }
 
             .filter-section {
@@ -571,9 +577,8 @@
                     const slideDiv = document.createElement('div');
                     slideDiv.classList.add('slide');
                     
-                    // Menggunakan 2 gambar berbeda (Desktop & Mobile)
                     const desktopImg = banner.image || '';
-                    const mobileImg = banner.mobileImage || desktopImg; // Fallback ke desktop jika mobileImage kosong
+                    const mobileImg = banner.mobileImage || desktopImg; 
                     
                     slideDiv.innerHTML = `
                         <img src="${desktopImg}" alt="${banner.title || 'Banner'}" class="img-desktop">
