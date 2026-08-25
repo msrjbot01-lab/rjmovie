@@ -11,6 +11,197 @@
     <!-- Pustaka CSS Video.js -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #0b0f19;
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-sizing: border-box;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .page-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER (DISAMAKAN DENGAN HOME) --- */
+        .header {
+            width: 100%;
+            background-color: #0f172a;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 12px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .site-logo {
+            height: 34px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #3b82f6;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .mobile-search-btn {
+            display: none;
+            background: #162032;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #162032;
+            border-radius: 50px;
+            padding: 4px 4px 4px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            width: 100%;
+            max-width: 280px;
+            min-width: 200px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            outline: none;
+            font-size: 0.9rem;
+            width: 100%;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .search-box button {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border: none;
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* MODAL SEARCH MOBILE */
+        .mobile-search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #0f172a;
+            padding: 12px 16px;
+            z-index: 1100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-search-modal.active {
+            display: flex;
+        }
+
+        .mobile-search-modal input {
+            flex: 1;
+            background: #162032;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 9px 16px;
+            border-radius: 50px;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .mobile-search-close {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        /* --- VIDEO PLAYER STYLING --- */
         .video-container {
             position: relative;
             width: 100%;
@@ -18,14 +209,14 @@
             border-radius: 8px;
             overflow: hidden;
         }
-        /* Mengatur ukuran pemutar agar pas 16:9 */
+        
         .video-js {
             width: 100% !important;
             height: auto !important;
             aspect-ratio: 16 / 9;
             border-radius: 8px;
         }
-        /* Kustomisasi Tombol Play Besar di Tengah Layar */
+
         .video-js .vjs-big-play-button {
             top: 50% !important;
             left: 50% !important;
@@ -38,109 +229,212 @@
             border: none !important;
             font-size: 2.5em !important;
         }
+        
         .video-js .vjs-big-play-button:hover {
             background-color: #3b82f6 !important;
+        }
+
+        /* Responsive Query khusus Header Mobile */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 10px 14px;
+            }
+
+            .site-logo {
+                height: 28px;
+            }
+
+            .search-box {
+                display: none !important;
+            }
+
+            .mobile-search-btn {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background: #0f172a;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 14px 18px;
+                gap: 14px;
+                align-items: flex-start;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                width: 100%;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header class="header">
-        <div class="logo-container">
-            <a href="index.html">
-                <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
-            </a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
-            <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
-            <li><a href="genre.html"><i class="fas fa-tags"></i> Genre</a></li>
-            <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
-        </ul>
-        <div class="search-box">
-            <input type="text" placeholder="Cari film...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-    </header>
-
-    <!-- Konten Detail & Streaming -->
-    <main class="main-container watch-container">
-        
-        <!-- Pemutar Video dengan Video.js -->
-        <div class="player-wrapper">
-            <div class="video-container">
-                <video
-                    id="rjPlayer"
-                    class="video-js vjs-big-play-centered"
-                    controls
-                    preload="auto"
-                    playsinline>
-                    <p class="vjs-no-js">
-                        Peramban Anda harus mengaktifkan JavaScript untuk melihat video ini.
-                    </p>
-                </video>
+    <div class="page-content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
+                </a>
             </div>
             
-            <!-- Tombol Aksi Bawah Player -->
-            <div class="player-actions">
-                <div class="view-count"><i class="fas fa-eye"></i> 814,497 views</div>
-                <div class="action-buttons">
-                    <a id="downloadBtn" href="#" target="_blank" class="btn-action" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"><i class="fas fa-download"></i> DOWNLOAD</a>
-                    <button class="btn-action"><i class="fas fa-closed-captioning"></i> SUB INDO</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
+                <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
+                <li><a href="genre.html"><i class="fas fa-tags"></i> Genre</a></li>
+                <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
+            </ul>
+
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Cari film...">
+                    <button><i class="fas fa-search"></i></button>
                 </div>
+                <button class="mobile-search-btn" id="mobileSearchBtn" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
+        </header>
+
+        <!-- Modal Search Mobile -->
+        <div class="mobile-search-modal" id="mobileSearchModal">
+            <input type="text" id="mobileSearchInput" placeholder="Cari film...">
+            <button class="mobile-search-close" id="mobileSearchClose"><i class="fas fa-times"></i></button>
         </div>
 
-        <!-- Informasi & Sinopsis Film -->
-        <div class="movie-detail-box">
-            <h1 id="movieTitleDisplay" class="detail-title">Memuat Judul...</h1>
-            <div class="detail-badges">
-                <span class="badge hd">HD</span>
-                <span class="badge">Indonesia</span>
-                <span id="movieGenreDisplay" class="badge genre-tag">-</span>
-            </div>
-
-            <div class="detail-grid">
-                <div class="detail-poster-col">
-                    <img id="moviePosterDisplay" src="" alt="Poster Film" class="detail-poster-img">
-                    <div class="rating-box-large">
-                        <i class="fas fa-star text-yellow"></i> <strong id="movieRatingDisplay">0.0</strong> / 5
-                    </div>
+        <!-- Konten Detail & Streaming -->
+        <main class="main-container watch-container" style="width: 100%; max-width: 1100px; padding: 20px 16px;">
+            
+            <!-- Pemutar Video dengan Video.js -->
+            <div class="player-wrapper">
+                <div class="video-container">
+                    <video
+                        id="rjPlayer"
+                        class="video-js vjs-big-play-centered"
+                        controls
+                        preload="auto"
+                        playsinline>
+                        <p class="vjs-no-js">
+                            Peramban Anda harus mengaktifkan JavaScript untuk melihat video ini.
+                        </p>
+                    </video>
                 </div>
-
-                <div class="detail-info-col">
-                    <h3>Sinopsis Resmi</h3>
-                    <p id="movieSynopsis" class="synopsis-text">Memuat sinopsis...</p>
-
-                    <div class="cast-info">
-                        <h4><i class="fas fa-users"></i> Pemeran Utama / Cast:</h4>
-                        <p id="movieCastDisplay">-</p>
-                    </div>
-
-                    <div class="movie-metadata-grid">
-                        <div><strong>Rilis:</strong> <span id="movieReleaseDisplay">-</span></div>
-                        <div><strong>Negara:</strong> <span id="movieCountryDisplay">-</span></div>
-                        <div><strong>Sutradara:</strong> <span id="movieDirectorDisplay">-</span></div>
+                
+                <!-- Tombol Aksi Bawah Player -->
+                <div class="player-actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; flex-wrap: wrap; gap: 10px;">
+                    <div class="view-count" style="color: #94a3b8; font-size: 0.9rem;"><i class="fas fa-eye"></i> 814,497 views</div>
+                    <div class="action-buttons" style="display: flex; gap: 10px;">
+                        <a id="downloadBtn" href="#" target="_blank" class="btn-action" style="background: #162032; color: #fff; padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 600;"><i class="fas fa-download" style="margin-right: 6px;"></i> DOWNLOAD</a>
+                        <button class="btn-action" style="background: #162032; color: #fff; padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 600; cursor: pointer;"><i class="fas fa-closed-captioning" style="margin-right: 6px;"></i> SUB INDO</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </main>
+            <!-- Informasi & Sinopsis Film -->
+            <div class="movie-detail-box" style="margin-top: 25px; background: #162032; padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <h1 id="movieTitleDisplay" class="detail-title" style="font-size: 1.3rem; margin-bottom: 10px;">Memuat Judul...</h1>
+                <div class="detail-badges" style="display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <span class="badge hd" style="background: #3b82f6; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">HD</span>
+                    <span class="badge" style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">Indonesia</span>
+                    <span id="movieGenreDisplay" class="badge genre-tag" style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">-</span>
+                </div>
+
+                <div class="detail-grid" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="detail-poster-col" style="width: 140px; flex-shrink: 0;">
+                        <img id="moviePosterDisplay" src="" alt="Poster Film" class="detail-poster-img" style="width: 100%; border-radius: 8px; aspect-ratio: 2/3; object-fit: cover;">
+                        <div class="rating-box-large" style="margin-top: 8px; text-align: center; font-size: 0.85rem;">
+                            <i class="fas fa-star" style="color: #fbbf24;"></i> <strong id="movieRatingDisplay">0.0</strong> / 5
+                        </div>
+                    </div>
+
+                    <div class="detail-info-col" style="flex: 1; min-width: 250px;">
+                        <h3 style="font-size: 1rem; margin-bottom: 6px;">Sinopsis Resmi</h3>
+                        <p id="movieSynopsis" class="synopsis-text" style="color: #94a3b8; font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">Memuat sinopsis...</p>
+
+                        <div class="cast-info" style="margin-bottom: 12px;">
+                            <h4 style="font-size: 0.9rem; margin-bottom: 4px;"><i class="fas fa-users"></i> Pemeran Utama / Cast:</h4>
+                            <p id="movieCastDisplay" style="color: #94a3b8; font-size: 0.85rem; margin: 0;">-</p>
+                        </div>
+
+                        <div class="movie-metadata-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; font-size: 0.85rem; color: #cbd5e1;">
+                            <div><strong>Rilis:</strong> <span id="movieReleaseDisplay">-</span></div>
+                            <div><strong>Negara:</strong> <span id="movieCountryDisplay">-</span></div>
+                            <div><strong>Sutradara:</strong> <span id="movieDirectorDisplay">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
-            <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
+            <p style="margin-top: 4px;">&copy; 2026 RJMOVIE. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- JavaScript Video.js & Logika Data Film -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script>
+        // Logika Tombol Menu Hamburger & Mobile Search Modal
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const icon = menuToggle.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+        const mobileSearchModal = document.getElementById('mobileSearchModal');
+        const mobileSearchClose = document.getElementById('mobileSearchClose');
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+
+        if (mobileSearchBtn && mobileSearchModal) {
+            mobileSearchBtn.addEventListener('click', () => {
+                mobileSearchModal.classList.add('active');
+                if(mobileSearchInput) mobileSearchInput.focus();
+            });
+        }
+
+        if (mobileSearchClose && mobileSearchModal) {
+            mobileSearchClose.addEventListener('click', () => {
+                mobileSearchModal.classList.remove('active');
+            });
+        }
+
         // Inisialisasi Player Video.js
         var player = videojs('rjPlayer');
 
