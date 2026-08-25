@@ -36,10 +36,9 @@
 
         .slide img {
             width: 100%;
-            height: 380px;
+            height: 380px; /* Tinggi tetap di komputer */
             display: block;
-            object-fit: contain; /* Mengubah dari cover ke contain agar gambar tampil utuh */
-            background-color: #000; /* Memberikan latar belakang hitam jika ada sisa ruang kosong di samping */
+            object-fit: cover; /* Gambar pas tanpa distorsi/gepeng */
         }
 
         /* Penyesuaian khusus Tampilan Mobile (HP) agar tetap proporsional */
