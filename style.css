@@ -78,10 +78,35 @@ body {
 }
 .search-box button:hover { background: #2563eb; }
 
+/* Hero Banner */
+.hero-banner {
+    background: linear-gradient(rgba(11, 15, 25, 0.8), rgba(7, 9, 14, 0.95)), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 50px 20px;
+    text-align: center;
+    border-bottom: 1px solid #1f2937;
+    margin-bottom: 20px;
+}
+.hero-content h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+}
+.hero-content p {
+    font-size: 14px;
+    color: #94a3b8;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* Filter Section */
 .filter-section {
-    max-width: 1350px;
+    max-width: 1200px;
     margin: 0 auto 25px auto;
+    padding: 0 15px;
     display: flex;
     gap: 10px;
     overflow-x: auto;
@@ -107,8 +132,9 @@ body {
 
 /* Main Container & Grid Film */
 .main-container {
-    max-width: 1350px;
+    max-width: 1200px;
     margin: 0 auto 40px auto;
+    padding: 0 15px;
 }
 .section-title h2 {
     font-size: 18px;
@@ -145,7 +171,7 @@ body {
 .movie-poster-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 2/3;
+    height: 270px;
     background: #000;
     overflow: hidden;
 }
@@ -197,6 +223,19 @@ body {
 }
 .quality-tag.cam { background-color: #ef4444; }
 
+.play-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.movie-poster-container:hover .play-overlay { opacity: 1; }
+.play-icon { font-size: 48px; color: #3b82f6; filter: drop-shadow(0 0 10px rgba(59,130,246,0.8)); }
+
 .movie-info { padding: 12px; }
 .movie-title {
     font-size: 14px;
@@ -208,6 +247,118 @@ body {
     text-overflow: ellipsis;
 }
 .movie-meta { font-size: 12px; color: #64748b; }
+
+/* Halaman Watch / Streaming Styles */
+.watch-container { padding-top: 25px; }
+.video-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #020617;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+.video-placeholder { text-align: center; color: #64748b; }
+.video-placeholder p { margin-top: 10px; font-size: 14px; }
+
+.player-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111827;
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+    border: 1px solid #1f2937;
+}
+.view-count { font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 6px; }
+.action-buttons { display: flex; gap: 10px; }
+.btn-action {
+    background: #1f2937;
+    color: #fff;
+    border: 1px solid #374151;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+.btn-action:hover { background: #3b82f6; border-color: #3b82f6; }
+
+/* Kotak Detail & Sinopsis */
+.movie-detail-box {
+    background: #111827;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 20px;
+    border: 1px solid #1f2937;
+}
+.detail-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+.detail-badges { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.badge {
+    background: #1f2937;
+    color: #cbd5e1;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+}
+.badge.hd { background: #3b82f6; color: white; }
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 25px;
+}
+.detail-poster-img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+.rating-box-large {
+    margin-top: 12px;
+    background: #1a2234;
+    padding: 8px;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 13px;
+    border: 1px solid #2d3748;
+}
+.text-yellow { color: #eab308; }
+
+.detail-info-col h3 { font-size: 16px; color: #f8fafc; margin-bottom: 8px; font-weight: 700; }
+.synopsis-text { font-size: 14px; color: #94a3b8; line-height: 1.6; margin-bottom: 20px; }
+
+.cast-info {
+    background: #161e2e;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 3px solid #3b82f6;
+}
+.cast-info h4 { font-size: 13px; color: #e2e8f0; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.cast-info p { font-size: 13px; color: #94a3b8; }
+
+.movie-metadata-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    font-size: 13px;
+    color: #94a3b8;
+    background: #161e2e;
+    padding: 15px;
+    border-radius: 8px;
+}
+.movie-metadata-grid strong { color: #e2e8f0; }
 
 /* Footer */
 .footer {
@@ -222,7 +373,10 @@ body {
 
 /* Responsif Mobile */
 @media (max-width: 768px) {
-    .header { padding: 12px 15px; }
-    .nav-links { display: none; }
-    .movie-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .header { padding: 12px 15px; flex-direction: column; gap: 10px; }
+    .nav-links { display: none; } /* Sembunyikan navigasi berlebih di HP */
+    .detail-grid { grid-template-columns: 1fr; }
+    .detail-poster-img { max-width: 180px; margin: 0 auto; display: block; }
+    .player-actions { flex-direction: column; gap: 12px; align-items: stretch; text-align: center; }
+    .action-buttons { justify-content: center; }
 }
