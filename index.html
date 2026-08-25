@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- KUNCI ANTI GESER (MENGHILANGKAN SCROLL SAMPING) --- */
+        /* --- KUNCI ANTI GESER & STICKY FOOTER --- * /
         html, body {
             width: 100%;
+            height: 100%;
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Mencegah halaman bisa digeser ke samping */
+            overflow-x: hidden; /* Mencegah geser samping */
             background-color: #0b0f19;
             color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -23,6 +24,17 @@
 
         *, *:before, *:after {
             box-sizing: inherit;
+        }
+
+        /* Struktur Utama agar Footer selalu di bawah mentok */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .page-content-wrapper {
+            flex: 1;
         }
 
         /* --- HEADER FULL-WIDTH (PAS 100%) --- */
@@ -75,27 +87,28 @@
             color: #3b82f6;
         }
 
-        /* Kotak Pencarian Profesional */
+        /* --- DESAIN SEARCH BAR BARU (KEREN & BULAT BIRU DENGAN ANIMASI) --- */
         .search-box {
             display: flex;
+            align-items: center;
             background: #162032;
-            border-radius: 8px;
-            overflow: hidden;
+            border-radius: 50px; /* Bentuk Kapsul */
+            padding: 4px 4px 4px 16px;
             border: 1px solid rgba(255, 255, 255, 0.12);
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            width: 270px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 280px;
         }
 
         .search-box:focus-within {
             border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+            width: 320px; /* Sedikit memanjang halus saat diklik */
         }
 
         .search-box input {
             background: transparent;
             border: none;
-            padding: 10px 16px;
             color: #fff;
             outline: none;
             font-size: 0.9rem;
@@ -108,19 +121,29 @@
         }
 
         .search-box button {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             border: none;
             color: white;
-            padding: 0 18px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%; /* Tombol bulat sempurna */
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+            flex-shrink: 0;
         }
 
         .search-box button:hover {
-            background: #2563eb;
+            transform: scale(1.1) rotate(15deg); /* Efek animasi putar & membesar saat di-hover */
+            background: linear-gradient(135deg, #2563eb, #1e40af;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.6);
+        }
+
+        .search-box button:active {
+            transform: scale(0.95);
         }
 
         /* --- CONTAINER UTAMA 100% --- */
@@ -129,51 +152,56 @@
             padding: 0 35px;
         }
 
-        /* --- HERO BANNER FULL LAYAR (PAS SAMPAI UJUNG) --- */
+        /* --- HERO BANNER (UKURAN FIX 1200x450px) --- */
         .hero-banner {
             width: 100%;
             position: relative;
-            margin-left: 0;
-            margin-right: 0;
             margin-bottom: 35px;
             overflow: hidden;
             background: #000;
-            border-radius: 8px;
-            max-height: 440px;
+            border-radius: 12px;
+            aspect-ratio: 1200 / 450; /* Menjaga rasio fix */
+            max-height: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .slider-container {
             display: flex;
             transition: transform 0.5s ease-in-out;
             width: 100%;
+            height: 100%;
         }
 
         .slide {
             min-width: 100%;
+            height: 100%;
         }
 
         .slide img {
             width: 100%;
-            height: 440px;
+            height: 100%;
             display: block;
-            object-fit: cover;
+            object-fit: cover; /* Memastikan gambar pas tanpa gepeng */
         }
 
         .slider-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(11, 15, 25, 0.7);
             color: white;
-            border: none;
+            border: 1px solid rgba(255,255,255,0.1);
             padding: 14px 18px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             z-index: 10;
-            transition: background 0.3s;
-            border-radius: 6px;
+            transition: all 0.3s;
+            border-radius: 8px;
         }
-        .slider-btn:hover { background-color: #3b82f6; }
+        .slider-btn:hover { 
+            background-color: #3b82f6; 
+            border-color: #3b82f6;
+        }
         .prev-btn { left: 20px; }
         .next-btn { right: 20px; }
 
@@ -375,73 +403,76 @@
             margin: 0;
         }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER STICKY (SELALU DI BAWAH MENTOK) --- */
         .footer {
             width: 100%;
             background-color: #0f172a;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 35px 35px;
-            margin-top: 70px;
+            padding: 25px 35px;
             color: #94a3b8;
             font-size: 0.88rem;
             text-align: center;
+            margin-top: auto; /* Memastikan footer selalu turun ke paling bawah */
         }
     </style>
 </head>
 <body>
 
-    <!-- Header & Navbar -->
-    <header class="header">
-        <div class="logo-container">
-            <a href="index.html">
-                <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
-            </a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
-            <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
-            <li><a href="genre.html"><i class="fas fa-tags"></i> Genre</a></li>
-            <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
-        </ul>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Cari film favorit...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-    </header>
-
-    <div class="wrapper-full">
-        <!-- Hero Banner Slider -->
-        <div class="hero-banner">
-            <div class="slider-container" id="sliderContainer"></div>
-            <button class="slider-btn prev-btn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
-            <button class="slider-btn next-btn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
-            <div class="slider-dots" id="sliderDots"></div>
-        </div>
-
-        <!-- Filter Section -->
-        <div class="filter-section" id="filterContainer">
-            <button class="filter-btn active" data-filter="Semua">Semua</button>
-            <button class="filter-btn" data-filter="Terbaru">Terbaru</button>
-            <button class="filter-btn" data-filter="Action">Action</button>
-            <button class="filter-btn" data-filter="Horror">Horror</button>
-            <button class="filter-btn" data-filter="Comedy">Comedy</button>
-            <button class="filter-btn" data-filter="Sci-Fi">Sci-Fi</button>
-        </div>
-
-        <!-- Konten Utama (Grid Film) -->
-        <main class="main-container">
-            <div class="section-title">
-                <h2><i class="fas fa-fire" style="color: #3b82f6;"></i> Sedang Trending</h2>
+    <!-- Pembungkus Konten Utama -->
+    <div class="page-content-wrapper">
+        <!-- Header & Navbar -->
+        <header class="header">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
+                </a>
             </div>
-            <div id="movieGrid" class="movie-grid"></div>
-        </main>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
+                <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
+                <li><a href="genre.html"><i class="fas fa-tags"></i> Genre</a></li>
+                <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
+            </ul>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Cari film favorit...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </header>
+
+        <div class="wrapper-full">
+            <!-- Hero Banner Slider -->
+            <div class="hero-banner">
+                <div class="slider-container" id="sliderContainer"></div>
+                <button class="slider-btn prev-btn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn next-btn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+                <div class="slider-dots" id="sliderDots"></div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section" id="filterContainer">
+                <button class="filter-btn active" data-filter="Semua">Semua</button>
+                <button class="filter-btn" data-filter="Terbaru">Terbaru</button>
+                <button class="filter-btn" data-filter="Action">Action</button>
+                <button class="filter-btn" data-filter="Horror">Horror</button>
+                <button class="filter-btn" data-filter="Comedy">Comedy</button>
+                <button class="filter-btn" data-filter="Sci-Fi">Sci-Fi</button>
+            </div>
+
+            <!-- Konten Utama (Grid Film) -->
+            <main class="main-container">
+                <div class="section-title">
+                    <h2><i class="fas fa-fire" style="color: #3b82f6;"></i> Sedang Trending</h2>
+                </div>
+                <div id="movieGrid" class="movie-grid"></div>
+            </main>
+        </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer Sticky di Bawah -->
     <footer class="footer">
         <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
-        <p style="margin-top: 8px;">&copy; 2026 RJMOVIE. All rights reserved.</p>
+        <p style="margin-top: 6px;">&copy; 2026 RJMOVIE. All rights reserved.</p>
     </footer>
 
     <!-- Script JavaScript -->
