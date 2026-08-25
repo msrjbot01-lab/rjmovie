@@ -37,7 +37,7 @@
             flex: 1;
         }
 
-        /* --- HEADER FULL-WIDTH (PAS 100%) --- */
+        /* --- HEADER DESKTOP --- */
         .header {
             width: 100%;
             background-color: #0f172a;
@@ -57,16 +57,16 @@
         }
 
         .site-logo {
-            height: 42px;
+            height: 40px;
             width: auto;
             display: block;
         }
 
-        /* Navigasi */
+        /* Navigasi Desktop */
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 32px;
+            gap: 28px;
             align-items: center;
             margin: 0;
             padding: 0;
@@ -97,13 +97,13 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            width: 280px;
+            width: 270px;
         }
 
         .search-box:focus-within {
             border-color: #3b82f6;
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
-            width: 320px;
+            width: 310px;
         }
 
         .search-box input {
@@ -142,11 +142,7 @@
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.6);
         }
 
-        .search-box button:active {
-            transform: scale(0.95);
-        }
-
-        /* --- CONTAINER UTAMA 100% --- */
+        /* --- CONTAINER UTAMA --- */
         .wrapper-full {
             width: 100%;
             padding: 0 35px;
@@ -156,11 +152,11 @@
         .hero-banner {
             width: 100%;
             position: relative;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             overflow: hidden;
             background: #000;
             border-radius: 12px;
-            aspect-ratio: 1200 / 450; /* Kunci rasio tampilan fix */
+            aspect-ratio: 1200 / 450;
             max-height: 450px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
@@ -181,7 +177,7 @@
             width: 100%;
             height: 100%;
             display: block;
-            object-fit: cover; /* Memastikan gambar pas tanpa gepeng */
+            object-fit: cover;
         }
 
         .slider-btn {
@@ -191,9 +187,9 @@
             background-color: rgba(11, 15, 25, 0.7);
             color: white;
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 14px 18px;
+            padding: 12px 16px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             z-index: 10;
             transition: all 0.3s;
             border-radius: 8px;
@@ -202,12 +198,12 @@
             background-color: #3b82f6; 
             border-color: #3b82f6;
         }
-        .prev-btn { left: 20px; }
-        .next-btn { right: 20px; }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
 
         .slider-dots {
             position: absolute;
-            bottom: 20px;
+            bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -215,8 +211,8 @@
             z-index: 10;
         }
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background-color: rgba(255, 255, 255, 0.4);
             border-radius: 50%;
             cursor: pointer;
@@ -224,28 +220,29 @@
         }
         .dot.active {
             background-color: #3b82f6;
-            width: 28px;
-            border-radius: 5px;
+            width: 24px;
+            border-radius: 4px;
         }
 
         /* --- FILTER SECTION --- */
         .filter-section {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
 
         .filter-btn {
             background: #162032;
             color: #94a3b8;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 11px 22px;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .filter-btn:hover {
@@ -263,23 +260,23 @@
 
         /* --- KONTEN UTAMA (GRID FILM) --- */
         .main-container {
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             width: 100%;
         }
 
         .section-title h2 {
-            font-size: 1.4rem;
-            margin-bottom: 22px;
+            font-size: 1.3rem;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-weight: 700;
         }
 
         .movie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 16px;
             width: 100%;
         }
 
@@ -292,8 +289,8 @@
         }
 
         .movie-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
             border-color: rgba(59, 130, 246, 0.3);
         }
 
@@ -324,39 +321,39 @@
 
         .overlay-top {
             position: absolute;
-            top: 12px;
-            left: 12px;
-            right: 12px;
+            top: 10px;
+            left: 10px;
+            right: 10px;
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             z-index: 2;
         }
 
         .rating-tag {
             background: rgba(11, 15, 25, 0.85);
             color: #fbbf24;
-            padding: 4px 9px;
-            border-radius: 5px;
+            padding: 3px 7px;
+            border-radius: 4px;
             font-weight: 700;
         }
 
         .duration-tag {
             background: rgba(11, 15, 25, 0.85);
             color: #fff;
-            padding: 4px 9px;
-            border-radius: 5px;
+            padding: 3px 7px;
+            border-radius: 4px;
         }
 
         .quality-tag {
             position: absolute;
-            bottom: 12px;
-            left: 12px;
+            bottom: 10px;
+            left: 10px;
             background: #3b82f6;
             color: white;
-            font-size: 0.7rem;
-            padding: 4px 9px;
-            border-radius: 5px;
+            font-size: 0.65rem;
+            padding: 3px 7px;
+            border-radius: 4px;
             font-weight: 700;
             z-index: 2;
         }
@@ -374,7 +371,7 @@
         }
 
         .play-icon {
-            font-size: 3.8rem;
+            font-size: 3.2rem;
             color: #3b82f6;
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
         }
@@ -384,13 +381,13 @@
         }
 
         .movie-info {
-            padding: 15px;
+            padding: 12px;
         }
 
         .movie-title {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            margin: 0 0 6px 0;
+            margin: 0 0 4px 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -398,21 +395,106 @@
         }
 
         .movie-meta {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #94a3b8;
             margin: 0;
         }
 
-        /* --- FOOTER STICKY (SELALU DI BAWAH MENTOK) --- */
+        /* --- FOOTER STICKY --- */
         .footer {
             width: 100%;
             background-color: #0f172a;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 25px 35px;
+            padding: 22px 20px;
             color: #94a3b8;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
             text-align: center;
             margin-top: auto;
+        }
+
+
+        /* ========================================================
+           RESPONSIVE KHUSUS MOBILE / HP (Maksimal Lebar 768px)
+           ======================================================== */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 12px 15px;
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .logo-container {
+                justify-content: center;
+            }
+
+            .site-logo {
+                height: 35px;
+            }
+
+            /* Navigasi HP (Dirapikan & Bisa Digeser Horizontal) */
+            .nav-links {
+                display: flex;
+                overflow-x: auto;
+                gap: 18px;
+                padding-bottom: 4px;
+                justify-content: flex-start;
+                scrollbar-width: none; /* Hilangkan scrollbar */
+            }
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-links a {
+                font-size: 0.88rem;
+                white-space: nowrap;
+            }
+
+            /* Kotak Pencarian Pas Lebar HP */
+            .search-box {
+                width: 100% !important;
+                max-width: 100%;
+            }
+
+            .search-box:focus-within {
+                width: 100% !important;
+            }
+
+            /* Padding Konten Utama Lebih Lebar & Pas di HP */
+            .wrapper-full {
+                padding: 0 15px;
+            }
+
+            /* Filter Kategori Menjadi Horizontal Scroll (Seperti Aplikasi Modern) */
+            .filter-section {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 8px;
+                padding-bottom: 6px;
+                margin-bottom: 25px;
+                scrollbar-width: none;
+            }
+            .filter-section::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 0.82rem;
+                flex-shrink: 0;
+            }
+
+            /* Grid Film di HP (2 Kolom Pas) */
+            .movie-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .slider-btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -472,7 +554,7 @@
     <!-- Footer Sticky di Bawah -->
     <footer class="footer">
         <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
-        <p style="margin-top: 6px;">&copy; 2026 RJMOVIE. All rights reserved.</p>
+        <p style="margin-top: 5px;">&copy; 2026 RJMOVIE. All rights reserved.</p>
     </footer>
 
     <!-- Script JavaScript -->
@@ -517,7 +599,7 @@
                     dotsContainer.appendChild(dot);
                 });
 
-                // LOGIKA PINTAR: Jika banner hanya 1 atau kurang, sembunyikan tombol panah & titik navigasi
+                // Jika banner hanya 1 atau kurang, sembunyikan navigasi slider
                 if (totalSlides <= 1) {
                     if(prevBtn) prevBtn.style.display = 'none';
                     if(nextBtn) nextBtn.style.display = 'none';
