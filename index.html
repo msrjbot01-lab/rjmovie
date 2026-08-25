@@ -151,7 +151,7 @@
             position: relative;
             margin-bottom: 30px;
             border-radius: 16px;
-            background: transparent; /* Diubah agar tidak ada kotak hitam latar belakang */
+            background: transparent;
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
             overflow: hidden;
             aspect-ratio: 21 / 9; 
@@ -183,17 +183,15 @@
             align-items: center;
         }
 
-        /* Perbaikan Tampilan Gambar agar tidak terpotong & pas di frame */
         .slide img {
             width: 100%;
             height: 100%;
             display: block;
-            object-fit: contain; /* Mengubah dari cover ke contain agar gambar tampil utuh */
+            object-fit: contain;
             object-position: center;
             background: transparent;
         }
 
-        /* Kontrol Gambar via CSS */
         .img-desktop { display: block; }
         .img-mobile { display: none; }
 
@@ -452,7 +450,6 @@
                 padding: 0 15px;
             }
 
-            /* --- BANNER MOBILE --- */
             .hero-banner {
                 aspect-ratio: 16 / 9;
                 max-height: 200px;
@@ -461,12 +458,11 @@
                 background: transparent;
             }
 
-            /* Beralih menampilkan gambar khusus HP dan menyembunyikan gambar Desktop */
             .img-desktop { display: none; }
             .img-mobile { display: block; }
 
             .slide img {
-                object-fit: contain; /* Memastikan gambar mobile tampil utuh tanpa terpotong */
+                object-fit: contain;
                 border-radius: 12px;
                 background: transparent;
             }
@@ -515,12 +511,12 @@
             </ul>
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Cari film favorit...">
-                <button><i class="fas fa-search"></i></button>
+                <button type="button"><i class="fas fa-search"></i></button>
             </div>
         </header>
 
         <div class="wrapper-full">
-            <!-- Hero Banner Swipeable (Mendukung Gambar Berbeda Desktop & Mobile) -->
+            <!-- Hero Banner Swipeable -->
             <div class="hero-banner">
                 <div class="slider-container" id="sliderContainer"></div>
                 <div class="slider-dots" id="sliderDots"></div>
@@ -564,6 +560,8 @@
                 const sliderContainer = document.getElementById('sliderContainer');
                 const dotsContainer = document.getElementById('sliderDots');
                 
+                if (!sliderContainer || !dotsContainer) return;
+
                 sliderContainer.innerHTML = '';
                 dotsContainer.innerHTML = '';
                 totalSlides = banners.length;
@@ -600,13 +598,17 @@
 
             } catch (error) {
                 console.error("Gagal memuat banner:", error);
-                document.getElementById('sliderContainer').innerHTML = '<div class="slide"><p style="text-align:center; padding:50px; color:#ef4444;">Gagal memuat banners.json</p></div>';
+                const sliderContainer = document.getElementById('sliderContainer');
+                if (sliderContainer) {
+                    sliderContainer.innerHTML = '<div class="slide"><p style="text-align:center; padding:50px; color:#ef4444;">Gagal memuat banners.json</p></div>';
+                }
             }
         }
 
         function setupAutoAndScrollListener() {
             const sliderContainer = document.getElementById('sliderContainer');
             const dots = document.querySelectorAll('.dot');
+            if (!sliderContainer) return;
             
             sliderContainer.addEventListener('scroll', () => {
                 const index = Math.round(sliderContainer.scrollLeft / sliderContainer.clientWidth);
@@ -617,6 +619,7 @@
 
             let currentIndex = 0;
             slideInterval = setInterval(() => {
+                if (totalSlides === 0) return;
                 currentIndex = (currentIndex + 1) % totalSlides;
                 sliderContainer.scrollTo({
                     left: currentIndex * sliderContainer.clientWidth,
@@ -625,8 +628,10 @@
             }, 4000);
 
             const bannerElement = document.querySelector('.hero-banner');
-            bannerElement.addEventListener('mouseenter', () => clearInterval(slideInterval));
-            bannerElement.addEventListener('touchstart', () => clearInterval(slideInterval));
+            if (bannerElement) {
+                bannerElement.addEventListener('mouseenter', () => clearInterval(slideInterval));
+                bannerElement.addEventListener('touchstart', () => clearInterval(slideInterval));
+            }
         }
 
         let allMovies = [];
@@ -635,25 +640,33 @@
         async function loadMovies() {
             try {
                 const response = await fetch('movies.json');
+                if (!response.ok) throw new Error('File movies.json tidak ditemukan');
                 allMovies = await response.json();
                 renderMovies(allMovies);
             } catch (error) {
                 console.error("Gagal memuat data film:", error);
+                const grid = document.getElementById('movieGrid');
+                if (grid) {
+                    grid.innerHTML = '<p style="color: #ef4444; grid-column: 1/-1; text-align: center; padding: 40px;">Gagal memuat daftar film.</p>';
+                }
             }
         }
 
         function renderMovies(moviesToRender) {
             const grid = document.getElementById('movieGrid');
+            if (!grid) return;
+            
             grid.innerHTML = '';
 
-            if (moviesToRender.length === 0) {
+            if (!moviesToRender || moviesToRender.length === 0) {
                 grid.innerHTML = '<p style="color: #888; grid-column: 1/-1; text-align: center; padding: 40px;">Film tidak ditemukan.</p>';
                 return;
             }
 
+            let htmlContent = '';
             moviesToRender.forEach(movie => {
                 const qualityClass = movie.quality === 'CAM' ? 'cam' : '';
-                const card = `
+                htmlContent += `
                     <div class="movie-card">
                         <a href="watch.html?title=${encodeURIComponent(movie.title)}" class="movie-link">
                             <div class="movie-poster-container">
@@ -674,8 +687,8 @@
                         </a>
                     </div>
                 `;
-                grid.innerHTML += card;
             });
+            grid.innerHTML = htmlContent;
         }
 
         const filterButtons = document.querySelectorAll('.filter-btn');
@@ -711,8 +724,10 @@
             let result = allMovies.filter(movie => {
                 const matchTitle = movie.title.toLowerCase().includes(keyword);
                 let matchCategory = true;
+                
                 if (currentFilter === 'Terbaru') {
-                    matchCategory = parseInt(movie.year) >= 2024;
+                    // Dinamis berdasarkan tahun rilis terbaru (misal: 2025 ke atas)
+                    matchCategory = parseInt(movie.year) >= 2025;
                 } else if (currentFilter !== 'Semua') {
                     matchCategory = movie.genre && movie.genre.toLowerCase().includes(currentFilter.toLowerCase());
                 }
