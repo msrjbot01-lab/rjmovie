@@ -196,7 +196,7 @@
             padding: 4px;
         }
 
-        /* CONTAINER UTAMA DENGAN MAX-WIDTH AGAR TIDAK KEBABLASAN DI LAYAR LEBAR */
+        /* CONTAINER UTAMA */
         .wrapper-full {
             width: 100%;
             max-width: 1350px;
@@ -204,7 +204,7 @@
             margin: 0 auto;
         }
 
-        /* --- HERO BANNER (DISESUAIKAN TINGGINYA SESUAI AREA YANG DITANDAI) --- */
+        /* --- HERO BANNER --- */
         .hero-banner {
             width: 100%;
             position: relative;
@@ -214,8 +214,8 @@
             background: #0f172a;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             overflow: hidden;
-            aspect-ratio: 16 / 5.2; /* Diperlebar agar tidak terlalu panjang ke bawah */
-            max-height: 280px;      /* Membatasi tinggi maksimal agar pas dengan area yang Anda inginkan */
+            aspect-ratio: 16 / 5.2;
+            max-height: 280px;
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
@@ -249,7 +249,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover; 
-            object-position: top center; /* Fokus menampilkan bagian atas/tengah banner */
+            object-position: top center;
             display: block;
         }
 
@@ -433,7 +433,7 @@
         }
 
         /* ========================================================
-            RESPONSIVE MOBILE & FRAME BANNER
+            RESPONSIVE MOBILE
             ======================================================== */
         @media screen and (max-width: 768px) {
             .header {
@@ -485,7 +485,6 @@
                 padding: 0 12px;
             }
 
-            /* TAMPILAN BANNER MOBILE DENGAN EFEK FRAME & PADDING ELEGAN */
             .hero-banner {
                 aspect-ratio: 16 / 8;
                 max-height: 190px;
@@ -493,13 +492,13 @@
                 margin-top: 12px;
                 margin-bottom: 16px;
                 background: #111827;
-                padding: 4px; /* Memberikan efek frame border di sekeliling banner */
+                padding: 4px;
                 border: 1px solid rgba(255, 255, 255, 0.12);
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
             }
 
             .slider-container {
-                border-radius: 8px; /* Agar sudut dalam slider mengikuti frame */
+                border-radius: 8px;
                 overflow: hidden;
             }
 
