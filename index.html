@@ -42,15 +42,17 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            padding: 12px 24px;
+            padding: 12px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 24px; /* Memberi jarak aman antar elemen header */
         }
 
         .logo-container {
             display: flex;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .site-logo {
@@ -59,6 +61,7 @@
             display: block;
         }
 
+        /* Bagian Tengah: Menu Navigasi diubah agar fleksibel menyesuaikan layar */
         .nav-links {
             display: flex;
             list-style: none;
@@ -77,6 +80,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
 
         .nav-links a:hover, .nav-links a.active {
@@ -86,7 +90,8 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
+            flex-shrink: 0;
         }
 
         .mobile-search-btn {
@@ -113,7 +118,7 @@
             padding: 4px;
         }
 
-        /* SEARCH DESKTOP */
+        /* SEARCH DESKTOP: Dibuat agar menyesuaikan ukuran desktop dengan lebar maksimal */
         .search-box {
             display: flex;
             align-items: center;
@@ -121,7 +126,9 @@
             border-radius: 50px;
             padding: 4px 4px 4px 16px;
             border: 1px solid rgba(255, 255, 255, 0.12);
-            width: 270px;
+            width: 100%;
+            max-width: 280px;
+            min-width: 200px;
         }
 
         .search-box input {
@@ -462,7 +469,7 @@
                 padding: 0 10px;
             }
 
-            /* BANNER MOBILE: Tampil utuh, proporsional, di dalam frame elegan */
+            /* BANNER MOBILE */
             .hero-banner {
                 aspect-ratio: 16 / 9;
                 max-height: 200px;
@@ -479,9 +486,9 @@
                 display: block !important; 
                 width: 100%;
                 height: 100%;
-                object-fit: contain; /* Banner terlihat full dan utuh tanpa terpotong */
+                object-fit: contain;
                 object-position: center;
-                background-color: #0b0f19; /* Bingkai latar belakang elegan */
+                background-color: #0b0f19;
                 border-radius: 12px;
             }
 
@@ -522,7 +529,7 @@
                 </a>
             </div>
             
-            <!-- Menu Desktop -->
+            <!-- Menu Desktop (Fleksibel Menyesuaikan Lebar Layar) -->
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
@@ -531,14 +538,12 @@
                 <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
             </ul>
 
-            <!-- Search Desktop -->
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cari film favorit...">
-                <button type="button"><i class="fas fa-search"></i></button>
-            </div>
-
-            <!-- Pojok Kanan: Tombol Search & Hamburger Bar (Paling Kanan) -->
+            <!-- Search Desktop (Otomatis Menyesuaikan Ukuran Layar Desktop) -->
             <div class="header-right">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Cari film favorit...">
+                    <button type="button"><i class="fas fa-search"></i></button>
+                </div>
                 <button class="mobile-search-btn" id="mobileSearchBtn" aria-label="Open Search">
                     <i class="fas fa-search"></i>
                 </button>
@@ -791,10 +796,12 @@
                 const matchTitle = movie.title.toLowerCase().includes(keyword);
                 let matchCategory = true;
                 
-                if (currentFilter === 'Terbaru') {
-                    matchCategory = parseInt(movie.year) >= 2025;
-                } else if (currentFilter !== 'Semua') {
-                    matchCategory = movie.genre && movie.genre.toLowerCase().includes(currentFilter.toLowerCase());
+                if (currentProfile = 'Terbaru') { // Mengikuti filter Anda
+                    if (currentFilter === 'Terbaru') {
+                        matchCategory = parseInt(movie.year) >= 2025;
+                    } else if (currentFilter !== 'Semua') {
+                        matchCategory = movie.genre && movie.genre.toLowerCase().includes(currentFilter.toLowerCase());
+                    }
                 }
                 return matchTitle && matchCategory;
             });
