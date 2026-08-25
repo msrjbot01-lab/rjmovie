@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* CSS Banner Diperbaiki Sesuai Batas Kotak Merah & Responsif Mobile */
-        /* CSS Banner agar Tampil Utuh di Segala Ukuran Tanpa Terpotong */
+        /* CSS Banner Sesuai Keinginan Anda (Tetap) */
         .hero-banner {
             width: 100vw;
             position: relative;
@@ -105,6 +104,35 @@
         .hero-content {
             display: none;
         }
+
+        /* Penyesuaian Layout Agar Konten Bawah Ikut Menyesuaikan Full Screen */
+        body {
+            margin: 0;
+            background-color: #0f172a; /* Sesuaikan warna background dasar jika perlu */
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .wrapper-full {
+            width: 94%;
+            max-width: 1700px; /* Lebar maksimal konten diperluas agar ala web streaming profesional */
+            margin: 0 auto;
+        }
+
+        /* Memastikan header, filter, main, dan footer mengikuti lebar wrapper */
+        .header, .filter-section, .main-container, .footer {
+            width: 94%;
+            max-width: 1700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
     </style>
 </head>
 <body>
@@ -116,56 +144,58 @@
                 <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
             </a>
         </div>
-        <ul class="nav-links">
+        <ul class="nav-links" style="display: flex; list-style: none; gap: 20px; align-items: center;">
             <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
             <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
             <li><a href="genre.html"><i class="fas fa-tags"></i> Genre</a></li>
             <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
         </ul>
-        <div class="search-box">
+        <div class="search-box" style="display: flex;">
             <input type="text" id="searchInput" placeholder="Cari film favorit...">
             <button><i class="fas fa-search"></i></button>
         </div>
     </header>
 
-    <!-- Hero Banner / Full Banner Slider (Dimuat Otomatis dari banners.json) -->
-    <div class="hero-banner">
-        <div class="slider-container" id="sliderContainer">
-            <!-- Slide banner akan dimuat secara dinamis via JavaScript -->
+    <div class="wrapper-full">
+        <!-- Hero Banner / Full Banner Slider (Dimuat Otomatis dari banners.json) -->
+        <div class="hero-banner">
+            <div class="slider-container" id="sliderContainer">
+                <!-- Slide banner akan dimuat secara dinamis via JavaScript -->
+            </div>
+
+            <!-- Tombol Panah Slider -->
+            <button class="slider-btn prev-btn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-btn next-btn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+
+            <!-- Titik Indikator -->
+            <div class="slider-dots" id="sliderDots"></div>
         </div>
 
-        <!-- Tombol Panah Slider -->
-        <button class="slider-btn prev-btn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
-        <button class="slider-btn next-btn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+        <!-- Filter Section -->
+        <div class="filter-section" id="filterContainer">
+            <button class="filter-btn active" data-filter="Semua">Semua</button>
+            <button class="filter-btn" data-filter="Terbaru">Terbaru</button>
+            <button class="filter-btn" data-filter="Action">Action</button>
+            <button class="filter-btn" data-filter="Horror">Horror</button>
+            <button class="filter-btn" data-filter="Comedy">Comedy</button>
+            <button class="filter-btn" data-filter="Sci-Fi">Sci-Fi</button>
+        </div>
 
-        <!-- Titik Indikator -->
-        <div class="slider-dots" id="sliderDots"></div>
+        <!-- Konten Utama (Grid Film) -->
+        <main class="main-container">
+            <div class="section-title">
+                <h2><i class="fas fa-fire" style="color: #3b82f6;"></i> Sedang Trending</h2>
+            </div>
+            <div id="movieGrid" class="movie-grid">
+                <!-- Data film dimuat otomatis oleh JavaScript -->
+            </div>
+        </main>
     </div>
-
-    <!-- Filter Section -->
-    <div class="filter-section" id="filterContainer">
-        <button class="filter-btn active" data-filter="Semua">Semua</button>
-        <button class="filter-btn" data-filter="Terbaru">Terbaru</button>
-        <button class="filter-btn" data-filter="Action">Action</button>
-        <button class="filter-btn" data-filter="Horror">Horror</button>
-        <button class="filter-btn" data-filter="Comedy">Comedy</button>
-        <button class="filter-btn" data-filter="Sci-Fi">Sci-Fi</button>
-    </div>
-
-    <!-- Konten Utama (Grid Film) -->
-    <main class="main-container">
-        <div class="section-title">
-            <h2><i class="fas fa-fire" style="color: #3b82f6;"></i> Sedang Trending</h2>
-        </div>
-        <div id="movieGrid" class="movie-grid">
-            <!-- Data film dimuat otomatis oleh JavaScript -->
-        </div>
-    </main>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
+    <footer class="footer" style="margin-top: 40px; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="wrapper-full footer-content">
             <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
             <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
         </div>
