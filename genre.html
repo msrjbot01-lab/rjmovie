@@ -8,10 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* Penyesuaian struktur halaman agar footer tetap menempel di bawah */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .page-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
         .genre-container {
             padding: 40px 5%;
-            min-height: 60vh;
             color: #fff;
+            flex: 1;
         }
         .genre-grid {
             display: grid;
@@ -36,46 +48,58 @@
             border-color: #3b82f6;
             transform: translateY(-3px);
         }
+
+        /* Penyesuaian Footer Menjadi Tipis & Rapi */
+        .footer {
+            background-color: #04060a;
+            text-align: center;
+            padding: 12px 20px;
+            margin-top: auto;
+            font-size: 11px;
+            color: #64748b;
+            border-top: 1px solid #111827;
+        }
+        .footer p {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
+    <div class="page-content-wrapper">
+        <!-- Header & Navbar -->
+        <header class="header">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
+                <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
+                <li><a href="genre.html" class="active"><i class="fas fa-tags"></i> Genre</a></li>
+                <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
+            </ul>
+            <div class="search-box">
+                <input type="text" id="searchGenreInput" placeholder="Cari genre...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </header>
 
-    <!-- Header & Navbar -->
-    <header class="header">
-        <div class="logo-container">
-            <a href="index.html">
-                <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
-            </a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
-            <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
-            <li><a href="genre.html" class="active"><i class="fas fa-tags"></i> Genre</a></li>
-            <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
-        </ul>
-        <div class="search-box">
-            <input type="text" id="searchGenreInput" placeholder="Cari genre...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-    </header>
-
-    <!-- Konten Utama Genre -->
-    <main class="genre-container">
-        <h1 style="text-align: center; margin-bottom: 10px;">Kategori Genre Film</h1>
-        <p style="text-align: center; color: #aaa;">Pilih kategori genre film yang ingin kamu tonton</p>
-        
-        <div id="genreGrid" class="genre-grid">
-            <!-- Daftar genre akan dimuat otomatis di sini -->
-        </div>
-    </main>
+        <!-- Konten Utama Genre -->
+        <main class="genre-container">
+            <h1 style="text-align: center; margin-bottom: 10px;">Kategori Genre Film</h1>
+            <p style="text-align: center; color: #aaa;">Pilih kategori genre film yang ingin kamu tonton</p>
+            
+            <div id="genreGrid" class="genre-grid">
+                <!-- Daftar genre akan dimuat otomatis di sini -->
+            </div>
+        </main>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-            <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
-            <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
-        </div>
+        <p>&copy; 2026 RJMOVIE. All rights reserved.</p>
     </footer>
 
     <!-- Script JavaScript untuk Menarik Data Genre -->
