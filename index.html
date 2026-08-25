@@ -20,7 +20,8 @@
             margin-right: -50vw;
             margin-bottom: 25px;
             overflow: hidden;
-            background: #000000; /* Latar belakang hitam untuk mengantisipasi sisa ruang */
+            background: #000;
+            max-height: 380px; /* Batasi tinggi maksimal di komputer sesuai kotak merah */
         }
 
         .slider-container {
@@ -32,16 +33,13 @@
         .slide {
             min-width: 100%;
             box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .slide img {
             width: 100%;
-            height: auto; /* Tinggi otomatis mengikuti lebar agar gambar tidak terpotong */
+            height: 380px; /* Tinggi tetap di komputer */
             display: block;
-            object-fit: contain; /* Memastikan seluruh bagian gambar tampil utuh */
+            object-fit: cover; /* Gambar pas tanpa distorsi/gepeng */
         }
 
         /* Penyesuaian khusus Tampilan Mobile (HP) agar tetap proporsional */
