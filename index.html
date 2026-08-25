@@ -145,29 +145,37 @@
             padding: 0 35px;
         }
 
-        /* --- HERO BANNER DESKTOP (Rasio Pasti 21/9) --- */
+        /* --- HERO BANNER SWIPE (DESKTOP & MOBILE) --- */
         .hero-banner {
             width: 100%;
             position: relative;
             margin-bottom: 30px;
-            overflow: hidden;
-            background: #000;
             border-radius: 16px;
-            aspect-ratio: 21 / 9;
-            max-height: 480px;
+            background: #000;
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+            overflow: hidden;
         }
 
         .slider-container {
             display: flex;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
             width: 100%;
             height: 100%;
+            scroll-behavior: smooth;
+        }
+
+        .slider-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
 
         .slide {
             min-width: 100%;
             height: 100%;
+            scroll-snap-align: start;
+            flex-shrink: 0;
         }
 
         .slide img {
@@ -178,29 +186,6 @@
             object-position: center;
         }
 
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(11, 15, 25, 0.75);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.15);
-            padding: 12px 16px;
-            cursor: pointer;
-            font-size: 1rem;
-            z-index: 10;
-            transition: all 0.3s ease;
-            border-radius: 10px;
-            backdrop-filter: blur(4px);
-        }
-        .slider-btn:hover { 
-            background-color: #3b82f6; 
-            border-color: #3b82f6;
-            transform: translateY(-50%) scale(1.05);
-        }
-        .prev-btn { left: 15px; }
-        .next-btn { right: 15px; }
-
         .slider-dots {
             position: absolute;
             bottom: 15px;
@@ -209,13 +194,13 @@
             display: flex;
             gap: 8px;
             z-index: 10;
+            pointer-events: none; /* Agar tidak mengganggu geseran sentuhan */
         }
         .dot {
             width: 8px;
             height: 8px;
             background-color: rgba(255, 255, 255, 0.4);
             border-radius: 50%;
-            cursor: pointer;
             transition: all 0.3s;
         }
         .dot.active {
@@ -456,43 +441,17 @@
                 padding: 0 15px;
             }
 
-            /* --- BANNER MOBILE: FULL MEMENUHI FRAME --- */
+            /* --- BANNER MOBILE DISESUAIKAN UNTUK SWIPE --- */
             .hero-banner {
-                aspect-ratio: 21 / 9;
-                height: auto;
-                max-height: none;
+                aspect-ratio: 16 / 9; /* Proporsi standar mobile landscape */
                 border-radius: 12px;
-                background: #000;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-                border: 1px solid rgba(255, 255, 255, 0.08);
                 margin-bottom: 22px;
             }
 
-            .slider-container {
-                height: 100%;
-            }
-
-            .slide {
-                height: 100%;
-            }
-
             .slide img {
-                width: 100%;
-                height: 100%;
-                display: block;
-                object-fit: cover;
-                object-position: center;
-                border-radius: 10px;
+                object-fit: cover; /* Menyesuaikan agar penuh tanpa merusak gambar */
+                border-radius: 12px;
             }
-
-            .slider-btn {
-                padding: 6px 10px;
-                font-size: 0.75rem;
-                background-color: rgba(11, 15, 25, 0.85);
-                border-radius: 6px;
-            }
-            .prev-btn { left: 10px; }
-            .next-btn { right: 10px; }
 
             .filter-section {
                 display: flex;
@@ -543,11 +502,9 @@
         </header>
 
         <div class="wrapper-full">
-            <!-- Hero Banner Slider -->
+            <!-- Hero Banner Swipeable (Tanpa Tombol Panah) -->
             <div class="hero-banner">
                 <div class="slider-container" id="sliderContainer"></div>
-                <button class="slider-btn prev-btn" id="prevBtn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
-                <button class="slider-btn next-btn" id="nextBtn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
                 <div class="slider-dots" id="sliderDots"></div>
             </div>
 
@@ -577,9 +534,8 @@
     </footer>
 
     <script>
-        let currentIndex = 0;
-        let totalSlides = 0;
         let slideInterval;
+        let totalSlides = 0;
 
         async function loadBanners() {
             try {
@@ -589,8 +545,6 @@
                 
                 const sliderContainer = document.getElementById('sliderContainer');
                 const dotsContainer = document.getElementById('sliderDots');
-                const prevBtn = document.getElementById('prevBtn');
-                const nextBtn = document.getElementById('nextBtn');
                 
                 sliderContainer.innerHTML = '';
                 dotsContainer.innerHTML = '';
@@ -598,8 +552,6 @@
 
                 if (totalSlides === 0) {
                     sliderContainer.innerHTML = '<div class="slide"><p style="text-align:center; padding:50px; color:#888;">Belum ada banner tersedia.</p></div>';
-                    if(prevBtn) prevBtn.style.display = 'none';
-                    if(nextBtn) nextBtn.style.display = 'none';
                     return;
                 }
 
@@ -612,19 +564,13 @@
                     const dot = document.createElement('div');
                     dot.classList.add('dot');
                     if (index === 0) dot.classList.add('active');
-                    dot.addEventListener('click', () => goToSlide(index));
                     dotsContainer.appendChild(dot);
                 });
 
                 if (totalSlides <= 1) {
-                    if(prevBtn) prevBtn.style.display = 'none';
-                    if(nextBtn) nextBtn.style.display = 'none';
                     dotsContainer.style.display = 'none';
                 } else {
-                    if(prevBtn) prevBtn.style.display = 'block';
-                    if(nextBtn) nextBtn.style.display = 'block';
-                    dotsContainer.style.display = 'flex';
-                    startAutoSlide();
+                    setupAutoAndScrollListener();
                 }
 
             } catch (error) {
@@ -633,47 +579,32 @@
             }
         }
 
-        function updateSlider() {
+        function setupAutoAndScrollListener() {
             const sliderContainer = document.getElementById('sliderContainer');
             const dots = document.querySelectorAll('.dot');
-            sliderContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentIndex);
+            
+            // Update titik indikator aktif berdasarkan posisi scroll manual / sentuhan
+            sliderContainer.addEventListener('scroll', () => {
+                const index = Math.round(sliderContainer.scrollLeft / sliderContainer.clientWidth);
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
             });
-        }
 
-        function moveSlide(direction) {
-            if (totalSlides <= 1) return;
-            currentIndex += direction;
-            if (currentIndex < 0) {
-                currentIndex = totalSlides - 1;
-            } else if (currentIndex >= totalSlides) {
-                currentIndex = 0;
-            }
-            updateSlider();
-        }
-
-        function goToSlide(index) {
-            currentIndex = index;
-            updateSlider();
-        }
-
-        function startAutoSlide() {
-            if (totalSlides <= 1) return;
-
+            // Auto slide setiap 4 detik
+            let currentIndex = 0;
             slideInterval = setInterval(() => {
-                moveSlide(1);
+                currentIndex = (currentIndex + 1) % totalSlides;
+                sliderContainer.scrollTo({
+                    left: currentIndex * sliderContainer.clientWidth,
+                    behavior: 'smooth'
+                });
             }, 4000);
 
+            // Berhenti otomatis saat disentuh atau mouse di atas banner
             const bannerElement = document.querySelector('.hero-banner');
             bannerElement.addEventListener('mouseenter', () => clearInterval(slideInterval));
-            bannerElement.addEventListener('mouseleave', () => {
-                if (totalSlides > 1) {
-                    slideInterval = setInterval(() => {
-                        moveSlide(1);
-                    }, 4000);
-                }
-            });
+            bannerElement.addEventListener('touchstart', () => clearInterval(slideInterval));
         }
 
         let allMovies = [];
