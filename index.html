@@ -145,7 +145,7 @@
             padding: 0 35px;
         }
 
-        /* --- HERO BANNER SWIPE --- */
+        /* --- HERO BANNER SWIPE (PERBAIKAN CSS) --- */
         .hero-banner {
             width: 100%;
             position: relative;
@@ -154,8 +154,6 @@
             background: transparent;
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
             overflow: hidden;
-            aspect-ratio: 21 / 9; 
-            max-height: 480px;
         }
 
         .slider-container {
@@ -183,19 +181,19 @@
             align-items: center;
         }
 
-        /* Perbaikan Tampilan Gambar Banner */
+        /* Perbaikan Tampilan Gambar Banner Desktop */
         .slide .img-desktop { 
             display: block; 
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain; /* Agar gambar proporsional tanpa terpotong */
         }
 
         .slide .img-mobile { 
             display: none; 
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
         }
 
         .slider-dots {
@@ -454,19 +452,22 @@
             }
 
             .hero-banner {
-                aspect-ratio: 16 / 9;
-                max-height: 200px;
                 border-radius: 12px;
                 margin-bottom: 22px;
                 background: transparent;
             }
 
-            /* Logika Sembunyikan/Tampilkan Gambar Banner di HP */
+            /* Logika Sembunyikan/Tampilkan & Perbaikan Gambar Banner di HP */
             .slide .img-desktop { 
                 display: none !important; 
             }
+            
             .slide .img-mobile { 
                 display: block !important; 
+                width: 100%;
+                height: auto;
+                max-height: 250px;
+                object-fit: contain; /* Agar gambar HP tampil utuh tidak terpotong */
                 border-radius: 12px;
             }
 
