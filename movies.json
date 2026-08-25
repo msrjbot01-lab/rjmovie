@@ -1,18 +1,34 @@
 [
-  {
-    "id": 1,
-    "title": "Tumbal Birahi Dukun Jahanam",
-    "year": 2025,
-    "genre": "Horror",
-    "rating": "6.8",
-    "duration": "70 Menit",
-    "quality": "HD",
-    "poster": "film1.png",
-    "director": "Bram Ferino",
-    "country": "Indonesia",
-    "cast": "Fitriyani Abdul Roni, Dian Fitra, Inung Hartati",
-    "synopsis": "Zakia membuat keputusan salah karena ingin cepat menemukan pasangan hidup. Ia meminta bantuan kepada seorang dukun. Alih-alih mendapat jodoh, ia malah masuk perangkap ritual sesat penuh nafsu milik sang dukun.",
-    "videoUrl": "https://archive.org/download/tumbal-dukun-jahanam/Tumbal%20Dukun%20Jahanam.mp4",
-    "downloadUrl": "https://archive.org/download/tumbal-dukun-jahanam/Tumbal%20Dukun%20Jahanam.mp4"
-  }
+    {
+        "id": 1,
+        "title": "Tumbal Birahi Dukun Jahanam",
+        "year": 2025,
+        "genre": "Horror",
+        "rating": "6.8",
+        "duration": "70 Menit",
+        "quality": "HD",
+        "poster": "film1.png",
+        "director": "Bram Ferino",
+        "country": "Indonesia",
+        "cast": "Fitriyani Abdul Roni, Dian Fitra, Inung Hartati",
+        "synopsis": "Zakia membuat keputusan salah karena ingin cepat menemukan pasangan hidup. Ia meminta bantuan kepada seorang dukun. Alih-alih mendapat jodoh, ia malah masuk perangkap ritual sesat penuh nafsu milik sang dukun.",
+        "videoUrl": "https://archive.org/download/tumbal-dukun-jahanam/Tumbal%20Dukun%20Jahanam.mp4",
+        "downloadUrl": "https://archive.org/download/tumbal-dukun-jahanam/Tumbal%20Dukun%20Jahanam.mp4"
+    },
+    {
+        "id": 1787671658364,
+        "title": "Sampai Titik Terakhirmu",
+        "year": 2025,
+        "genre": "Drama",
+        "rating": "7.2",
+        "duration": "114 Menit",
+        "quality": "HD",
+        "poster": "poster-1787671658361-Poster-film-Sampai-Titik-Terakhirmu.webp",
+        "director": "Dinna Jasanti",
+        "country": "Indonesia",
+        "cast": "Arbani Yasiz, Mawar Eva de Jongh, Unique Priscilla, Kiki Narendra, Yasamin Jasem, Shakeel Fauzi, Tika Panggabean, Onadio Leonardo",
+        "synopsis": "Film ini mengikuti perjalanan cinta Albi, seorang pria introvert yang bekerja sebagai wedding organizer, dan Shella, gadis ekstrovert yang ceria, atlet, serta content creator. Pertemuan mereka yang tidak disengaja berkembang menjadi hubungan penuh cinta dan dukungan.\nNamun hidup berubah ketika Shella divonis kanker ovarium, membuat keduanya harus menghadapi perjuangan panjang, rasa sakit, dan ketidakpastian masa depan. Kisah ini menggambarkan ketulusan, kesetiaan, dan cinta yang bertahan hingga titik terakhir.",
+        "videoUrl": "https://archive.org/download/sampai-titik-terakhirmu-full-movie-film-filmindonesia-movie-fyp-trending-720p/Sampai%20Titik%20Terakhirmu%20Full%20Movie%20%20%23film%20%23filmindonesia%20%23movie%20%23fyp%20%23trending_720p.mp4",
+        "downloadUrl": "https://archive.org/download/sampai-titik-terakhirmu-full-movie-film-filmindonesia-movie-fyp-trending-720p/Sampai%20Titik%20Terakhirmu%20Full%20Movie%20%20%23film%20%23filmindonesia%20%23movie%20%23fyp%20%23trending_720p.mp4"
+    }
 ]
