@@ -36,7 +36,7 @@
             flex: 1;
         }
 
-        /* --- HEADER DESKTOP --- */
+        /* --- HEADER --- */
         .header {
             width: 100%;
             background-color: #0f172a;
@@ -83,6 +83,17 @@
 
         .nav-links a:hover, .nav-links a.active {
             color: #3b82f6;
+        }
+
+        /* Tombol Hamburger (Hanya muncul di Mobile) */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 4px;
         }
 
         /* --- SEARCH BAR --- */
@@ -407,41 +418,49 @@
         }
 
         /* ========================================================
-            OPTIMASI TAMPILAN MOBILE / HP YANG DISEMPURNAKAN
+            RESPONSIVE MOBILE DENGAN HAMBURGER MENU
             ======================================================== */
         @media screen and (max-width: 768px) {
             .header {
-                padding: 10px 14px;
-                flex-direction: column;
-                gap: 10px;
-                align-items: stretch;
+                padding: 12px 16px;
+                flex-wrap: wrap;
+                gap: 12px;
             }
 
             .logo-container {
-                justify-content: flex-start;
+                flex: 1;
             }
 
             .site-logo {
                 height: 32px;
             }
 
-            /* Navigasi horizontal di HP */
-            .nav-links {
-                display: flex;
-                overflow-x: auto;
-                gap: 16px;
-                padding-bottom: 2px;
-                justify-content: flex-start;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
+            /* Tampilkan tombol garis tiga */
+            .menu-toggle {
+                display: block;
             }
-            .nav-links::-webkit-scrollbar {
+
+            /* Ubah nav-links menjadi dropdown/sidebar tersembunyi di mobile */
+            .nav-links {
                 display: none;
+                flex-direction: column;
+                width: 100%;
+                background: #0f172a;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 15px 0;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            /* Kelas aktif untuk menampilkan menu saat tombol diklik lewat JS */
+            .nav-links.active {
+                display: flex;
             }
 
             .nav-links a {
-                font-size: 0.85rem;
-                white-space: nowrap;
+                width: 100%;
+                padding: 4px 0;
+                font-size: 0.95rem;
             }
 
             .search-box {
@@ -454,7 +473,6 @@
                 padding: 0 12px;
             }
 
-            /* Banner HP Dibuat Lebih Proporsional & Rapi */
             .hero-banner {
                 aspect-ratio: 16 / 9;
                 max-height: 210px;
@@ -474,7 +492,6 @@
                 border-radius: 10px;
             }
 
-            /* Tombol Filter Kategori Bisa Digeser di HP */
             .filter-section {
                 display: flex;
                 flex-wrap: nowrap;
@@ -500,7 +517,6 @@
                 margin-bottom: 14px;
             }
 
-            /* Grid Film 2 Kolom Rapi Khusus HP */
             .movie-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
@@ -529,13 +545,20 @@
                     <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
                 </a>
             </div>
-            <ul class="nav-links">
+            
+            <!-- Tombol Garis Tiga (Hamburger Menu) -->
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-links" id="navLinks">
                 <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
                 <li><a href="serial.html"><i class="fas fa-tv"></i> Serial Tv</a></li>
                 <li><a href="genre.html"><i class="fas fa-tags"></i> Genre</a></li>
                 <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
             </ul>
+
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Cari film favorit...">
                 <button type="button"><i class="fas fa-search"></i></button>
@@ -575,6 +598,24 @@
     </footer>
 
     <script>
+        // Logika Toggle Hamburger Menu Mobile
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const icon = menuToggle.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times'); // Berubah jadi ikon silang saat terbuka
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
         let slideInterval;
         let totalSlides = 0;
 
