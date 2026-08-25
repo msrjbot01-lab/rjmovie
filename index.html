@@ -12,42 +12,45 @@
         /* CSS Banner Diperbaiki Sesuai Batas Kotak Merah & Responsif Mobile */
         /* CSS Banner agar Tampil Utuh di Segala Ukuran Tanpa Terpotong */
         .hero-banner {
-            width: 100%;
-            max-width: 1200px; /* Menyesuaikan lebar standar website film Anda */
-            height: 250px;     /* Tinggi banner proporsional (bisa diubah ke 220px atau 280px sesuai selera) */
-            margin: 0 auto 25px auto; /* Posisi di tengah dan beri jarak bawah */
+            width: 100vw;
             position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            margin-bottom: 25px;
             overflow: hidden;
-            border-radius: 12px; /* Membuat sudut banner agak melengkung rapi khas modern web */
-            background: #000;
+            background: #000000; /* Latar belakang hitam untuk mengantisipasi sisa ruang */
         }
 
         .slider-container {
             display: flex;
             transition: transform 0.5s ease-in-out;
             width: 100%;
-            height: 100%;
         }
 
         .slide {
             min-width: 100%;
-            height: 100%;
             box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .slide img {
             width: 100%;
-            height: 100%;
+            height: auto; /* Tinggi otomatis mengikuti lebar agar gambar tidak terpotong */
             display: block;
-            object-fit: cover; /* Gambar pas memenuhi area kotak tanpa gepeng */
+            object-fit: contain; /* Memastikan seluruh bagian gambar tampil utuh */
         }
 
-        /* Penyesuaian Tampilan Mobile (HP) */
+        /* Penyesuaian khusus Tampilan Mobile (HP) agar tetap proporsional */
         @media (max-width: 768px) {
             .hero-banner {
-                width: 92%;      /* Agak ada margin kiri-kanan dikit di HP */
-                height: 140px;   /* Tinggi mengecil proporsional di HP */
-                border-radius: 8px;
+                max-height: 180px; /* Tinggi lebih kecil di HP */
+            }
+            .slide img {
+                height: 180px; /* Menyesuaikan tinggi gambar di HP */
             }
         }
 
