@@ -9,16 +9,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- RESET & BODY ALA WEBSITE STREAMING PROFESIONAL --- */
-        body {
-            margin: 0;
-            background-color: #0b0f19; /* Warna gelap khas LK21/IDLIX */
-            color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
+        /* --- KUNCI UKURAN / MIN-WIDTH AGAR TIDAK CACAT SAAT DIKECILKAN --- */
+        html {
+            min-width: 1280px; /* Mengunci layout minimum agar tidak pecah/berantakan */
         }
 
-        /* --- HEADER FULL-WIDTH (MENEMBUS KE UJUNG KANAN-KIRI) --- */
+        /* --- RESET & BODY --- */
+        body {
+            margin: 0;
+            background-color: #0b0f19;
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: auto; /* Memungkinkan geser jika layar sangat kecil, tapi layout tetap aman terkunci */
+        }
+
+        /* --- HEADER FULL-WIDTH --- */
         .header {
             width: 100%;
             background-color: #0f172a;
@@ -27,7 +32,7 @@
             top: 0;
             z-index: 1000;
             box-sizing: border-box;
-            padding: 12px 30px;
+            padding: 14px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -39,16 +44,16 @@
         }
 
         .site-logo {
-            height: 40px; /* Ukuran logo disesuaikan agar proporsional dan jelas */
+            height: 42px;
             width: auto;
             display: block;
         }
 
-        /* Navigasi ala Web Streaming */
+        /* Navigasi */
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 28px;
+            gap: 35px;
             align-items: center;
             margin: 0;
             padding: 0;
@@ -66,50 +71,61 @@
         }
 
         .nav-links a:hover, .nav-links a.active {
-            color: #3b82f6; /* Aksen biru terang */
+            color: #3b82f6;
         }
 
-        /* Kotak Pencarian Profesional */
+        /* Kotak Pencarian Baru yang Lebih Menarik & Profesional */
         .search-box {
             display: flex;
-            background: #1e293b;
-            border-radius: 6px;
+            background: #162032;
+            border-radius: 8px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: border-color 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            width: 280px;
         }
 
         .search-box:focus-within {
             border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
 
         .search-box input {
             background: transparent;
             border: none;
-            padding: 9px 15px;
+            padding: 10px 16px;
             color: #fff;
             outline: none;
             font-size: 0.9rem;
-            width: 220px;
+            width: 100%;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .search-box input::placeholder {
+            color: #64748b;
         }
 
         .search-box button {
             background: #3b82f6;
             border: none;
             color: white;
-            padding: 0 16px;
+            padding: 0 18px;
             cursor: pointer;
             transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .search-box button:hover {
             background: #2563eb;
         }
 
-        /* --- CONTAINER UTAMA AGAR IKUT FULL-WIDTH DENGAN PADDING AMAN --- */
+        /* --- CONTAINER UTAMA --- */
         .wrapper-full {
             width: 100%;
-            padding: 0 30px;
+            padding: 0 40px;
             box-sizing: border-box;
         }
 
@@ -121,10 +137,10 @@
             right: 50%;
             margin-left: -50vw;
             margin-right: -50vw;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             overflow: hidden;
             background: #000;
-            max-height: 420px;
+            max-height: 450px;
         }
 
         .slider-container {
@@ -140,12 +156,11 @@
 
         .slide img {
             width: 100%;
-            height: 420px;
+            height: 450px;
             display: block;
             object-fit: cover;
         }
 
-        /* Tombol Navigasi Slider */
         .slider-btn {
             position: absolute;
             top: 50%;
@@ -153,21 +168,20 @@
             background-color: rgba(0, 0, 0, 0.6);
             color: white;
             border: none;
-            padding: 12px 16px;
+            padding: 14px 18px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             z-index: 10;
-            transition: background 0.3s, transform 0.2s;
-            border-radius: 4px;
+            transition: background 0.3s;
+            border-radius: 6px;
         }
         .slider-btn:hover { background-color: #3b82f6; }
-        .prev-btn { left: 25px; }
-        .next-btn { right: 25px; }
+        .prev-btn { left: 30px; }
+        .next-btn { right: 30px; }
 
-        /* Titik Indikator Slider */
         .slider-dots {
             position: absolute;
-            bottom: 15px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -184,25 +198,25 @@
         }
         .dot.active {
             background-color: #3b82f6;
-            width: 25px;
+            width: 28px;
             border-radius: 5px;
         }
         .hero-content { display: none; }
 
-        /* --- FILTER SECTION ALA STREAMING PROFESIONAL --- */
+        /* --- FILTER SECTION --- */
         .filter-section {
             display: flex;
-            gap: 12px;
+            gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
         .filter-btn {
             background: #162032;
             color: #94a3b8;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 11px 22px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
@@ -224,29 +238,28 @@
 
         /* --- KONTEN UTAMA (GRID FILM) --- */
         .main-container {
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
 
         .section-title h2 {
-            font-size: 1.35rem;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            margin-bottom: 22px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
 
         .movie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 22px;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 24px;
         }
 
-        /* Styling Kartu Film */
         .movie-card {
             background: #162032;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -254,7 +267,7 @@
 
         .movie-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
             border-color: rgba(59, 130, 246, 0.3);
         }
 
@@ -285,9 +298,9 @@
 
         .overlay-top {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
+            top: 12px;
+            left: 12px;
+            right: 12px;
             display: flex;
             justify-content: space-between;
             font-size: 0.75rem;
@@ -295,34 +308,33 @@
         }
 
         .rating-tag {
-            background: rgba(11, 15, 25, 0.8);
+            background: rgba(11, 15, 25, 0.85);
             color: #fbbf24;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 4px 9px;
+            border-radius: 5px;
             backdrop-filter: blur(4px);
             font-weight: 700;
         }
 
         .duration-tag {
-            background: rgba(11, 15, 25, 0.8);
+            background: rgba(11, 15, 25, 0.85);
             color: #fff;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 4px 9px;
+            border-radius: 5px;
             backdrop-filter: blur(4px);
         }
 
         .quality-tag {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
+            bottom: 12px;
+            left: 12px;
             background: #3b82f6;
             color: white;
             font-size: 0.7rem;
-            padding: 3px 8px;
-            border-radius: 4px;
+            padding: 4px 9px;
+            border-radius: 5px;
             font-weight: 700;
             z-index: 2;
-            letter-spacing: 0.5px;
         }
         .quality-tag.cam { background: #ef4444; }
 
@@ -338,9 +350,9 @@
         }
 
         .play-icon {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             color: #3b82f6;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
         }
 
         .movie-card:hover .play-overlay {
@@ -348,11 +360,11 @@
         }
 
         .movie-info {
-            padding: 14px;
+            padding: 15px;
         }
 
         .movie-title {
-            font-size: 0.98rem;
+            font-size: 1rem;
             font-weight: 700;
             margin: 0 0 6px 0;
             white-space: nowrap;
@@ -362,68 +374,34 @@
         }
 
         .movie-meta {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             color: #94a3b8;
             margin: 0;
         }
 
-        /* --- FOOTER FULL-WIDTH --- */
+        /* --- FOOTER --- */
         .footer {
             width: 100%;
             background-color: #0f172a;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 30px 0;
-            margin-top: 60px;
+            padding: 35px 0;
+            margin-top: 70px;
             color: #94a3b8;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             text-align: center;
             box-sizing: border-box;
         }
 
         .footer-content {
             width: 100%;
-            padding: 0 30px;
+            padding: 0 40px;
             box-sizing: border-box;
-        }
-
-        /* --- RESPONSIF UNTUK HP / TABLET --- */
-        @media (max-width: 768px) {
-            .header {
-                padding: 12px 15px;
-                flex-direction: column;
-                gap: 15px;
-            }
-            .wrapper-full, .footer-content {
-                padding: 0 15px;
-            }
-            .nav-links {
-                width: 100%;
-                justify-content: space-between;
-                gap: 10px;
-                font-size: 0.85rem;
-                overflow-x: auto;
-                padding-bottom: 5px;
-            }
-            .search-box {
-                width: 100%;
-            }
-            .search-box input {
-                width: 100%;
-            }
-            .hero-banner, .slide img {
-                max-height: 220px;
-                height: 220px;
-            }
-            .movie-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 14px;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header & Navbar Full-Width Ala Web Streaming -->
+    <!-- Header & Navbar -->
     <header class="header">
         <div class="logo-container">
             <a href="index.html">
@@ -444,7 +422,7 @@
     </header>
 
     <div class="wrapper-full">
-        <!-- Hero Banner Slider (Full-Width) -->
+        <!-- Hero Banner Slider -->
         <div class="hero-banner">
             <div class="slider-container" id="sliderContainer"></div>
             <button class="slider-btn prev-btn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
@@ -471,7 +449,7 @@
         </main>
     </div>
 
-    <!-- Footer Full-Width -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
