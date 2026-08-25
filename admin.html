@@ -532,25 +532,28 @@
             <!-- TAB 3: KELOLA & HAPUS BANNER WEBSITE -->
             <div id="bannerTab" class="content-panel">
                 <div class="panel-header">
-                    <i class="fas fa-images"></i> Kelola & Hapus Banner Website
+                    <i class="fas fa-images"></i> Kelola & Hapus Banner Website (Desktop & Mobile)
                 </div>
                 
                 <div style="background: rgba(243, 230, 0, 0.05); border-left: 3px solid var(--neon-yellow); padding: 12px 15px; margin-bottom: 20px; border-radius: 2px;">
                     <p style="color: var(--neon-yellow); font-weight: bold; margin: 0 0 5px 0; font-size: 13px; font-family: 'Orbitron', sans-serif;">
-                        <i class="fas fa-info-circle"></i> PANDUAN BANNER:
+                        <i class="fas fa-info-circle"></i> Panduan Ukuran Banner:
                     </p>
                     <p style="color: #94a3b8; font-size: 12px; margin: 0; line-height: 1.5;">
-                        • Resolusi Ideal: Lebar 1920px x Tinggi 600px (Rasio 16:5).<br>
-                        • Format: .png, .jpg, atau .webp di bawah 2MB.
+                        • **Desktop / PC:** Rasio 21:9 (Contoh: 1260 x 540 px).<br>
+                        • **Mobile / HP:** Rasio 16:9 (Contoh: 800 x 450 px).
                     </p>
                 </div>
 
                 <form id="bannerForm" class="admin-form" style="margin-bottom: 30px;">
-                    <label>Pilih File Gambar Banner:</label>
-                    <input type="file" id="bannerImageFile" accept="image/*" required>
-
                     <label>Keterangan / Judul Banner:</label>
                     <input type="text" id="bannerTitleInput" required placeholder="Contoh: Promo Spesial Bioskop Cyber">
+
+                    <label>File Banner DESKTOP / PC (Rasio 21:9):</label>
+                    <input type="file" id="bannerDesktopFile" accept="image/*" required>
+
+                    <label>File Banner MOBILE / HP (Rasio 16:9):</label>
+                    <input type="file" id="bannerMobileFile" accept="image/*" required>
 
                     <button type="submit" id="submitBannerBtn" class="btn-submit" style="border-color: #238636; color: #238636;">
                         <i class="fas fa-cloud-upload-alt"></i> UPLOAD & SIMPAN BANNER BARU
@@ -565,14 +568,15 @@
                         <table class="data-list-table">
                             <thead>
                                 <tr>
-                                    <th>Banner</th>
+                                    <th>Desktop</th>
+                                    <th>Mobile</th>
                                     <th>Keterangan / Judul</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="bannerTableBody">
                                 <tr>
-                                    <td colspan="3" style="text-align: center; color: #64748b; padding: 20px;">Memuat daftar banner...</td>
+                                    <td colspan="4" style="text-align: center; color: #64748b; padding: 20px;">Memuat daftar banner...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -741,7 +745,7 @@
         // 3. Muat Daftar Banner untuk Hapus
         async function loadBannerList() {
             const tableBody = document.getElementById('bannerTableBody');
-            tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Menghubungkan ke server...</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #64748b; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Menghubungkan ke server...</td></tr>`;
 
             try {
                 const res = await fetch('banners.json?v=' + Date.now());
@@ -749,7 +753,7 @@
                 const banners = await res.json();
 
                 if (!banners || banners.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b; padding: 20px;">Belum ada banner di database.</td></tr>`;
+                    tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #64748b; padding: 20px;">Belum ada banner di database.</td></tr>`;
                     return;
                 }
 
@@ -757,10 +761,11 @@
                 banners.forEach(banner => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td><img src="${banner.image}" alt="" style="width: 80px; height: 30px; object-fit: cover; border-radius: 2px;"></td>
+                        <td><img src="${banner.image}" alt="" style="width: 70px; height: 30px; object-fit: cover; border-radius: 2px;"></td>
+                        <td><img src="${banner.mobileImage || banner.image}" alt="" style="width: 50px; height: 30px; object-fit: cover; border-radius: 2px;"></td>
                         <td style="font-weight: 600; color: #fff;">${banner.title}</td>
                         <td>
-                            <button class="btn-delete" onclick="deleteItem('banners.json', '${banner.title}', '${banner.title}', '${banner.image}', loadBannerList)">
+                            <button class="btn-delete" onclick="deleteBannerItem('${banner.title}', '${banner.image}', '${banner.mobileImage}')">
                                 <i class="fas fa-trash-alt"></i> Hapus
                             </button>
                         </td>
@@ -769,11 +774,40 @@
                 });
             } catch (err) {
                 console.error(err);
-                tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #ef4444; padding: 20px;">Gagal memuat daftar banner.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">Gagal memuat daftar banner.</td></tr>`;
             }
         }
 
-        // 4. Fungsi Umum Hapus Data & File via Cloudflare Worker (DELETE)
+        // Fungsi khusus hapus banner (karena melibatkan 2 file gambar: desktop & mobile)
+        async function deleteBannerItem(title, desktopImg, mobileImg) {
+            if (!confirm(`Konfirmasi hapus banner "${title}" dari server?`)) return;
+
+            try {
+                // Hapus file desktop terlebih dahulu
+                await fetch(WORKER_URL, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jsonPath: 'banners.json', itemId: title, imageFileName: desktopImg })
+                });
+
+                // Jika mobileImage berbeda, hapus juga file mobile-nya
+                if (mobileImg && mobileImg !== desktopImg) {
+                    await fetch(WORKER_URL, {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ jsonPath: 'banners.json', itemId: title, imageFileName: mobileImg })
+                    });
+                }
+
+                alert('Banner berhasil dihapus dari sistem!');
+                loadBannerList(); 
+            } catch (error) {
+                console.error(error);
+                alert('Gagal menghapus: ' + error.message);
+            }
+        }
+
+        // Fungsi Umum Hapus Data Film via Cloudflare Worker (DELETE)
         async function deleteItem(jsonPath, itemId, itemTitle, imageFileName, callbackRefresh) {
             if (!confirm(`Konfirmasi hapus item "${itemTitle}" dari server?`)) return;
 
@@ -792,56 +826,90 @@
                 if (!result.success) throw new Error(result.error || 'Gagal menghapus data.');
 
                 alert('Data berhasil dihapus dari sistem!');
-                callbackRefresh(); // Refresh tabel terkait
+                callbackRefresh(); 
             } catch (error) {
                 console.error(error);
                 alert('Gagal menghapus: ' + error.message);
             }
         }
 
-        // 5. Upload Banner Website Baru
+        // 4. Upload Banner Website Baru (Desktop & Mobile Sekaligus)
         document.getElementById('bannerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const title = document.getElementById('bannerTitleInput').value.trim();
-            const fileInput = document.getElementById('bannerImageFile');
+            const desktopFileInput = document.getElementById('bannerDesktopFile');
+            const mobileFileInput = document.getElementById('bannerMobileFile');
 
-            if (!fileInput.files || !fileInput.files[0]) {
-                alert('Pilih file gambar banner terlebih dahulu!');
+            if (!desktopFileInput.files[0] || !mobileFileInput.files[0]) {
+                alert('Pilih file gambar untuk Desktop dan Mobile terlebih dahulu!');
                 return;
             }
 
-            const file = fileInput.files[0];
-            const fileName = `banner-${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
+            const desktopFile = desktopFileInput.files[0];
+            const mobileFile = mobileFileInput.files[0];
+
+            const desktopFileName = `banner-desk-${Date.now()}-${desktopFile.name.replace(/\s+/g, '-')}`;
+            const mobileFileName = `banner-mob-${Date.now()}-${mobileFile.name.replace(/\s+/g, '-')}`;
 
             const submitBtn = document.getElementById('submitBannerBtn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMPROSES BANNER...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMPROSES KEDUA BANNER...';
 
             try {
-                const base64Content = await toBase64(file);
-                const imageContentOnly = base64Content.split(',')[1];
+                // Konversi kedua file ke Base64
+                const base64Desktop = await toBase64(desktopFile);
+                const desktopContentOnly = base64Desktop.split(',')[1];
 
+                const base64Mobile = await toBase64(mobileFile);
+                const mobileContentOnly = base64Mobile.split(',')[1];
+
+                // 1. Upload file gambar Desktop ke GitHub via Worker
+                await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fileName: desktopFileName,
+                        fileContent: desktopContentOnly,
+                        jsonPath: '', // Kosongkan dulu agar hanya upload file gambar
+                        commitMessage: `Upload banner desktop: ${title}`
+                    })
+                });
+
+                // 2. Upload file gambar Mobile ke GitHub via Worker
+                await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fileName: mobileFileName,
+                        fileContent: mobileContentOnly,
+                        jsonPath: '', 
+                        commitMessage: `Upload banner mobile: ${title}`
+                    })
+                });
+
+                // 3. Simpan data objek ke `banners.json`
                 const newBanner = {
                     title: title,
-                    image: fileName
+                    image: desktopFileName,
+                    mobileImage: mobileFileName
                 };
 
                 const response = await fetch(WORKER_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        fileName: fileName,
-                        fileContent: imageContentOnly,
+                        fileName: 'dummy.txt', // Diabaikan worker karena jsonPath terisi
+                        fileContent: '',
                         jsonPath: 'banners.json',
                         jsonData: newBanner,
-                        commitMessage: `Tambah banner baru: ${title}`
+                        commitMessage: `Tambah data banner: ${title}`
                     })
                 });
 
                 const result = await response.json();
-                if (!result.success) throw new Error(result.error || 'Gagal memproses banner.');
+                if (!result.success) throw new Error(result.error || 'Gagal memperbarui banners.json');
 
-                alert('Sukses! Banner baru berhasil di-upload.');
+                alert('Sukses! Banner Desktop & Mobile berhasil di-upload.');
                 document.getElementById('bannerForm').reset();
                 loadBannerList();
             } catch (error) {
