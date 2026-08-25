@@ -9,21 +9,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- KUNCI UKURAN / MIN-WIDTH AGAR TIDAK CACAT SAAT DIKECILKAN --- */
-        html {
-            min-width: 1280px; /* Mengunci layout minimum agar tidak pecah/berantakan */
-        }
-
-        /* --- RESET & BODY --- */
-        body {
+        /* --- KUNCI ANTI GESER (MENGHILANGKAN SCROLL SAMPING) --- */
+        html, body {
+            width: 100%;
             margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Mencegah halaman bisa digeser ke samping */
             background-color: #0b0f19;
             color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: auto; /* Memungkinkan geser jika layar sangat kecil, tapi layout tetap aman terkunci */
+            box-sizing: border-box;
         }
 
-        /* --- HEADER FULL-WIDTH --- */
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        /* --- HEADER FULL-WIDTH (PAS 100%) --- */
         .header {
             width: 100%;
             background-color: #0f172a;
@@ -31,8 +33,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-sizing: border-box;
-            padding: 14px 40px;
+            padding: 14px 35px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -53,7 +54,7 @@
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 35px;
+            gap: 32px;
             align-items: center;
             margin: 0;
             padding: 0;
@@ -74,7 +75,7 @@
             color: #3b82f6;
         }
 
-        /* Kotak Pencarian Baru yang Lebih Menarik & Profesional */
+        /* Kotak Pencarian Profesional */
         .search-box {
             display: flex;
             background: #162032;
@@ -83,7 +84,7 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             transition: all 0.3s ease;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            width: 280px;
+            width: 270px;
         }
 
         .search-box:focus-within {
@@ -122,25 +123,23 @@
             background: #2563eb;
         }
 
-        /* --- CONTAINER UTAMA --- */
+        /* --- CONTAINER UTAMA 100% --- */
         .wrapper-full {
             width: 100%;
-            padding: 0 40px;
-            box-sizing: border-box;
+            padding: 0 35px;
         }
 
-        /* --- HERO BANNER FULL LAYAR --- */
+        /* --- HERO BANNER FULL LAYAR (PAS SAMPAI UJUNG) --- */
         .hero-banner {
-            width: 100vw;
+            width: 100%;
             position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
+            margin-left: 0;
+            margin-right: 0;
             margin-bottom: 35px;
             overflow: hidden;
             background: #000;
-            max-height: 450px;
+            border-radius: 8px;
+            max-height: 440px;
         }
 
         .slider-container {
@@ -151,12 +150,11 @@
 
         .slide {
             min-width: 100%;
-            box-sizing: border-box;
         }
 
         .slide img {
             width: 100%;
-            height: 450px;
+            height: 440px;
             display: block;
             object-fit: cover;
         }
@@ -176,8 +174,8 @@
             border-radius: 6px;
         }
         .slider-btn:hover { background-color: #3b82f6; }
-        .prev-btn { left: 30px; }
-        .next-btn { right: 30px; }
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
 
         .slider-dots {
             position: absolute;
@@ -201,7 +199,6 @@
             width: 28px;
             border-radius: 5px;
         }
-        .hero-content { display: none; }
 
         /* --- FILTER SECTION --- */
         .filter-section {
@@ -239,6 +236,7 @@
         /* --- KONTEN UTAMA (GRID FILM) --- */
         .main-container {
             margin-bottom: 60px;
+            width: 100%;
         }
 
         .section-title h2 {
@@ -248,13 +246,13 @@
             align-items: center;
             gap: 12px;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
         .movie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
         }
 
         .movie-card {
@@ -312,7 +310,6 @@
             color: #fbbf24;
             padding: 4px 9px;
             border-radius: 5px;
-            backdrop-filter: blur(4px);
             font-weight: 700;
         }
 
@@ -321,7 +318,6 @@
             color: #fff;
             padding: 4px 9px;
             border-radius: 5px;
-            backdrop-filter: blur(4px);
         }
 
         .quality-tag {
@@ -384,18 +380,11 @@
             width: 100%;
             background-color: #0f172a;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 35px 0;
+            padding: 35px 35px;
             margin-top: 70px;
             color: #94a3b8;
             font-size: 0.88rem;
             text-align: center;
-            box-sizing: border-box;
-        }
-
-        .footer-content {
-            width: 100%;
-            padding: 0 40px;
-            box-sizing: border-box;
         }
     </style>
 </head>
@@ -451,10 +440,8 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-            <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
-            <p style="margin-top: 8px;">&copy; 2026 RJMOVIE. All rights reserved.</p>
-        </div>
+        <p><strong>Disclaimer:</strong> RJMOVIE tidak menyimpan file video di server sendiri. Seluruh video ditautkan dari pihak ketiga.</p>
+        <p style="margin-top: 8px;">&copy; 2026 RJMOVIE. All rights reserved.</p>
     </footer>
 
     <!-- Script JavaScript -->
