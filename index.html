@@ -145,7 +145,7 @@
             padding: 0 35px;
         }
 
-        /* --- HERO BANNER SWIPE (PERBAIKAN UKURAN PAS) --- */
+        /* --- HERO BANNER SWIPE --- */
         .hero-banner {
             width: 100%;
             position: relative;
@@ -154,8 +154,8 @@
             background: transparent;
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
             overflow: hidden;
-            aspect-ratio: 21 / 9; /* Mengunci rasio tinggi banner agar tidak kepanjangan */
-            max-height: 380px;   /* Batasi tinggi maksimal agar pas sesuai area referensi */
+            aspect-ratio: 21 / 9;
+            max-height: 380px;
         }
 
         .slider-container {
@@ -183,13 +183,12 @@
             align-items: center;
         }
 
-        /* Perbaikan Tampilan Gambar Banner Desktop */
         .slide .img-desktop,
         .slide .img-mobile { 
             display: block; 
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Menyesuaikan penuh ke kotak banner secara proporsional */
+            object-fit: cover;
             object-position: center;
         }
 
@@ -317,9 +316,9 @@
 
         .overlay-top {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
+            top: 8px;
+            left: 8px;
+            right: 8px;
             display: flex;
             justify-content: space-between;
             font-size: 0.7rem;
@@ -329,7 +328,7 @@
         .rating-tag {
             background: rgba(11, 15, 25, 0.85);
             color: #fbbf24;
-            padding: 3px 7px;
+            padding: 3px 6px;
             border-radius: 4px;
             font-weight: 700;
         }
@@ -337,18 +336,18 @@
         .duration-tag {
             background: rgba(11, 15, 25, 0.85);
             color: #fff;
-            padding: 3px 7px;
+            padding: 3px 6px;
             border-radius: 4px;
         }
 
         .quality-tag {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
+            bottom: 8px;
+            left: 8px;
             background: #3b82f6;
             color: white;
             font-size: 0.65rem;
-            padding: 3px 7px;
+            padding: 2px 6px;
             border-radius: 4px;
             font-weight: 700;
             z-index: 2;
@@ -367,7 +366,7 @@
         }
 
         .play-icon {
-            font-size: 3.2rem;
+            font-size: 3rem;
             color: #3b82f6;
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
         }
@@ -377,11 +376,11 @@
         }
 
         .movie-info {
-            padding: 12px;
+            padding: 10px;
         }
 
         .movie-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             margin: 0 0 4px 0;
             white-space: nowrap;
@@ -391,7 +390,7 @@
         }
 
         .movie-meta {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #94a3b8;
             margin: 0;
         }
@@ -408,56 +407,59 @@
         }
 
         /* ========================================================
-            RESPONSIVE KHUSUS MOBILE / HP (Maksimal Lebar 768px)
+            OPTIMASI TAMPILAN MOBILE / HP YANG DISEMPURNAKAN
             ======================================================== */
         @media screen and (max-width: 768px) {
             .header {
-                padding: 12px 15px;
+                padding: 10px 14px;
                 flex-direction: column;
-                gap: 12px;
+                gap: 10px;
                 align-items: stretch;
             }
 
             .logo-container {
-                justify-content: center;
+                justify-content: flex-start;
             }
 
             .site-logo {
-                height: 35px;
+                height: 32px;
             }
 
+            /* Navigasi horizontal di HP */
             .nav-links {
                 display: flex;
                 overflow-x: auto;
-                gap: 18px;
-                padding-bottom: 4px;
+                gap: 16px;
+                padding-bottom: 2px;
                 justify-content: flex-start;
                 scrollbar-width: none;
+                -ms-overflow-style: none;
             }
             .nav-links::-webkit-scrollbar {
                 display: none;
             }
 
             .nav-links a {
-                font-size: 0.88rem;
+                font-size: 0.85rem;
                 white-space: nowrap;
             }
 
             .search-box {
                 width: 100% !important;
                 max-width: 100%;
+                padding: 2px 2px 2px 14px;
             }
 
             .wrapper-full {
-                padding: 0 15px;
+                padding: 0 12px;
             }
 
-            /* Banner di HP tampil pas, compact, langsung 1 slide jelas tanpa perlu geser */
+            /* Banner HP Dibuat Lebih Proporsional & Rapi */
             .hero-banner {
                 aspect-ratio: 16 / 9;
-                max-height: 200px;
-                border-radius: 12px;
-                margin-bottom: 20px;
+                max-height: 210px;
+                border-radius: 10px;
+                margin-bottom: 16px;
             }
 
             .slide .img-desktop { 
@@ -469,31 +471,51 @@
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                border-radius: 12px;
+                border-radius: 10px;
             }
 
+            /* Tombol Filter Kategori Bisa Digeser di HP */
             .filter-section {
                 display: flex;
                 flex-wrap: nowrap;
                 overflow-x: auto;
                 gap: 8px;
-                padding-bottom: 6px;
-                margin-bottom: 25px;
+                padding-bottom: 4px;
+                margin-bottom: 20px;
                 scrollbar-width: none;
+                -ms-overflow-style: none;
             }
             .filter-section::-webkit-scrollbar {
                 display: none;
             }
 
             .filter-btn {
-                padding: 8px 16px;
-                font-size: 0.82rem;
+                padding: 7px 14px;
+                font-size: 0.8rem;
                 flex-shrink: 0;
             }
 
+            .section-title h2 {
+                font-size: 1.15rem;
+                margin-bottom: 14px;
+            }
+
+            /* Grid Film 2 Kolom Rapi Khusus HP */
             .movie-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+                gap: 10px;
+            }
+
+            .movie-info {
+                padding: 8px;
+            }
+
+            .movie-title {
+                font-size: 0.85rem;
+            }
+
+            .movie-meta {
+                font-size: 0.72rem;
             }
         }
     </style>
