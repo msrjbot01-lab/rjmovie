@@ -20,37 +20,34 @@
             margin-right: -50vw;
             margin-bottom: 25px;
             overflow: hidden;
-            background: #000000; /* Latar belakang hitam untuk mengantisipasi sisa ruang */
+            background: #000;
+            height: 320px; /* Sesuaikan tinggi ini sesuai selera (misal 300px atau 350px) */
         }
 
         .slider-container {
             display: flex;
             transition: transform 0.5s ease-in-out;
             width: 100%;
+            height: 100%;
         }
 
         .slide {
             min-width: 100%;
+            height: 100%;
             box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .slide img {
             width: 100%;
-            height: auto; /* Tinggi otomatis mengikuti lebar agar gambar tidak terpotong */
+            height: 100%;
             display: block;
-            object-fit: contain; /* Memastikan seluruh bagian gambar tampil utuh */
+            object-fit: cover; /* Gambar akan pas memenuhi kotak merah dengan rapi */
         }
 
-        /* Penyesuaian khusus Tampilan Mobile (HP) agar tetap proporsional */
+        /* Penyesuaian Tampilan Mobile */
         @media (max-width: 768px) {
             .hero-banner {
-                max-height: 180px; /* Tinggi lebih kecil di HP */
-            }
-            .slide img {
-                height: 180px; /* Menyesuaikan tinggi gambar di HP */
+                height: 160px; /* Tinggi di HP */
             }
         }
 
