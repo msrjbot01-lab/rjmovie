@@ -32,6 +32,9 @@
 
         .page-content-wrapper {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* --- HEADER --- */
@@ -193,22 +196,27 @@
             padding: 4px;
         }
 
+        /* CONTAINER UTAMA DENGAN MAX-WIDTH AGAR TIDAK KEBABLASAN DI LAYAR LEBAR */
         .wrapper-full {
             width: 100%;
-            padding: 0 20px;
+            max-width: 1350px;
+            padding: 0 24px;
+            margin: 0 auto;
         }
 
-        /* --- HERO BANNER (DIPERBAIKI AGAR TIDAK TERPOTONG) --- */
+        /* --- HERO BANNER (DISESUAIKAN TINGGINYA SESUAI AREA YANG DITANDAI) --- */
         .hero-banner {
             width: 100%;
             position: relative;
+            margin-top: 20px;
             margin-bottom: 25px;
             border-radius: 14px;
             background: #0f172a;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             overflow: hidden;
-            aspect-ratio: 21 / 9; /* Rasio Ultrawide yang pas */
-            max-height: 400px;
+            aspect-ratio: 16 / 5.2; /* Diperlebar agar tidak terlalu panjang ke bawah */
+            max-height: 280px;      /* Membatasi tinggi maksimal agar pas dengan area yang Anda inginkan */
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .slider-container {
@@ -240,8 +248,8 @@
         .slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Menyesuaikan tanpa gepeng */
-            object-position: center;
+            object-fit: cover; 
+            object-position: top center; /* Fokus menampilkan bagian atas/tengah banner */
             display: block;
         }
 
@@ -251,7 +259,7 @@
 
         .slider-dots {
             position: absolute;
-            bottom: 10px;
+            bottom: 8px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -260,15 +268,15 @@
         }
 
         .dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             background-color: rgba(255, 255, 255, 0.4);
             border-radius: 50%;
             transition: all 0.3s;
         }
         .dot.active {
             background-color: #3b82f6;
-            width: 20px;
+            width: 18px;
             border-radius: 4px;
         }
 
@@ -289,6 +297,12 @@
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            color: #fff;
         }
 
         .filter-btn.active {
@@ -312,8 +326,8 @@
 
         .movie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 16px;
             width: 100%;
         }
 
@@ -322,6 +336,12 @@
             border-radius: 10px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
         .movie-link {
@@ -382,13 +402,13 @@
         .quality-tag.cam { background: #ef4444; }
 
         .movie-info {
-            padding: 8px;
+            padding: 10px;
         }
 
         .movie-title {
             font-size: 0.85rem;
             font-weight: 700;
-            margin: 0 0 3px 0;
+            margin: 0 0 4px 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -413,12 +433,11 @@
         }
 
         /* ========================================================
-            RESPONSIVE MOBILE 
+            RESPONSIVE MOBILE & FRAME BANNER
             ======================================================== */
         @media screen and (max-width: 768px) {
             .header {
                 padding: 10px 14px;
-                flex-wrap: nowrap;
             }
 
             .site-logo {
@@ -463,14 +482,25 @@
             }
 
             .wrapper-full {
-                padding: 0 10px;
+                padding: 0 12px;
             }
 
+            /* TAMPILAN BANNER MOBILE DENGAN EFEK FRAME & PADDING ELEGAN */
             .hero-banner {
-                aspect-ratio: 16 / 9;
-                max-height: 200px;
+                aspect-ratio: 16 / 8;
+                max-height: 190px;
                 border-radius: 12px;
-                margin-bottom: 12px;
+                margin-top: 12px;
+                margin-bottom: 16px;
+                background: #111827;
+                padding: 4px; /* Memberikan efek frame border di sekeliling banner */
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            }
+
+            .slider-container {
+                border-radius: 8px; /* Agar sudut dalam slider mengikuti frame */
+                overflow: hidden;
             }
 
             .slide .img-desktop { 
@@ -484,7 +514,7 @@
                 object-fit: cover;
                 object-position: center;
                 background-color: #0b0f19;
-                border-radius: 12px;
+                border-radius: 8px;
             }
 
             .filter-section {
@@ -508,7 +538,7 @@
 
             .movie-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
+                gap: 10px;
             }
         }
     </style>
@@ -784,7 +814,6 @@
                 const matchTitle = movie.title.toLowerCase().includes(keyword);
                 let matchCategory = true;
                 
-                // PERBAIKAN LOGIKA FILTER DI SINI
                 if (currentFilter === 'Terbaru') {
                     matchCategory = parseInt(movie.year) >= 2025;
                 } else if (currentFilter !== 'Semua') {
