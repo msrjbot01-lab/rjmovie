@@ -453,18 +453,29 @@
                 padding: 0 15px;
             }
 
-            /* --- BANNER FULL PENUH DI HP TANPA RUANG HITAM --- */
+            /* --- PERBAIKAN BANNER MOBILE: FRAME MENYESUAIKAN GAMBAR OTOMATIS --- */
             .hero-banner {
-                aspect-ratio: 16 / 6; /* Sesuaikan rasio agar pas di layar HP */
+                aspect-ratio: unset;
+                height: auto;
                 max-height: none;
                 border-radius: 10px;
+                background: transparent;
+                box-shadow: none;
+            }
+
+            .slider-container {
+                height: auto;
+            }
+
+            .slide {
+                height: auto;
             }
 
             .slide img {
                 width: 100%;
-                height: 100%;
-                object-fit: cover; /* Mengisi penuh frame secara proporsional */
-                object-position: center;
+                height: auto;
+                display: block;
+                object-fit: contain;
             }
 
             .filter-section {
