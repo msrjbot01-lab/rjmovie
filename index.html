@@ -46,7 +46,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 24px; /* Memberi jarak aman antar elemen header */
+            gap: 24px;
         }
 
         .logo-container {
@@ -61,7 +61,6 @@
             display: block;
         }
 
-        /* Bagian Tengah: Menu Navigasi diubah agar fleksibel menyesuaikan layar */
         .nav-links {
             display: flex;
             list-style: none;
@@ -118,7 +117,6 @@
             padding: 4px;
         }
 
-        /* SEARCH DESKTOP: Dibuat agar menyesuaikan ukuran desktop dengan lebar maksimal */
         .search-box {
             display: flex;
             align-items: center;
@@ -200,7 +198,7 @@
             padding: 0 20px;
         }
 
-        /* --- HERO BANNER --- */
+        /* --- HERO BANNER (DIPERBAIKI AGAR TIDAK TERPOTONG) --- */
         .hero-banner {
             width: 100%;
             position: relative;
@@ -209,8 +207,8 @@
             background: #0f172a;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             overflow: hidden;
-            aspect-ratio: 21 / 9;
-            max-height: 380px;
+            aspect-ratio: 21 / 9; /* Rasio Ultrawide yang pas */
+            max-height: 400px;
         }
 
         .slider-container {
@@ -242,7 +240,7 @@
         .slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Menyesuaikan tanpa gepeng */
             object-position: center;
             display: block;
         }
@@ -439,7 +437,6 @@
                 display: block;
             }
 
-            /* Dropdown Menu Hamburger */
             .nav-links {
                 display: none;
                 position: absolute;
@@ -469,13 +466,11 @@
                 padding: 0 10px;
             }
 
-            /* BANNER MOBILE */
             .hero-banner {
                 aspect-ratio: 16 / 9;
                 max-height: 200px;
                 border-radius: 12px;
                 margin-bottom: 12px;
-                background-color: #0f172a;
             }
 
             .slide .img-desktop { 
@@ -486,7 +481,7 @@
                 display: block !important; 
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
+                object-fit: cover;
                 object-position: center;
                 background-color: #0b0f19;
                 border-radius: 12px;
@@ -522,14 +517,12 @@
 
     <div class="page-content-wrapper">
         <header class="header">
-            <!-- Pojok Kiri: Logo RJMOVIE -->
             <div class="logo-container">
                 <a href="index.html">
                     <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
                 </a>
             </div>
             
-            <!-- Menu Desktop (Fleksibel Menyesuaikan Lebar Layar) -->
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="index.html"><i class="fas fa-film"></i> Movies</a></li>
@@ -538,7 +531,6 @@
                 <li><a href="negara.html"><i class="fas fa-globe"></i> Negara</a></li>
             </ul>
 
-            <!-- Search Desktop (Otomatis Menyesuaikan Ukuran Layar Desktop) -->
             <div class="header-right">
                 <div class="search-box">
                     <input type="text" id="searchInput" placeholder="Cari film favorit...">
@@ -553,20 +545,17 @@
             </div>
         </header>
 
-        <!-- Modal Search Mobile -->
         <div class="mobile-search-modal" id="mobileSearchModal">
             <input type="text" id="mobileSearchInput" placeholder="Cari film favorit...">
             <button class="mobile-search-close" id="mobileSearchClose"><i class="fas fa-times"></i></button>
         </div>
 
         <div class="wrapper-full">
-            <!-- Hero Banner -->
             <div class="hero-banner">
                 <div class="slider-container" id="sliderContainer"></div>
                 <div class="slider-dots" id="sliderDots"></div>
             </div>
 
-            <!-- Filter Section -->
             <div class="filter-section" id="filterContainer">
                 <button class="filter-btn active" data-filter="Semua">Semua</button>
                 <button class="filter-btn" data-filter="Terbaru">Terbaru</button>
@@ -576,7 +565,6 @@
                 <button class="filter-btn" data-filter="Sci-Fi">Sci-Fi</button>
             </div>
 
-            <!-- Grid Film -->
             <main class="main-container">
                 <div class="section-title">
                     <h2><i class="fas fa-fire" style="color: #3b82f6;"></i> Sedang Trending</h2>
@@ -796,13 +784,13 @@
                 const matchTitle = movie.title.toLowerCase().includes(keyword);
                 let matchCategory = true;
                 
-                if (currentProfile = 'Terbaru') { // Mengikuti filter Anda
-                    if (currentFilter === 'Terbaru') {
-                        matchCategory = parseInt(movie.year) >= 2025;
-                    } else if (currentFilter !== 'Semua') {
-                        matchCategory = movie.genre && movie.genre.toLowerCase().includes(currentFilter.toLowerCase());
-                    }
+                // PERBAIKAN LOGIKA FILTER DI SINI
+                if (currentFilter === 'Terbaru') {
+                    matchCategory = parseInt(movie.year) >= 2025;
+                } else if (currentFilter !== 'Semua') {
+                    matchCategory = movie.genre && movie.genre.toLowerCase().includes(currentFilter.toLowerCase());
                 }
+
                 return matchTitle && matchCategory;
             });
             renderMovies(result);
