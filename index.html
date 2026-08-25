@@ -453,17 +453,18 @@
                 padding: 0 15px;
             }
 
-            /* --- PENYESUAIAN BANNER DI HP (FRAME TETAP, GAMBAR FULL) --- */
+            /* --- BANNER FULL PENUH DI HP TANPA RUANG HITAM --- */
             .hero-banner {
-                /* Mengubah rasio tinggi frame khusus HP agar pas memenuhi gambar banner landscape */
-                aspect-ratio: 16 / 7; 
-                max-height: 220px;
+                aspect-ratio: 16 / 6; /* Sesuaikan rasio agar pas di layar HP */
+                max-height: none;
+                border-radius: 10px;
             }
 
             .slide img {
-                object-fit: cover; /* Gambar mengisi penuh tanpa sisa hitam di atas/bawah */
                 width: 100%;
                 height: 100%;
+                object-fit: cover; /* Mengisi penuh frame secara proporsional */
+                object-position: center;
             }
 
             .filter-section {
