@@ -12,16 +12,14 @@
         /* CSS Banner Diperbaiki Sesuai Batas Kotak Merah & Responsif Mobile */
         /* CSS Banner agar Tampil Utuh di Segala Ukuran Tanpa Terpotong */
         .hero-banner {
-            width: 100vw;
+            width: 100%;
+            max-width: 1200px; /* Menyesuaikan lebar standar website film Anda */
+            height: 250px;     /* Tinggi banner proporsional (bisa diubah ke 220px atau 280px sesuai selera) */
+            margin: 0 auto 25px auto; /* Posisi di tengah dan beri jarak bawah */
             position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-            margin-bottom: 25px;
             overflow: hidden;
+            border-radius: 12px; /* Membuat sudut banner agak melengkung rapi khas modern web */
             background: #000;
-            height: 320px; /* Sesuaikan tinggi ini sesuai selera (misal 300px atau 350px) */
         }
 
         .slider-container {
@@ -41,13 +39,15 @@
             width: 100%;
             height: 100%;
             display: block;
-            object-fit: cover; /* Gambar akan pas memenuhi kotak merah dengan rapi */
+            object-fit: cover; /* Gambar pas memenuhi area kotak tanpa gepeng */
         }
 
-        /* Penyesuaian Tampilan Mobile */
+        /* Penyesuaian Tampilan Mobile (HP) */
         @media (max-width: 768px) {
             .hero-banner {
-                height: 160px; /* Tinggi di HP */
+                width: 92%;      /* Agak ada margin kiri-kanan dikit di HP */
+                height: 140px;   /* Tinggi mengecil proporsional di HP */
+                border-radius: 8px;
             }
         }
 
