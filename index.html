@@ -249,7 +249,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover; 
-            object-position: top center;
+            object-position: center;
             display: block;
         }
 
@@ -485,35 +485,30 @@
                 padding: 0 12px;
             }
 
+            /* Perbaikan Khusus Banner Mobile agar tidak terpotong */
             .hero-banner {
-                aspect-ratio: 16 / 8;
-                max-height: 190px;
-                border-radius: 12px;
-                margin-top: 12px;
-                margin-bottom: 16px;
-                background: #111827;
-                padding: 4px;
-                border: 1px solid rgba(255, 255, 255, 0.12);
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+                aspect-ratio: 16 / 9; /* Diubah menjadi lebih proporsional untuk HP */
+                max-height: 210px;
+                border-radius: 10px;
+                margin-top: 10px;
+                margin-bottom: 15px;
+                background: #0f172a;
+                border: 1px solid rgba(255, 255, 255, 0.1);
             }
 
-            .slider-container {
-                border-radius: 8px;
-                overflow: hidden;
+            .slide img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain !important; /* Mencegah gambar terzoom/terpotong di HP */
+                background-color: #0b0f19;
             }
 
             .slide .img-desktop { 
-                display: none !important; 
+                display: block; /* Menyesuaikan jika hanya ada 1 link gambar */
             }
             
             .slide .img-mobile { 
-                display: block !important; 
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-                background-color: #0b0f19;
-                border-radius: 8px;
+                display: none; 
             }
 
             .filter-section {
@@ -673,12 +668,18 @@
                     slideDiv.classList.add('slide');
                     
                     const desktopImg = banner.image || '';
-                    const mobileImg = banner.mobileImage || desktopImg; 
+                    const mobileImg = banner.mobileImage || ''; 
                     
-                    slideDiv.innerHTML = `
-                        <img src="${desktopImg}" alt="${banner.title || 'Banner'}" class="img-desktop">
-                        <img src="${mobileImg}" alt="${banner.title || 'Banner'}" class="img-mobile">
-                    `;
+                    if (mobileImg) {
+                        slideDiv.innerHTML = `
+                            <img src="${desktopImg}" alt="${banner.title || 'Banner'}" class="img-desktop">
+                            <img src="${mobileImg}" alt="${banner.title || 'Banner'}" class="img-mobile">
+                        `;
+                    } else {
+                        slideDiv.innerHTML = `
+                            <img src="${desktopImg}" alt="${banner.title || 'Banner'}" style="width:100%; height:100%;">
+                        `;
+                    }
                     sliderContainer.appendChild(slideDiv);
 
                     const dot = document.createElement('div');
