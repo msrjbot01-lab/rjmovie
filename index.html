@@ -145,7 +145,7 @@
             padding: 0 35px;
         }
 
-        /* --- HERO BANNER SWIPE (DESKTOP) --- */
+        /* --- HERO BANNER SWIPE --- */
         .hero-banner {
             width: 100%;
             position: relative;
@@ -183,17 +183,20 @@
             align-items: center;
         }
 
-        .slide img {
+        /* Perbaikan Tampilan Gambar Banner */
+        .slide .img-desktop { 
+            display: block; 
             width: 100%;
             height: 100%;
-            display: block;
-            object-fit: contain;
-            object-position: center;
-            background: transparent;
+            object-fit: cover;
         }
 
-        .img-desktop { display: block; }
-        .img-mobile { display: none; }
+        .slide .img-mobile { 
+            display: none; 
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .slider-dots {
             position: absolute;
@@ -458,13 +461,13 @@
                 background: transparent;
             }
 
-            .img-desktop { display: none; }
-            .img-mobile { display: block; }
-
-            .slide img {
-                object-fit: contain;
+            /* Logika Sembunyikan/Tampilkan Gambar Banner di HP */
+            .slide .img-desktop { 
+                display: none !important; 
+            }
+            .slide .img-mobile { 
+                display: block !important; 
                 border-radius: 12px;
-                background: transparent;
             }
 
             .filter-section {
@@ -726,7 +729,6 @@
                 let matchCategory = true;
                 
                 if (currentFilter === 'Terbaru') {
-                    // Dinamis berdasarkan tahun rilis terbaru (misal: 2025 ke atas)
                     matchCategory = parseInt(movie.year) >= 2025;
                 } else if (currentFilter !== 'Semua') {
                     matchCategory = movie.genre && movie.genre.toLowerCase().includes(currentFilter.toLowerCase());
