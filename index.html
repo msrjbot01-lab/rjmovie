@@ -145,7 +145,7 @@
             padding: 0 35px;
         }
 
-        /* --- HERO BANNER SWIPE (DESKTOP & MOBILE) --- */
+        /* --- HERO BANNER SWIPE (DESKTOP) --- */
         .hero-banner {
             width: 100%;
             position: relative;
@@ -154,21 +154,23 @@
             background: #000;
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
             overflow: hidden;
+            aspect-ratio: 21 / 9; /* Rasio Desktop */
+            max-height: 480px;
         }
 
         .slider-container {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE/Edge */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
             width: 100%;
             height: 100%;
             scroll-behavior: smooth;
         }
 
         .slider-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
         }
 
         .slide {
@@ -178,6 +180,7 @@
             flex-shrink: 0;
         }
 
+        /* Pengaturan Tampilan Gambar Desktop vs Mobile */
         .slide img {
             width: 100%;
             height: 100%;
@@ -185,6 +188,10 @@
             object-fit: cover;
             object-position: center;
         }
+
+        /* Kontrol Gambar via CSS */
+        .img-desktop { display: block; }
+        .img-mobile { display: none; }
 
         .slider-dots {
             position: absolute;
@@ -194,7 +201,7 @@
             display: flex;
             gap: 8px;
             z-index: 10;
-            pointer-events: none; /* Agar tidak mengganggu geseran sentuhan */
+            pointer-events: none;
         }
         .dot {
             width: 8px;
@@ -441,15 +448,20 @@
                 padding: 0 15px;
             }
 
-            /* --- BANNER MOBILE DISESUAIKAN UNTUK SWIPE --- */
+            /* --- BANNER MOBILE (Rasio 16:9 Pas untuk HP) --- */
             .hero-banner {
-                aspect-ratio: 16 / 9; /* Proporsi standar mobile landscape */
+                aspect-ratio: 16 / 9;
+                max-height: 220px;
                 border-radius: 12px;
                 margin-bottom: 22px;
             }
 
+            /* Beralih menampilkan gambar khusus HP dan menyembunyikan gambar Desktop */
+            .img-desktop { display: none; }
+            .img-mobile { display: block; }
+
             .slide img {
-                object-fit: cover; /* Menyesuaikan agar penuh tanpa merusak gambar */
+                object-fit: cover;
                 border-radius: 12px;
             }
 
@@ -502,7 +514,7 @@
         </header>
 
         <div class="wrapper-full">
-            <!-- Hero Banner Swipeable (Tanpa Tombol Panah) -->
+            <!-- Hero Banner Swipeable (Mendukung Gambar Berbeda Desktop & Mobile) -->
             <div class="hero-banner">
                 <div class="slider-container" id="sliderContainer"></div>
                 <div class="slider-dots" id="sliderDots"></div>
@@ -558,7 +570,15 @@
                 banners.forEach((banner, index) => {
                     const slideDiv = document.createElement('div');
                     slideDiv.classList.add('slide');
-                    slideDiv.innerHTML = `<img src="${banner.image}" alt="${banner.title || 'Banner'}">`;
+                    
+                    // Menggunakan 2 gambar berbeda (Desktop & Mobile)
+                    const desktopImg = banner.image || '';
+                    const mobileImg = banner.mobileImage || desktopImg; // Fallback ke desktop jika mobileImage kosong
+                    
+                    slideDiv.innerHTML = `
+                        <img src="${desktopImg}" alt="${banner.title || 'Banner'}" class="img-desktop">
+                        <img src="${mobileImg}" alt="${banner.title || 'Banner'}" class="img-mobile">
+                    `;
                     sliderContainer.appendChild(slideDiv);
 
                     const dot = document.createElement('div');
@@ -583,7 +603,6 @@
             const sliderContainer = document.getElementById('sliderContainer');
             const dots = document.querySelectorAll('.dot');
             
-            // Update titik indikator aktif berdasarkan posisi scroll manual / sentuhan
             sliderContainer.addEventListener('scroll', () => {
                 const index = Math.round(sliderContainer.scrollLeft / sliderContainer.clientWidth);
                 dots.forEach((dot, i) => {
@@ -591,7 +610,6 @@
                 });
             });
 
-            // Auto slide setiap 4 detik
             let currentIndex = 0;
             slideInterval = setInterval(() => {
                 currentIndex = (currentIndex + 1) % totalSlides;
@@ -601,7 +619,6 @@
                 });
             }, 4000);
 
-            // Berhenti otomatis saat disentuh atau mouse di atas banner
             const bannerElement = document.querySelector('.hero-banner');
             bannerElement.addEventListener('mouseenter', () => clearInterval(slideInterval));
             bannerElement.addEventListener('touchstart', () => clearInterval(slideInterval));
