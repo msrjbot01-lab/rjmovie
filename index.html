@@ -7,9 +7,207 @@
     <!-- FontAwesome untuk Ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
-        /* Perbaikan khusus agar banner tampil utuh dan proporsional */
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #0b0f19;
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-sizing: border-box;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .page-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            width: 100%;
+            background-color: #0f172a;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 12px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .site-logo {
+            height: 34px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #3b82f6;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .mobile-search-btn {
+            display: none;
+            background: #162032;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #162032;
+            border-radius: 50px;
+            padding: 4px 4px 4px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            width: 100%;
+            max-width: 280px;
+            min-width: 200px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            outline: none;
+            font-size: 0.9rem;
+            width: 100%;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .search-box button {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border: none;
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* MODAL SEARCH MOBILE */
+        .mobile-search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #0f172a;
+            padding: 12px 16px;
+            z-index: 1100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-search-modal.active {
+            display: flex;
+        }
+
+        .mobile-search-modal input {
+            flex: 1;
+            background: #162032;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 9px 16px;
+            border-radius: 50px;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .mobile-search-close {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        /* CONTAINER UTAMA */
+        .wrapper-full {
+            width: 100%;
+            max-width: 1350px;
+            padding: 0 24px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        /* --- HERO BANNER (DIPERBAIKI AGAR TIDAK GESER KANAN-KIRI) --- */
         .hero-banner {
             width: 100%;
             max-width: 100%;
@@ -21,7 +219,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             overflow: hidden;
             aspect-ratio: 16 / 5.2;
-            max-height: 380px;
+            max-height: 280px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-sizing: border-box;
         }
@@ -57,8 +255,7 @@
         .slide img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Diubah ke contain agar gambar banner tidak terpotong */
-            background-color: #0b0f19;
+            object-fit: cover; 
             object-position: center;
             display: block;
         }
@@ -72,7 +269,7 @@
 
         .slider-dots {
             position: absolute;
-            bottom: 10px;
+            bottom: 8px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -93,11 +290,218 @@
             border-radius: 4px;
         }
 
+        /* --- FILTER & KONTEN --- */
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .filter-btn {
+            background: #162032;
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            color: #fff;
+            border-color: #3b82f6;
+        }
+
+        .main-container {
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .section-title h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 16px;
+            width: 100%;
+        }
+
+        .movie-card {
+            background: #162032;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .movie-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .movie-poster-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: #000;
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay-top {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+        }
+
+        .rating-tag {
+            background: rgba(11, 15, 25, 0.85);
+            color: #fbbf24;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .duration-tag {
+            background: rgba(11, 15, 25, 0.85);
+            color: #fff;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        .quality-tag {
+            position: absolute;
+            bottom: 6px;
+            left: 6px;
+            background: #3b82f6;
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+        .quality-tag.cam { background: #ef4444; }
+
+        .movie-info {
+            padding: 10px;
+        }
+
+        .movie-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #f8fafc;
+        }
+
+        .movie-meta {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .footer {
+            width: 100%;
+            background-color: #0f172a;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 18px 16px;
+            color: #94a3b8;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
         @media screen and (max-width: 768px) {
+            .header {
+                padding: 10px 14px;
+            }
+
+            .site-logo {
+                height: 28px;
+            }
+
+            .search-box {
+                display: none !important;
+            }
+
+            .mobile-search-btn {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                flex-direction: column;
+                background: #0f172a;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 14px 18px;
+                gap: 14px;
+                align-items: flex-start;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                width: 100%;
+                font-size: 0.9rem;
+            }
+
+            .wrapper-full {
+                padding: 0 12px;
+            }
+
             .hero-banner {
                 aspect-ratio: 16 / 9;
-                max-height: 220px;
+                max-height: 210px;
+                border-radius: 10px;
+                margin-top: 10px;
+                margin-bottom: 15px;
+                background: #0f172a;
+                border: 1px solid rgba(255, 255, 255, 0.1);
             }
+
             .slide .img-desktop {
                 display: none !important;
             }
@@ -105,17 +509,40 @@
                 display: block !important;
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
-                background-color: #0b0f19;
+                object-fit: cover;
                 object-position: center;
+            }
+
+            .filter-section {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 6px;
+                padding-bottom: 4px;
+                margin-bottom: 16px;
+                scrollbar-width: none;
+            }
+            .filter-section::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+                flex-shrink: 0;
+            }
+
+            .movie-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="page-content-wrapper" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-        <header class="header" style="width:100%;">
+    <div class="page-content-wrapper">
+        <header class="header">
             <div class="logo-container">
                 <a href="index.html">
                     <img src="logorjmovie.png" alt="RJMOVIE Logo" class="site-logo">
@@ -149,7 +576,7 @@
             <button class="mobile-search-close" id="mobileSearchClose"><i class="fas fa-times"></i></button>
         </div>
 
-        <div class="wrapper-full" style="width: 100%; max-width: 1350px; padding: 0 24px; box-sizing: border-box;">
+        <div class="wrapper-full">
             <div class="hero-banner">
                 <div class="slider-container" id="sliderContainer"></div>
                 <div class="slider-dots" id="sliderDots"></div>
